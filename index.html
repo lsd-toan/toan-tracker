@@ -99,15 +99,29 @@
   path.slice{cursor:pointer;outline:none;transition:filter .15s ease}
   path.slice.nodata{fill:color-mix(in srgb,var(--sc) 8%,transparent);stroke:var(--sc);stroke-width:1.2;stroke-linejoin:miter}
   path.slice.nodata:active{filter:none;fill:color-mix(in srgb,var(--sc) 18%,transparent)}
+  /* nothing practiced in this period: one blank pie, black tint with a silver border */
+  path.blankpie{fill:rgba(0,0,0,.55);stroke:#aeb5c0;stroke-width:1.2;cursor:default;pointer-events:none}
   path.slice:active{filter:brightness(1.25)}
   @media (hover:hover){ path.slice:hover{filter:brightness(1.15)} }
   .editing path.slice{cursor:default}
   .editing circle.slice:active{stroke-width:36}
   /* goal split: a thin ring just outside the practice ring, styled like the opened-category context arc */
   circle.goal{fill:none;stroke-width:4;pointer-events:none}
+  circle.goal.gtrack{stroke-opacity:.25}
+  .chart.hasprog .center .big{font-size:29px}
+  circle.progtrack{fill:none;stroke:#242a33;stroke-width:5.5;pointer-events:none}
+  circle.prog{fill:none;stroke-linecap:round;pointer-events:none}
   circle.ringtrack{fill:none;stroke:var(--line);stroke-width:4;opacity:.8;pointer-events:none}
   .center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
   .center .big{font-family:var(--disp);font-size:38px;font-weight:300;letter-spacing:.01em}
+  .corner .cvr{display:flex;align-items:center;gap:6px}
+  .corner .cvr .ico{width:15px;height:15px;color:var(--muted)}
+  /* icon-only corners: tap to see the streak or the bar graph */
+  .corner.icn{padding:10px;margin:-10px;cursor:pointer;border-radius:50%}
+  .corner.icn .cv,.corner.icn .ck{display:none}
+  .corner.icn .cvr .ico{width:28px;height:28px;color:#aeb5c0;transition:color .15s ease,transform .15s ease}
+  .corner.icn:active .ico{color:#fff;transform:scale(.92)}
+  #goalW.hit .ico{color:#fff}
   .center .small{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:4px}
   .hint{text-align:center;color:var(--muted);font-size:14px;margin:6px 0 4px}
   .ringkey{text-align:center;color:var(--muted);font-size:12px;opacity:.8;margin:0 0 4px}
@@ -155,6 +169,10 @@
   .editing .addrow{display:flex}
   .escope .addrow,.escope #goalsum{display:none !important}
   #editDone .editbtn{margin:16px 0 0}
+  #home.editing{padding-bottom:calc(env(safe-area-inset-bottom) + 104px)}
+  #home.editing #editDone{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:100%;max-width:480px;z-index:30;
+    padding:30px 20px calc(env(safe-area-inset-bottom) + 18px);background:linear-gradient(to bottom,transparent,var(--bg) 28px);pointer-events:none}
+  #home.editing #editDone .editbtn{margin:0;pointer-events:auto}
   .editing .donebtn{display:none !important}
   .addrow input{flex:1;min-width:0;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:11px 12px;font-size:16px;outline:none}
   .addrow input:focus{border-color:var(--accent)}
@@ -168,8 +186,8 @@
   .p-bot{position:absolute;left:0;right:0;bottom:0;z-index:4;min-width:0;padding:14px 16px calc(env(safe-area-inset-bottom) + 10px);
     background:color-mix(in srgb,var(--bg) 86%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
     -webkit-mask-image:linear-gradient(to bottom,transparent,#000 12px);mask-image:linear-gradient(to bottom,transparent,#000 12px)}
-  .slcol{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
-  .p-bot .bpmwrap{margin-bottom:8px}
+  .slcol{display:flex;flex-direction:column;gap:6px;margin-bottom:var(--bgap,9px)}
+  .p-bot .bpmwrap{margin-bottom:var(--bgap,9px)}
   .tipcard{padding:10px 14px;position:absolute;left:0;right:0;z-index:1;transition:opacity .2s ease}
   .tipcard.under{opacity:0;pointer-events:none}
   .panel{position:relative}
@@ -229,13 +247,13 @@
   .chips.fit .chip{flex:1 1 auto;min-width:0;padding:7px 3px;text-align:center;font-size:12px}
   @media (max-width:380px){ .chips.fit{gap:4px} .chips.fit .chip{padding:7px 2px;font-size:11.5px} }
   .beatrow{display:flex;align-items:center;gap:8px;width:100%}
-  .beats{display:flex;flex:1;min-width:0;flex-wrap:nowrap;justify-content:space-evenly;align-items:center;min-height:40px}
+  .beats{display:flex;flex:1;min-width:0;flex-wrap:nowrap;justify-content:space-evenly;align-items:center;min-height:calc(40px * var(--bk,1))}
   .beats.dense .beat{width:18px;height:18px}
   .beats.dense .beat.l2{width:24px;height:24px}
-  .beat{width:25px;height:25px;border-radius:50%;border:2px solid #4a5463;background:#2a303a;transition:transform .08s ease,background .08s ease;flex:none}
-  .beat.l2{width:32.5px;height:32.5px;border-color:var(--accent);background:color-mix(in srgb,var(--accent) 30%,transparent)}
+  .beat{width:calc(25px * var(--bk,1));height:calc(25px * var(--bk,1));border-radius:50%;border:2px solid #4a5463;background:#2a303a;transition:transform .08s ease,background .08s ease;flex:none}
+  .beat.l2{width:calc(32.5px * var(--bk,1));height:calc(32.5px * var(--bk,1));border-color:var(--accent);background:color-mix(in srgb,var(--accent) 30%,transparent)}
   .beat.l0{border-color:var(--line);background:transparent;opacity:.6}
-  .beat.l3{width:28.5px;height:28.5px;border-color:color-mix(in srgb,var(--accent) 70%,#4a5463);background:color-mix(in srgb,var(--accent) 14%,transparent)}
+  .beat.l3{width:calc(28.5px * var(--bk,1));height:calc(28.5px * var(--bk,1));border-color:color-mix(in srgb,var(--accent) 70%,#4a5463);background:color-mix(in srgb,var(--accent) 14%,transparent)}
   .beats.dense .beat.l3{width:21px;height:21px}
   .beat.cnt{background:transparent !important;border-color:var(--text) !important;transform:scale(1.15)}
   .beat.on{background:radial-gradient(circle at 35% 30%,var(--accent),color-mix(in oklab,var(--accent) 55%,#000));border-color:var(--accent);transform:scale(1.22)}
@@ -261,6 +279,24 @@
   .tline{font-size:13px;color:var(--muted);margin:10px 2px 0}
   .drop{display:flex;align-items:center;gap:10px;width:100%;text-align:left}
   .drop .cl{margin:0;flex:1}
+  /* time signature and subdivision tucked under the beat dots; tap the line to show them (set FOLD_METER false to undo) */
+  .meterline{display:flex;align-items:center;justify-content:center;gap:8px;margin:0 auto;padding:4px 14px;border-radius:999px;font-size:11px;letter-spacing:.18em;color:var(--muted)}
+  .meterline .dchev{font-size:11px}
+  #practice.mfolded .mfold{display:none !important}
+  #practice.dfolded .dfold{display:none !important}
+  #practice:not(.mfoldon) .meterline{display:none}
+  /* line-metronome icon family */
+  .ico{width:17px;height:17px;flex:none}
+  .drop>.ico{margin-right:-2px}
+  .bpmcap .ico{width:11px;height:11px;vertical-align:-2px;margin-right:4px}
+  /* Modes: one dropdown holding all the modes; its header shows the icons of the modes that are on */
+  .card.modes{padding:0;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-card);overflow:hidden}
+  .card.modes>.drop{padding:12px 14px}
+  .card.modes>.drop .cl{flex:none;color:var(--text)}
+  .micons{display:flex;gap:6px;color:var(--accent);flex:none}
+  .micons .ico{width:16px;height:16px}
+  #modesSum{flex:1;min-width:0;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .card.modes .optgroup{border:0;border-top:1px solid var(--line);border-radius:0;background:transparent}
   .dsum{font-size:13px;color:var(--muted)}
   .dchev{color:var(--muted);font-size:14px;width:14px;text-align:center}
   #trainer .cl,.card.opt .cl{color:var(--accent)}
@@ -313,7 +349,7 @@
   .bpmbox{width:124px;flex:none;text-align:center}
   .bpmnum{font-family:var(--disp);font-size:58px;font-size:clamp(44px,8.2dvh,68px);font-weight:300;line-height:1;letter-spacing:-.03em;width:100%;padding:0;margin:0;border:0;border-radius:0;background:transparent;outline:none;text-align:center;color:inherit;-webkit-appearance:none;appearance:none;caret-color:var(--accent)}
   .bpmcap{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:3px;white-space:nowrap}
-  .gline{margin:4px 0 0;min-height:13px;text-align:center;font-size:10.5px;letter-spacing:.14em;color:var(--accent);white-space:nowrap}
+  .gline{display:none !important;margin:4px 0 0;min-height:13px;text-align:center;font-size:10.5px;letter-spacing:.14em;color:var(--accent);white-space:nowrap}
   #practice:not(.mguided) .gline{visibility:hidden}
   .bpmcap b{color:var(--accent);font-weight:500;letter-spacing:.04em;font-size:12px}
   .meter{display:flex;align-items:center;gap:8px}
@@ -339,6 +375,47 @@
     background:var(--surface);border:1px solid var(--line);font-size:14px;letter-spacing:.06em;line-height:1.35;color:var(--text);
     box-shadow:0 10px 30px rgba(0,0,0,.55);transition:opacity .18s ease}
   .tourn{margin-top:7px;font-size:9.5px;letter-spacing:.14em;color:var(--muted)}
+  /* tour on a dropdown: its settings show (dimmed) even while the feature is off */
+  .card.tpeek .trset{display:block !important;opacity:.5}
+  .card.tpeek #graderOff{display:none !important}
+  /* tour demo: copies of two real rows act out press, hold, drag and merge; beat dots stand in for the finger */
+  #tourDemo{position:absolute;inset:0;pointer-events:none}
+  #tourDemo .row.pill{position:absolute;margin:0;transform-origin:50% 50%;transition:transform .5s cubic-bezier(.3,.7,.3,1),opacity .35s ease,background .2s ease,box-shadow .2s ease}
+  #tourDemo .row.pill.dlift{z-index:3;box-shadow:0 10px 28px rgba(0,0,0,.6);background:color-mix(in srgb,var(--pc) 22%,var(--surface))}
+  #tourDemo .row.pill.dmerge{background:color-mix(in srgb,var(--pc) 24%,var(--surface))}
+  #tourDemo .row.pill.dmerge .name b{color:var(--pc)}
+  .tdf{position:absolute;z-index:4;width:0;height:0;transition:transform .5s cubic-bezier(.3,.7,.3,1),opacity .25s ease}
+  .tdf .beat{position:absolute;left:-15px;top:-15px;width:30px;height:30px;transform:scale(.2);opacity:0;transition:transform .18s ease,opacity .18s ease,background .12s ease,border-color .12s ease}
+  .tdf.show .beat{transform:scale(1);opacity:1}
+  .tdf .beat.on{background:radial-gradient(circle at 35% 30%,#f4f6f9,#8a93a0);border-color:#d5dae2;transform:scale(1.15)}
+  .tdh{position:absolute;left:-26px;top:-38px;display:flex;gap:6px;opacity:0;transition:opacity .18s ease}
+  .tdh.show{opacity:1}
+  .tdh .beat{position:static;width:12px;height:12px;border-width:1.5px;transform:none;opacity:1}
+  .tdh .beat.on{transform:scale(1.2)}
+  .tdl{position:absolute;left:-60px;top:22px;width:120px;text-align:center;font-size:10px;letter-spacing:.16em;color:var(--text);text-transform:uppercase;white-space:nowrap}
+  .tdt{position:absolute;z-index:3;width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:50%;background:#d5dae2;opacity:.55;transition:opacity .5s ease,transform .5s ease}
+  /* bar graph of the selected period (tap the average widget) */
+  .bars{display:none;position:fixed;inset:0;z-index:120;background:rgba(0,0,0,.72);align-items:center;justify-content:center;padding:18px}
+  .bars.show{display:flex}
+  .bbox{width:100%;max-width:420px;background:var(--surface2);border:2px solid #aeb5c0;border-radius:var(--r-card);padding:20px 16px 14px;text-align:center;animation:celepop .4s cubic-bezier(.2,.9,.3,1.15) both}
+  .bk{font-size:11px;letter-spacing:.24em;color:var(--muted)}
+  .bt{margin-top:6px;font-family:var(--disp);font-size:30px;font-weight:300;letter-spacing:.08em;color:var(--text)}
+  .bs{margin-top:2px;font-size:11px;letter-spacing:.14em;color:var(--muted)}
+  .bchart{margin:14px 0 4px}
+  .bchart svg{display:block;width:100%;height:auto;overflow:visible}
+  .bchart .bcol{cursor:pointer}
+  .bchart.pick .bbar:not(.sel){opacity:.3}
+  .bchart .bbar{transition:opacity .15s ease}
+  .btip{min-height:34px;font-size:11.5px;letter-spacing:.08em;line-height:1.45;color:var(--text)}
+  .btip small{display:block;color:var(--muted);font-size:10.5px}
+  .bleg{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 14px;margin:8px 0 12px;font-size:10.5px;letter-spacing:.1em;color:var(--text)}
+  .bleg span{display:inline-flex;align-items:center;gap:6px}
+  .bleg i{width:9px;height:9px;border-radius:50%;background:var(--dc)}
+  .bbox .cok{margin-top:4px;background:linear-gradient(120deg,#7c8594 0%,#ffffff 60%,#ffffff 100%)}
+  #avgW{cursor:pointer}
+  /* share preview */
+  .shprev{display:block;width:100%;max-height:46vh;object-fit:contain;border-radius:12px;border:1px solid var(--line);margin:4px 0 10px;background:#090b0e}
+  .shrecs{font-size:11px;letter-spacing:.08em;line-height:1.5;color:var(--muted);text-align:left;margin-bottom:6px}
   /* level found / level up */
   .cele{display:none;position:fixed;inset:0;z-index:120;background:rgba(0,0,0,.72);align-items:center;justify-content:center;padding:24px}
   .cele.show{display:flex}
@@ -387,6 +464,7 @@
   .mch.gpill:active{background:color-mix(in srgb,var(--gc) 24%,transparent)}
   .mch.gpill .gp{font-weight:400;color:var(--muted);font-size:13px}
   .mch.gpill .gn{flex:0 0 100%;margin-top:4px;font-weight:400;font-size:11.5px;letter-spacing:.04em;color:var(--muted)}
+  .mch.gpill .gn em{display:block;margin-top:4px;font-style:normal;letter-spacing:.08em;color:var(--gc)}
   .mbtns{display:flex;gap:10px}
   .mbtns button{flex:1;height:44px;border-radius:22px;background:var(--surface);font-weight:600;font-size:15px}
   .mbtns button.ok{background:var(--accent);color:#0b0d10}
@@ -465,8 +543,15 @@
   @keyframes sugslice{0%,100%{filter:none}50%{filter:brightness(1.18) drop-shadow(0 0 3px var(--sc))}}
   @media (prefers-reduced-motion:reduce){ .row.pill.suggest,path.slice.suggest{animation:none} }
   .row.pill .name b{font-weight:500;font-size:15px;text-transform:uppercase;letter-spacing:.06em}
+  /* subcategory rows: long names wrap to a second line instead of being cut off */
+  .catblk.open .row.pill .name b{white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-height:1.25;overflow-wrap:anywhere}
+  /* drag onto another row to merge: the target lights up, the dragged row shrinks into it */
+  .row.pill.reo-merge{background:color-mix(in srgb,var(--pc) 24%,transparent);transform:scale(1.04);transition:transform .15s ease,background .15s ease}
+  .row.pill.reo-merge .name b{color:var(--pc)}
+  .reo-into{opacity:.5}
   .row.pill .time{font-size:14px}
   .row.pill .pct{font-size:13px;color:color-mix(in srgb,var(--text) 70%,transparent)}
+  #legend .row.pill:not(.mhit) .pct{display:none}
   .row.pill .rt{padding-left:0}
   .row.pill{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
   .reo-sib{transition:transform .18s ease}
@@ -479,7 +564,7 @@
   @media (max-height:680px){
     .rb{width:44px;height:44px}
     .tap,.go-btn{height:48px;border-radius:24px}
-    .panel{gap:9px}
+    .panel{gap:var(--pgap,9px)}
   }
 </style>
 </head>
@@ -497,6 +582,7 @@
       </button>
       <button class="donebtn" id="doneBtn">Done</button>
       <div class="menu" id="menu" role="menu">
+        <button data-act="share" role="menuitem">Share</button>
         <button data-act="unit" role="menuitem">Time units: <span id="unitName">Auto</span></button>
         <button data-act="tour" role="menuitem">Show the tour</button>
         <button data-act="backup" role="menuitem">Back up data</button>
@@ -519,10 +605,10 @@
     <div class="hsp" style="--min:22px"></div>
     <div class="chart">
       <svg id="donut" viewBox="0 0 200 200" role="img" aria-label="Practice time by category"></svg>
-      <div class="corner cl" id="sinceW" aria-label="Time since last practice"><span class="ck">Since last practice</span><span class="cv" id="sinceV">—</span></div>
-      <button class="corner cr" id="goalW" aria-label="Daily practice goal (tap to set)"><span class="ck" id="goalK">Goal / day</span><span class="cv" id="goalV">Set</span></button>
-      <div class="corner cl cb" id="streakW" aria-label="Day streak"><span class="cv" id="streakV">0 days</span><span class="ck">Day streak</span></div>
-      <div class="corner cr cb" id="avgW" aria-label="Average practice time"><span class="cv" id="avgV">—</span><span class="ck" id="avgK">Average / week</span></div>
+      <button type="button" class="corner cl icn" id="goalW" aria-label="Daily goal (tap to see or set it)"><span class="cvr"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/></svg></span></button>
+      <button type="button" class="corner cr icn" id="tipW" aria-label="A learning strategy to try"><span class="cvr"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg></span></button>
+      <button type="button" class="corner cl cb icn" id="streakW" aria-label="Day streak (tap to see it)"><span class="cvr"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M3 10h18M8 3v4M16 3v4"/><text id="streakNum" x="12" y="18.6" text-anchor="middle" font-size="8" font-weight="600" fill="currentColor" stroke="none" font-family="-apple-system,'Helvetica Neue',Arial,sans-serif">0</text></svg><span class="cv" id="streakV">0 days</span></span><span class="ck">Day streak</span></button>
+      <button class="corner cr cb icn" id="avgW" aria-label="Average practice per day (tap for the bar graph)"><span class="cvr"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 20V12M12 20V5M19 20v-9"/><path d="M3 20h18"/></svg><span class="cv" id="avgV">—</span></span><span class="ck" id="avgK">Average / day ›</span></button>
       <div class="center">
         <div class="big" id="total">0m</div>
         <div class="small" id="totalLbl">this week</div>
@@ -568,10 +654,12 @@
           <div class="clock" id="clock">15:00</div>
           <div class="bar"><i id="barFill"></i></div>
         </div>
-        <div class="chips fit" id="chips"></div>
+        <button type="button" class="meterline" id="durLine" aria-expanded="false"><span id="durTxt">1 min</span><span class="dchev" id="durChev">&#9662;</span></button>
+        <div class="chips fit dfold" id="chips"></div>
         <div class="beatrow clickonly"><div class="beats" id="beats"></div></div>
-        <div class="chips fit clickonly" id="tsChips" role="group" aria-label="Time signature"></div>
-        <div class="meter clickonly">
+        <button type="button" class="meterline clickonly" id="meterLine" aria-expanded="false"><span id="meterTxt">4/4 · Quarter</span><span class="dchev" id="meterChev">&#9662;</span></button>
+        <div class="chips fit clickonly mfold" id="tsChips" role="group" aria-label="Time signature"></div>
+        <div class="meter clickonly mfold">
           <div class="seg" id="seg">
             <button data-sub="1">Quarter</button>
             <button data-sub="2">Eighth</button>
@@ -579,26 +667,29 @@
             <button data-sub="4">16th</button>
           </div>
         </div>
+        <div class="card modes" id="modes">
+          <button class="drop" id="modesHead" aria-expanded="false"><span class="cl">Modes</span><span class="micons" id="modesIcons"></span><span class="dsum" id="modesSum"></span><span class="dchev" id="modesChev">&#9662;</span></button>
+          <div id="modesBody" style="display:none">
         <div class="optgroup">
         <div class="card clickonly opt" id="grader">
           <button class="drop" id="graderHead" aria-expanded="false">
-            <span class="cl">Guided</span>
+            <span class="cl">Guided mode</span>
             <span class="dsum" id="graderSum">Off</span>
             <span class="dchev" id="graderChev">&#9662;</span>
           </button>
           <div id="graderBody" style="display:none">
             <div class="trl"><span>Turn on</span>
-              <button class="sw" id="grGuided" role="switch" aria-checked="false" aria-label="Guided"></button></div>
+              <button class="sw" id="grGuided" role="switch" aria-checked="false" aria-label="Guided mode"></button></div>
             <div class="trset" id="graderSet">
-            <div class="trl"><span>Find your level</span>
-              <button class="sw" id="grCal" role="switch" aria-checked="false" aria-label="Find your level"></button></div>
+            <div class="trl"><span>Find your BPM</span>
+              <button class="sw" id="grCal" role="switch" aria-checked="false" aria-label="Find your BPM"></button></div>
             <div class="trl"><span>Record each run</span>
               <button class="sw" id="grOn" role="switch" aria-checked="false" aria-label="Record each run"></button></div>
               <div class="trl"><span>After clean</span>
                 <div class="mini"><button class="sb" id="grUpDn" aria-label="Less">&minus;</button><div class="val" id="grUpV"></div><button class="sb" id="grUpUp" aria-label="More">+</button></div></div>
               <div class="trl"><span>After rough</span>
                 <div class="mini"><button class="sb" id="grDownDn" aria-label="Less">&minus;</button><div class="val" id="grDownV"></div><button class="sb" id="grDownUp" aria-label="More">+</button></div></div>
-              <div class="optnote">Grade each run when the metronome stops. The BPM goes up, stays, or comes down. Find your level: 30-second runs from 60 BPM until we find your edge, about 3 minutes. Recordings keep your starred takes plus the latest 10.</div>
+              <div class="optnote">Rate each session when it ends. The BPM goes up, stays, or comes down. Find your BPM: 30-second runs from 60 BPM until we find your edge, about 3 minutes. Recordings keep your starred takes plus the latest 10.</div>
             </div>
             <div class="optnote" id="graderOff">Turn on to grade each run and let the BPM follow.</div>
           </div>
@@ -637,7 +728,23 @@
             <div class="optnote">No click, just the countdown. For playing along with songs, lessons, or working out ideas.</div>
           </div>
         </div>
-        <div class="card clickonly metroonly" id="trainer">
+        <div class="card clickonly opt" id="cin">
+          <button class="drop" id="cinHead" aria-expanded="false">
+            <span class="cl">Count-in</span>
+            <span class="dsum" id="cinSum">On · 1 bar</span>
+            <span class="dchev" id="cinChev">&#9662;</span>
+          </button>
+          <div id="cinBody" style="display:none">
+            <div class="trl"><span>Turn on</span>
+              <button class="sw" id="ciOn" role="switch" aria-checked="true" aria-label="Count-in"></button></div>
+            <div class="trset" id="cinSet">
+              <div class="trl"><span>Bars</span>
+                <div class="mini"><button class="sb" id="ciBarsDn" aria-label="Fewer bars">&minus;</button><div class="val" id="ciBarsV"></div><button class="sb" id="ciBarsUp" aria-label="More bars">+</button></div></div>
+              <div class="optnote">Sticks count you in before the click starts. Recording and practice time begin after the count-in.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card clickonly opt" id="trainer">
           <button class="drop" id="trHead" aria-expanded="false">
             <span class="cl">Speed mode</span>
             <span class="dsum" id="trSum">Off</span>
@@ -657,17 +764,19 @@
           </div>
         </div>
         </div>
+          </div>
+        </div>
       </div>
     </div>
 
     <div class="p-bot" id="pbot">
       <div class="bpmwrap clickonly">
         <div class="bpmrow">
-          <div class="corner bw bl" id="lastW"><span class="cv" id="lastTempo">—</span><span class="ck">Last BPM</span></div>
+          <div class="corner bw bl" id="lastW"><span class="cv" id="lastTempo">—</span><span class="ck" id="lastK">Last BPM</span></div>
           <button class="rb" id="bpmDown" aria-label="Slower">&minus;</button>
           <div class="bpmbox">
             <input class="bpmnum" id="bpmNum" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="3" enterkeyhint="done" autocomplete="off" aria-label="Tempo in BPM" value="100">
-            <div class="bpmcap">BPM &middot; <b id="tempo"></b></div>
+            <div class="bpmcap"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 3h5L19 21H5z"/><path d="M12 17 16 7"/><circle cx="14.9" cy="9.8" r="1.2"/></svg>BPM &middot; <b id="tempo"></b></div>
           </div>
           <button class="rb" id="bpmUp" aria-label="Faster">+</button>
           <button type="button" class="corner bw br" id="goalTempo" aria-label="Goal BPM (tap to set)"><span class="cv" id="goalV2">—</span><span class="ck">Goal BPM</span></button>
@@ -675,10 +784,6 @@
         <div class="gline" id="gline"></div>
       </div>
       <div class="slcol">
-        <div class="volrow clickonly">
-          <svg width="19.8" height="19.8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 3h5L19 21H5z"/><path d="M12 17 16 7"/><circle cx="14.9" cy="9.8" r="1.2"/></svg>
-          <input type="range" id="bpmSlider" min="30" max="300" step="1" aria-label="Tempo">
-        </div>
         <div class="volrow">
           <svg width="19.8" height="19.8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg>
           <input type="range" id="vol" min="0" max="1" step="0.01" aria-label="Volume">
@@ -694,6 +799,7 @@
 
 <div class="tour" id="tour" role="dialog" aria-modal="true" aria-live="polite"><svg id="tourSvg"></svg><div class="tourpill" id="tourPill"><div id="tourText"></div><div class="tourn" id="tourN"></div></div></div>
 <div class="cele" id="cele" role="dialog" aria-modal="true"><div class="cbox"><div class="ck" id="celeK"></div><div class="cbig" id="celeT"></div><div class="csub" id="celeS"></div><div class="ctip" id="celeTip"></div><div class="cplay" id="celePlay"></div><button class="cok" id="celeOk">Nice</button></div></div>
+<div class="bars" id="bars" role="dialog" aria-modal="true" aria-labelledby="barsK"><div class="bbox"><div class="bk" id="barsK"></div><div class="bt" id="barsT"></div><div class="bs" id="barsS"></div><div class="bchart" id="barsChart"></div><div class="btip" id="barsTip"></div><div class="bleg" id="barsLeg"></div><button class="cok" id="barsOk">Close</button></div></div>
 <div class="modal" id="modal" role="dialog" aria-modal="true">
   <div class="mbox">
     <div class="mt" id="mTitle"></div>
@@ -723,8 +829,8 @@
   var KEY = 'woodshed.v1';
   // TEST BUILDS: every new iteration opens like a first launch. When BUILD changes, saved data from the
   // previous iteration is cleared once, then saving works normally. Set RESET_ON_NEW_BUILD = false before release.
-  var BUILD = '2026-11-04-al';
-  var RESET_ON_NEW_BUILD = false;
+  var BUILD = '2026-11-07-n';
+  var RESET_ON_NEW_BUILD = true; // ON for the 2026-11-07 fresh-start test builds: opens like a first launch. Turn OFF when testing is done.
   var UNITS = {
     min:{n:'Minutes', s:'min', ms:6e4},
     hr: {n:'Hours',   s:'hr',  ms:36e5},
@@ -742,7 +848,7 @@
             log:[], range:'week', unit:'auto', bpm:100, beats:4, tsd:4, sub:1, vol:0.8, duration:10, tour:{},
             pattern:[2,1,1,1,1,1,1,1,1,1,1,1],
             trainer:{on:false, step:2, bars:4, max:0},
-            grade:{on:true, up:3, down:7, rec:true}, gaps:{on:false, play:3, mute:1}, tmr:{chime:true}};
+            grade:{on:true, up:3, down:7, rec:true}, gaps:{on:false, play:3, mute:1}, tmr:{chime:true}, cin:{on:true, bars:1}};
   }
   function load(){
     try{
@@ -800,6 +906,7 @@
         out.trainer = Object.assign({}, d.trainer, s.trainer || {});
         out.grade = Object.assign({}, d.grade, s.grade || {});
         out.gaps = Object.assign({}, d.gaps, s.gaps || {});
+        out.cin = Object.assign({}, d.cin, s.cin || {}); out.cin.bars = clamp(Math.round(+out.cin.bars) || 1, 1, 4);
         if(['day','week','month','year','all'].indexOf(out.range) < 0) out.range = 'week';
         if(!out.tour || typeof out.tour !== 'object') out.tour = {};
         if(!(out.dailyGoal > 0)) delete out.dailyGoal;
@@ -968,7 +1075,7 @@
     Array.prototype.forEach.call(document.querySelectorAll('#modal .tmpseg'), function(e){ e.remove(); });
     var inp = $('mInput');
     inp.style.display = o.input ? 'block' : 'none';
-    if(o.input){ inp.value = o.input.value; inp.setAttribute('inputmode', o.input.mode || 'text'); }
+    if(o.input){ inp.value = o.input.value; inp.setAttribute('inputmode', o.input.mode || 'text'); if(o.input.max) inp.maxLength = o.input.max; else inp.removeAttribute('maxlength'); }
     var ch = $('mChoices'); ch.innerHTML = '';
     if(o.top) ch.appendChild(o.top);
     (o.choices || []).forEach(function(c){
@@ -976,23 +1083,24 @@
       b.className = 'mch' + (c.value === o.current ? ' active' : '') + (o.pills ? ' gpill' : '');
       if(o.pills) b.style.setProperty('--gc', o.pills);
       if(c.html) b.innerHTML = c.html; else b.textContent = c.label;
-      b.addEventListener('click', function(){ closeModal(); o.onOk(c.value); });
+      b.addEventListener('click', function(){ closeModal(); (o.onPick || o.onOk)(c.value); });
       ch.appendChild(b);
     });
     var ok = $('mOk');
-    ok.style.display = o.choices ? 'none' : '';
+    ok.style.display = o.choices && !o.showOk ? 'none' : '';
     ok.textContent = o.ok || 'OK';
     ok.classList.toggle('danger', !!o.danger);
     $('mCancel').style.display = o.single ? 'none' : '';
     $('mCancel').textContent = o.cancelText || (o.choices ? 'Close' : 'Cancel');
     modalOk = function(){ var v = o.input ? inp.value : true; closeModal(); if(o.onOk) o.onOk(v); };
-    modalCancel = o.onCancel || null;
+    modalCancel = o.onCancel || null; modalSticky = !!o.sticky;
     $('modal').classList.add('show');
     if(o.input){ try{ inp.focus(); inp.select(); }catch(e){} setTimeout(function(){ inp.focus(); inp.select(); }, 60); }
   }
   $('mOk').addEventListener('click', function(){ if(modalOk) modalOk(); });
   $('mCancel').addEventListener('click', function(){ var f = modalCancel; closeModal(); if(f) f(); });
-  $('modal').addEventListener('click', function(e){ if(e.target === $('modal')){ var f = modalCancel; closeModal(); if(f) f(); } });
+  var modalSticky = false;
+  $('modal').addEventListener('click', function(e){ if(e.target === $('modal') && !modalSticky){ var f = modalCancel; closeModal(); if(f) f(); } });
   $('mInput').addEventListener('keydown', function(e){ if(e.key === 'Enter' && modalOk) modalOk(); });
 
   /* ---------- Home ---------- */
@@ -1086,7 +1194,9 @@
     if(sn && sn.textContent){
       var full = $('psub').clientWidth - 8, z = window.innerHeight <= 700 ? 15 : 17;
       sn.style.letterSpacing = ''; sn.style.marginRight = ''; sn.style.fontSize = z + 'px';
+      sn.style.whiteSpace = ''; sn.style.maxWidth = '';
       while(sn.getBoundingClientRect().width > full && z > 11){ z -= 0.5; sn.style.fontSize = z + 'px'; }
+      if(sn.getBoundingClientRect().width > full){ sn.style.fontSize = '13px'; sn.style.whiteSpace = 'normal'; sn.style.maxWidth = full + 'px'; sn.style.textAlign = 'center'; }
     }
   }
 
@@ -1116,10 +1226,11 @@
     var svg = $('lgPie'); if(!svg) return;
     var parts = [], tot = 0;
     store.cats.forEach(function(c){ var v = homeTimes[c.id] || 0; if(v > 0){ parts.push([v, c.color]); tot += v; } });
-    if(!tot) store.cats.forEach(function(c){ if(c.target > 0){ parts.push([c.target, c.color]); tot += c.target; } });
     var R = 8.6, W = 3.4, html = '<circle cx="12" cy="12" r="11.15" stroke="#3a414c" stroke-width=".9"/>';
     function pt(a){ return [12 + R * Math.sin(a * 2 * Math.PI), 12 - R * Math.cos(a * 2 * Math.PI)]; }
-    if(!tot) html += '<circle cx="12" cy="12" r="' + R + '" stroke="#3a414c" stroke-width="' + W + '"/>';
+    // nothing practiced in this period: the same blank pie as the main chart, black tint and silver border
+    if(!tot) html += '<circle cx="12" cy="12" r="' + R + '" stroke="#000" stroke-opacity=".55" stroke-width="' + W + '"/>' +
+                     '<circle cx="12" cy="12" r="' + (R + W / 2) + '" stroke="#aeb5c0" stroke-width=".6"/><circle cx="12" cy="12" r="' + (R - W / 2) + '" stroke="#aeb5c0" stroke-width=".6"/>';
     else if(parts.length === 1) html += '<circle cx="12" cy="12" r="' + R + '" stroke="' + V(parts[0][1]) + '" stroke-width="' + W + '"/>';
     else {
       var at = 0, gap = 0.022;
@@ -1242,41 +1353,31 @@
   }
   function renderCorners(ex){
     var hide = !!ex || editing;
-    ['sinceW', 'goalW', 'streakW', 'avgW'].forEach(function(id){ $(id).classList.toggle('off', hide); });
+    ['goalW', 'tipW', 'streakW', 'avgW'].forEach(function(id){ $(id).classList.toggle('off', hide); });
     var DAY = 864e5, today = new Date(); today.setHours(0, 0, 0, 0);
     var streak = calcStreak().n;
     $('streakV').textContent = streak + (streak === 1 ? ' day' : ' days');
-    // average per period of the selected kind (all time = per day)
-    var unit = store.range === 'all' ? 'day' : store.range, first = null, sum = 0;
+    var sn = $('streakNum'), ss = String(streak); sn.textContent = ss; sn.setAttribute('font-size', ss.length >= 3 ? 6.2 : ss.length === 2 ? 7.6 : 8.4);
+    // average per day, from the first day you practiced to today
+    var first = null, sum = 0;
     store.log.forEach(function(e){ if(e.t > 0){ sum += e.ms; if(first === null || e.t < first) first = e.t; } });
-    $('avgK').textContent = 'Average / ' + unit;
     if(first === null) $('avgV').textContent = '—';
-    else {
-      var a = new Date(first), now = new Date(), periods;
-      if(unit === 'day'){ a.setHours(0, 0, 0, 0); periods = Math.round((today - a) / DAY) + 1; }
-      else if(unit === 'week'){ a.setHours(0, 0, 0, 0); a.setDate(a.getDate() - a.getDay()); var w0 = new Date(today); w0.setDate(w0.getDate() - w0.getDay()); periods = Math.round((w0 - a) / (7 * DAY)) + 1; }
-      else if(unit === 'month') periods = (now.getFullYear() - a.getFullYear()) * 12 + now.getMonth() - a.getMonth() + 1;
-      else periods = now.getFullYear() - a.getFullYear() + 1;
-      $('avgV').textContent = fmt(sum / Math.max(1, periods));
-    }
-    // since last practice
-    var last = null;
-    store.log.forEach(function(e){ if(e.t > 0 && (!last || e.t > last.t)) last = e; });
-    $('sinceV').textContent = last ? agoText(Date.now() - last.t) : '—';
-    // goal: time practised in the selected period / percent of the daily goal scaled to that period
+    else { var a0 = new Date(first); a0.setHours(0, 0, 0, 0); $('avgV').textContent = fmt(sum / Math.max(1, Math.round((today - a0) / DAY) + 1)); }
+    // daily goal icon: brightens once the goal for this period is met
     var g = store.dailyGoal || 0;
-    $('goalK').textContent = 'Goal / ' + UNIT_WORD[store.range];
-    if(!(g > 0)){ $('goalV').textContent = 'Set'; $('goalV').classList.remove('hit'); }
-    else {
-      var pc = Math.round(homeTotal / (g * goalDays(store.range) * 60000) * 100);
-      $('goalV').textContent = fmt(homeTotal) + ' / ' + pc + '%';
-      $('goalV').classList.toggle('hit', pc >= 100);
-    }
+    var gf = g > 0 ? Math.min(1, homeTotal / (g * goalDays(store.range) * 60000)) : 0;
+    $('goalW').classList.toggle('hit', gf >= 1);
   }
   $('catBack').addEventListener('click', function(e){ e.stopPropagation(); exitFocus(); });
-  $('goalW').addEventListener('click', function(){
-    var cur = store.dailyGoal || 0;
-    dialog({title:'Daily practice goal', text:'Minutes or hours a day (for example 45 or 1.5h). Leave empty to clear.',
+  function goalText(ms){ var m = Math.round(ms / 60000); return store.unit === 'auto' ? (m >= 60 ? Math.floor(m / 60) + 'h' + (m % 60 ? ' ' + m % 60 + 'm' : '') : m + 'm') : fmt(ms); }
+  $('goalW').addEventListener('click', function(e){ e.stopPropagation();
+    if(editing || expandedCat()) return;
+    var cur = store.dailyGoal || 0, prog = '';
+    if(cur > 0){
+      var gms = cur * goalDays(store.range) * 60000, pc = Math.round(homeTotal / gms * 100);
+      prog = {day:'Today', week:'This week', month:'This month', year:'This year', all:'All time'}[store.range] + ': ' + fmt(homeTotal) + ' of ' + goalText(gms) + ' · ' + pc + '%' + (pc >= 100 ? ' ✓' : '') + '. ';
+    }
+    dialog({title:'Daily goal', accent:'#d5dae2', text:prog + 'Minutes or hours a day (for example 45 or 1.5h). Leave empty to clear.',
       input:{value:cur ? (cur % 60 === 0 && cur >= 60 ? (cur / 60) + 'h' : String(cur)) : '', mode:'text'}, ok:'Set', onOk:function(v){
       var t = String(v).trim().toLowerCase().replace(/\s/g, ''), mins = 0;
       if(t){
@@ -1285,11 +1386,17 @@
         mins = parseFloat(mm[1]) * (mm[2] && mm[2][0] === 'h' ? 60 : 1);
       }
       if(mins > 0 && mins <= 1440) store.dailyGoal = Math.round(mins); else if(!(mins > 0)) delete store.dailyGoal;
-      save(); renderCorners(expandedCat());
+      save(); renderHome();
     }});
   });
   setInterval(function(){ if(!inPractice && !tourOn) renderCorners(expandedCat()); }, 30000);
 
+  function goalFill(c){
+    if(!(c.target > 0)) return 0;
+    var t = homeTimes[c.id] || 0;
+    if(store.dailyGoal > 0) return Math.min(1, t / (c.target / 100 * store.dailyGoal * goalDays(store.range) * 60000));
+    return homeTotal > 0 ? Math.min(1, (t / homeTotal * 100) / c.target) : 0;
+  }
   function renderChart(){
     var svg = $('donut'), total = homeTotal;
     svg.innerHTML = '';
@@ -1334,15 +1441,19 @@
       store.cats.forEach(function(c){
         if(!(c.target > 0)) return;
         var len = c.target * scale / 100 * CT;
-        var dash = Math.max(len - 1.6, 0.8);
-        var g = document.createElementNS(NS, 'circle');
-        g.setAttribute('cx', 100); g.setAttribute('cy', 100); g.setAttribute('r', RT);
-        g.setAttribute('class', 'goal'); g.setAttribute('stroke', c.color); g.style.stroke = V(c.color);
-        g.setAttribute('stroke-dasharray', dash + ' ' + (CT - dash));
-        g.setAttribute('stroke-dashoffset', -(off + 0.8));
-        g.setAttribute('transform', 'rotate(-90 100 100)');
-        g.setAttribute('aria-hidden', 'true');
-        bg.appendChild(g);
+        var dash = Math.max(len - 1.6, 0.8), done = goalFill(c);
+        // each category's section: a dim track, filled clockwise as it gets closer to its goal
+        [['goal gtrack', dash], ['goal', dash * done]].forEach(function(a){
+          if(!(a[1] > 0.05)) return;
+          var g = document.createElementNS(NS, 'circle');
+          g.setAttribute('cx', 100); g.setAttribute('cy', 100); g.setAttribute('r', RT);
+          g.setAttribute('class', a[0]); g.setAttribute('stroke', c.color); g.style.stroke = V(c.color);
+          g.setAttribute('stroke-dasharray', a[1] + ' ' + (CT - a[1]));
+          g.setAttribute('stroke-dashoffset', -(off + 0.8));
+          g.setAttribute('transform', 'rotate(-90 100 100)');
+          g.setAttribute('aria-hidden', 'true');
+          bg.appendChild(g);
+        });
         goalArcs.push([off / CT * 360, (off + len) / CT * 360]);
         off += len;
       });
@@ -1408,7 +1519,15 @@
     }
 
     var geo = null, mainLead = [];
-    store.cats.forEach(function(c){
+    // nothing practiced in this period: one blank pie, no category pieces
+    if(n && !(total > 0)){
+      var bp = document.createElementNS(NS, 'path');
+      bp.setAttribute('class', 'blankpie'); bp.setAttribute('fill-rule', 'evenodd'); bp.setAttribute('aria-label', 'No practice in this period');
+      bp.setAttribute('d', sectorD(0, C, 0));
+      bg.appendChild(bp);
+      if(ex) geo = {c:ex, t:0, offset:0, len:0};
+    }
+    else store.cats.forEach(function(c){
       var t = homeTimes[c.id] || 0;
       var frac = total > 0 ? t / total : 1 / n;
       if(frac <= 0){ if(ex && ex.id === c.id) geo = {c:c, t:t, offset:offset, len:0}; return; }
@@ -1419,6 +1538,27 @@
       mainLead.push({a:mm / C * 2 * Math.PI - Math.PI / 2, deg:mm / C * 360, key:c.id, color:c.color});
       offset += len;
     });
+
+    // daily goal ring: inside the pie, around the total; fills as practice is logged toward the goal for this period
+    svg.parentNode.classList.toggle('hasprog', !ex && store.dailyGoal > 0);
+    if(!ex && store.dailyGoal > 0){
+      var GR = 44, GW = 5.5, GC = 2 * Math.PI * GR, gms = store.dailyGoal * goalDays(store.range) * 60000, gf = Math.min(1, total / gms);
+      var pg = document.createElementNS(NS, 'linearGradient'); pg.setAttribute('id', 'progG'); pg.setAttribute('x1', '0'); pg.setAttribute('y1', '0'); pg.setAttribute('x2', '1'); pg.setAttribute('y2', '1');
+      [[0, '#7c8594'], [0.6, '#ffffff'], [1, '#ffffff']].forEach(function(st){ var e = document.createElementNS(NS, 'stop'); e.setAttribute('offset', st[0]); e.setAttribute('stop-color', st[1]); pg.appendChild(e); });
+      defs.appendChild(pg);
+      var gt = document.createElementNS(NS, 'circle');
+      gt.setAttribute('cx', 100); gt.setAttribute('cy', 100); gt.setAttribute('r', GR); gt.setAttribute('class', 'progtrack'); gt.setAttribute('aria-hidden', 'true');
+      bg.appendChild(gt);
+      if(gf > 0){
+        var gp = document.createElementNS(NS, 'circle');
+        gp.setAttribute('cx', 100); gp.setAttribute('cy', 100); gp.setAttribute('r', GR); gp.setAttribute('class', 'prog' + (gf >= 1 ? ' full' : ''));
+        gp.setAttribute('stroke', 'url(#progG)'); gp.setAttribute('stroke-width', GW);
+        gp.setAttribute('stroke-dasharray', (gf * GC).toFixed(2) + ' ' + GC.toFixed(2));
+        gp.setAttribute('transform', 'rotate(-90 100 100)');
+        gp.setAttribute('role', 'img'); gp.setAttribute('aria-label', Math.round(gf * 100) + '% of your goal for this period');
+        bg.appendChild(gp);
+      }
+    }
 
     // focused view: the category's slice sweeps open into a full circle of its subsections (General first),
     // 5% larger than the overview pie; a thin arc keeps the category's place in the overview
@@ -1646,7 +1786,7 @@
     var id = cid || c.id, st = tempoStats(id, sid), g = c.goalBpm > 0 ? Math.round(c.goalBpm) : 0;
     var prog = '', goal = '', fore = '';                     // left, centre, right
     if(st) prog = (st.n < 2 ? st.last.bpm : st.first.bpm + ' → ' + st.last.bpm) + ' BPM';
-    if(c.level) prog = 'Level ' + c.level;
+    if(c.level && st) prog = 'Last BPM ' + st.last.bpm;
     if(g){
       var hit = st && st.last.bpm >= g;
       goal = '<span class="' + (hit ? 'up' : '') + '">Goal ' + g + ' BPM</span>';
@@ -1665,9 +1805,10 @@
     function cell(x){ return x.charAt(0) === '<' ? x : '<span>' + x + '</span>'; }
     return '<span class="rt">' + cell(prog) + cell(goal) + cell(fore) + '</span>';
   }
+  var SUB_NAME_MAX = 40; // subcategory names: room for a song plus its section
   function bindName(inp, obj, max){
     max = max || 20;
-    inp.value = obj.name;
+    inp.value = obj.name; inp.maxLength = max;
     var prev = obj.name;
     inp.addEventListener('input', function(){ obj.name = inp.value.slice(0, max); save(); });
     inp.addEventListener('blur', function(){
@@ -1852,7 +1993,7 @@
         if(editScope){
           subs.forEach(function(x){
             var k = c.id + '|' + x.id;
-            blk.appendChild(editHead(subColor(c, x), x, x.goalBpm > 0 ? 'Goal ' + x.goalBpm + ' BPM' : '', !!editOpen[k], function(){ editOpen[k] = !editOpen[k]; renderHome(); }, true, 30));
+            blk.appendChild(editHead(subColor(c, x), x, x.goalBpm > 0 ? 'Goal ' + x.goalBpm + ' BPM' : '', !!editOpen[k], function(){ editOpen[k] = !editOpen[k]; renderHome(); }, true, SUB_NAME_MAX));
             if(editOpen[k]){
               blk.appendChild(efRow('Goal BPM', bpmField(x), true));
               blk.appendChild(timeRow(c, x.id, 'Practice time'));
@@ -1871,8 +2012,8 @@
           asb.className = 'addsub';
           asb.textContent = '+ Add subcategory';
           asb.addEventListener('click', function(){
-            dialog({title:'New subcategory', text:'Add a subcategory to ' + c.name + '.', accent:nextSubColor(c), input:{value:'', mode:'text'}, ok:'Add', onOk:function(v){
-              var name = String(v).trim().slice(0, 30);
+            dialog({title:'New subcategory', text:'Add a subcategory to ' + c.name + '.', accent:nextSubColor(c), input:{value:'', mode:'text', max:SUB_NAME_MAX}, ok:'Add', onOk:function(v){
+              var name = String(v).trim().slice(0, SUB_NAME_MAX);
               if(name){ addSub(c, name); }
             }});
           });
@@ -1926,19 +2067,21 @@
           ab2.textContent = 'Edit';
           ab2.addEventListener('click', function(){ startEdit(c); });
           blk.appendChild(ab2);
-          reorderable(subEls, function(from, to){ moveItem(c.subs, from, to); }, previewOrder(function(){ return c.subs; }, function(a){ c.subs = a; }));
+          reorderable(subEls, function(from, to){ moveItem(c.subs, from, to); }, previewOrder(function(){ return c.subs; }, function(a){ c.subs = a; }),
+                      function(from, into){ askMergeSubs(c, c.subs[from], c.subs[into]); });
         }
       }
       box.appendChild(blk);
     });
-    if(!exc && !editing) reorderable(catEls, function(from, to){ moveItem(store.cats, from, to); }, previewOrder(function(){ return store.cats; }, function(a){ store.cats = a; }));
-    if(!exc && store.cats.length){
+    if(!exc && !editing) reorderable(catEls, function(from, to){ moveItem(store.cats, from, to); }, previewOrder(function(){ return store.cats; }, function(a){ store.cats = a; }),
+      function(from, into){ askMergeCats(store.cats[from], store.cats[into]); });
+    if(editing || (!exc && store.cats.length)){
       var ac = document.createElement('button');
       ac.className = 'addsub addcat editbtn' + (editing ? ' done' : '');
       ac.textContent = editing ? 'Done' : 'Edit';
       ac.addEventListener('click', function(){ if(editing) endEdit(); else startEdit(null); });
-      // while editing the categories, Done sits last, under the new-category field
-      if(editing && !editScope){ $('editDone').appendChild(ac); } else box.appendChild(ac);
+      // while editing, Done is pinned to the bottom of the screen and the list scrolls behind it
+      if(editing) $('editDone').appendChild(ac); else box.appendChild(ac);
     }
   }
 
@@ -1980,6 +2123,66 @@
   document.addEventListener('pointercancel', mRelease);
   $('home').addEventListener('contextmenu', function(e){ if(mHold) e.preventDefault(); });
 
+  /* ---------- merge: drop one row onto another; times, BPM history and recordings join the target ---------- */
+  var KEEP_OWN = {id:1, name:1, color:1, ci:1, subs:1, target:1};
+  // settings the target lacks (goal BPM, level, note, mode…) are taken from the row merged into it
+  function fillFrom(dst, src){ for(var k in src){ if(!KEEP_OWN[k] && dst[k] === undefined) dst[k] = src[k]; } }
+  // move recordings to their new key; where two Day one takes meet, the earlier stays Day one
+  function recRekey(map){
+    var keys = {};
+    return recTx('readwrite', function(os){
+      var q = os.openCursor();
+      q.onsuccess = function(){
+        var cr = q.result; if(!cr) return;
+        var r = cr.value, nk = map(r.key);
+        if(nk && nk !== r.key){ r.key = nk; cr.update(r); }
+        if(nk) keys[nk] = 1;
+        cr.continue();
+      };
+      return null;
+    }).then(function(){
+      return Promise.all(Object.keys(keys).map(function(k){
+        return recList(k).then(function(l){
+          var d1 = l.filter(function(r){ return r.dayOne; }).sort(function(a, b){ return a.t - b.t; });
+          return Promise.all(d1.slice(1).map(function(r){ r.dayOne = false; return recPut(r); }));
+        });
+      }));
+    }).catch(function(){});
+  }
+  function mergeNote(ms, extra){ return (ms > 0 ? fmt(ms) + ' of practice' : 'Its practice history') + extra; }
+  function askMergeCats(a, b){
+    if(!a || !b || a === b) return;
+    var subs = subsOf(a).length;
+    dialog({title:'Merge ' + a.name + ' into ' + b.name + '?', accent:V(b.color),
+      text:mergeNote(catSince(a.id, 0), subs ? ', BPM history, recordings and ' + subs + (subs === 1 ? ' subcategory' : ' subcategories') : ', BPM history and recordings') +
+           ' move into ' + b.name + '. ' + b.name + ' keeps its name and color, and ' + a.name + ' is removed. This can\'t be undone.',
+      ok:'Merge', onOk:function(){
+        store.log.forEach(function(e){ if(e.c === a.id) e.c = b.id; });
+        subsOf(a).forEach(function(x){ if(!b.subs) b.subs = []; x.ci = nextSubCi(b); b.subs.push(x); });
+        if(a.target > 0) b.target = (b.target || 0) + a.target;
+        fillFrom(b, a);
+        store.cats = store.cats.filter(function(x){ return x.id !== a.id; });
+        if(expandedId === a.id) expandedId = null;
+        save(); renderHome();
+        var pre = a.id + '|';
+        recRekey(function(k){ return k && k.indexOf(pre) === 0 ? b.id + '|' + k.slice(pre.length) : (k && k.indexOf(b.id + '|') === 0 ? k : null); });
+      }});
+  }
+  function askMergeSubs(c, x, y){
+    if(!x || !y || x === y) return;
+    var ms = 0; store.log.forEach(function(e){ if(e.c === c.id && e.s === x.id) ms += e.ms; });
+    dialog({title:'Merge ' + x.name + ' into ' + y.name + '?', accent:V(subColor(c, y)),
+      text:mergeNote(ms, ', BPM history and recordings') + ' move into ' + y.name + '. ' + y.name + ' keeps its name and color, and ' + x.name + ' is removed. This can\'t be undone.',
+      ok:'Merge', onOk:function(){
+        store.log.forEach(function(e){ if(e.c === c.id && e.s === x.id) e.s = y.id; });
+        fillFrom(y, x);
+        c.subs = c.subs.filter(function(z){ return z.id !== x.id; });
+        save(); renderHome();
+        var from = c.id + '|' + x.id, to = c.id + '|' + y.id;
+        recRekey(function(k){ return k === from ? to : (k === to ? k : null); });
+      }});
+  }
+
   /* ---------- list rows: touch, hold, drag to reorder ---------- */
   function moveItem(a, from, to){ a.splice(to, 0, a.splice(from, 1)[0]); save(); renderHome(); }
   var reo = null, reoEat = 0;
@@ -1995,13 +2198,15 @@
       restore:function(){ if(base){ set(base); base = null; return true; } return false; }
     };
   }
-  function reorderable(els, onMove, preview){
+  // drag between rows to reorder; hold a row over the middle of another row to merge them (like making a folder on iPhone)
+  function pillOf(el){ return el.classList.contains('pill') ? el : el.querySelector('.row.pill'); }
+  function reorderable(els, onMove, preview, onMerge){
     if(els.length < 2) return;
     els.forEach(function(el, i){
-      var h = el.classList.contains('pill') ? el : el.querySelector('.row.pill');
+      var h = pillOf(el);
       h.addEventListener('pointerdown', function(e){
         if(e.button > 0 || reo || chartBusy) return;
-        var st = {el:el, h:h, i:i, to:i, last:i, els:els, onMove:onMove, preview:preview, x0:e.clientX, y0:e.clientY, on:false};
+        var st = {el:el, h:h, i:i, to:i, last:i, els:els, onMove:onMove, preview:preview, onMerge:onMerge, zone:-1, merge:-1, x0:e.clientX, y0:e.clientY, on:false};
         st.timer = setTimeout(function(){ if(reo === st) reoLift(st); }, 380);
         reo = st;
       });
@@ -2023,11 +2228,18 @@
     var st = reo, dy = y - st.y0;
     var lo = st.rects[0].top - st.rects[st.i].top, hi = st.rects[st.rects.length - 1].bottom - st.rects[st.i].bottom;
     dy = clamp(dy, lo - 10, hi + 10);
-    st.el.style.transform = 'translateY(' + dy + 'px) scale(1.03)';
-    var c = st.mid[st.i] + dy, to = st.i;
+    st.el.style.transform = 'translateY(' + dy + 'px) scale(' + (st.merge >= 0 ? 0.94 : 1.03) + ')';
+    // with merging on, the middle of each row is a merge zone; a row only moves aside once you pass that zone
+    var band = st.onMerge ? st.rects[st.i].height * 0.3 : 0;
+    var c = st.mid[st.i] + dy, to = st.i, zone = -1;
     for(var j = 0; j < st.mid.length; j++){
-      if(j > st.i && c > st.mid[j]) to = j;
-      if(j < st.i && c < st.mid[j] && to === st.i) to = j;
+      if(j > st.i && c > st.mid[j] + band) to = j;
+      if(j < st.i && c < st.mid[j] - band && to === st.i) to = j;
+      if(band && j !== st.i && Math.abs(c - st.mid[j]) < band) zone = j;
+    }
+    if(zone !== st.zone){
+      st.zone = zone; clearTimeout(st.mt); setMerge(st, -1);
+      if(zone >= 0) st.mt = setTimeout(function(){ if(reo === st && st.zone === zone){ setMerge(st, zone); st.el.style.transform = st.el.style.transform.replace(/scale\([^)]*\)/, 'scale(0.94)'); } }, 280);
     }
     st.to = to;
     if(st.preview && to !== st.last){ st.last = to; st.preview.show(st.i, to, st.h.getAttribute('data-lk')); }
@@ -2037,17 +2249,27 @@
       x.style.transform = sh ? 'translateY(' + sh + 'px)' : '';
     });
   }
+  function setMerge(st, k){
+    if(st.merge === k) return;
+    if(st.merge >= 0) pillOf(st.els[st.merge]).classList.remove('reo-merge');
+    st.merge = k;
+    st.h.classList.toggle('reo-into', k >= 0);
+    if(k >= 0){ pillOf(st.els[k]).classList.add('reo-merge'); try{ if(navigator.vibrate) navigator.vibrate(10); }catch(e){} }
+  }
   function reoEnd(commit){
     var st = reo; reo = null;
     if(!st) return;
-    clearTimeout(st.timer);
+    clearTimeout(st.timer); clearTimeout(st.mt);
     if(!st.on) return;
     reoEat = Date.now();
     document.body.classList.remove('reo-on');
     var previewed = st.preview ? st.preview.restore() : false;
-    if(commit && st.to !== st.i){ st.onMove(st.i, st.to); return; }
+    var into = commit && st.onMerge ? st.merge : -1;
+    setMerge(st, -1);
+    if(into < 0 && commit && st.to !== st.i){ st.onMove(st.i, st.to); return; }
     if(previewed) renderChart();
     st.els.forEach(function(x){ x.style.transform = ''; x.classList.remove('reo-lift'); }); st.h.classList.remove('reo-liftv');
+    if(into >= 0) setTimeout(function(){ st.onMerge(st.i, into); }, 60);
     setTimeout(function(){ st.els.forEach(function(x){ x.classList.remove('reo-sib'); }); }, 200);
   }
   document.addEventListener('pointermove', function(e){
@@ -2102,6 +2324,8 @@
       var ch = [{label:'Auto (hours & minutes)', value:'auto'}];
       Object.keys(UNITS).forEach(function(k){ ch.push({label:UNITS[k].n, value:k}); });
       dialog({title:'Show time in', choices:ch, current:store.unit, onOk:function(v){ store.unit = v; save(); lastClockText = ''; renderHome(); }});
+    } else if(act === 'share'){
+      prepareShare();
     } else if(act === 'backup'){
       backupData();
     } else if(act === 'restore'){
@@ -2271,6 +2495,15 @@
   var lastManual = null, bannerT = 0;
 
   function tgt(){ return curSub || cur; }
+  // Silent mode and Speed mode never run alongside Guided mode
+  function gapsOn(){ return !!store.gaps.on && !isGuided(); }
+  function speedOn(){ return !!store.trainer.on && !isGuided(); }
+  function setGuided(on){
+    if(running || !cur) return;
+    var t = tgt(); t.mode = on ? 'guided' : 'click'; t.metro = t.mode;
+    if(on){ store.gaps.on = false; store.trainer.on = false; }
+    entry = null; gradeFrom = store.log.length; save(); applyMode(); renderTempoLine(); renderChips(); renderOpts(); renderTrainer();
+  }
   function isClick(){ return !!cur && modeOf(tgt()) !== 'timer'; }   // the metronome is sounding (guided or metronome)
   function isGuided(){ return !!cur && modeOf(tgt()) === 'guided'; }
 
@@ -2314,6 +2547,7 @@
     curSub = sid ? subById(c, sid) : null;
     var col = curSub ? subColor(c, curSub) : c.color;
     session = 0; unlogged = 0; entry = null; barCount = 0; lastManual = null; nudged = false;
+    store.duration = 1; // every visit starts with a 1-minute countdown
     $('practice').style.setProperty('--accent', V(col));
     $('catdot').style.background = V(col);
     $('catdot').style.boxShadow = '0 0 4px 0 ' + col + '80';
@@ -2332,7 +2566,7 @@
     if(gn){
       delete tgt().gradeNote; save();
       gradeUndo = gn;
-      setTimeout(function(){ if(inPractice && gradeUndo === gn) showBanner('Starting at ' + gn.to + ' BPM · ' + gn.g + ' last time', true); }, 300);
+      setTimeout(function(){ if(inPractice && gradeUndo === gn) showBanner('Starting at ' + gn.to + ' BPM · ' + gradeLabel(gn.g) + ' last time', true); }, 300);
     }
     applyMode();
     renderBeats(); renderBpm(); renderBeatsVal(); renderSub(); renderChips(); renderTrainer(); renderOpts(); renderTempoLine(); setRunUI();
@@ -2374,11 +2608,17 @@
     $('celeOk').textContent = 'Keep going';
     c.classList.add('show');
   }
+  // leaving the practice screen: confirm before this visit's time goes into the log and the charts
   function leavePractice(){
     stop();
     stopPlay(); releaseMic();
     commit();
     save();
+    exitRating();
+    doLeave();
+  }
+  function doLeave(){
+    stopPlay(); releaseMic(); save();
     var mineMs = 0, before = false, t0 = new Date(); t0.setHours(0, 0, 0, 0);
     store.log.forEach(function(e, i){
       if(i >= visitLen){ if(e.mode !== 'manual') mineMs += e.ms || 0; }
@@ -2410,7 +2650,10 @@
   function renderTempoLine(){
     if(!cur) return;
     var st = tempoStats(cur.id, curSub ? curSub.id : null);
-    $('lastTempo').textContent = st ? st.last.bpm : '—';
+    // Guided mode: the corner is your Clean BPM; plain metronome: the BPM you used last time
+    var t = tgt(), gd = isGuided();
+    $('lastTempo').textContent = gd ? (t.level ? t.level : '—') : (st ? st.last.bpm : '—');
+    $('lastK').textContent = gd ? 'Clean BPM' : 'Last BPM';
     $('goalV2').textContent = tgt().goalBpm > 0 ? tgt().goalBpm : 'Set';
   }
   $('goalTempo').addEventListener('click', askGoal);
@@ -2446,6 +2689,11 @@
     }});
   });
   $('bannerUndo').addEventListener('click', function(){
+    if(deleteUndo){
+      var du = deleteUndo; deleteUndo = null; du.done = true; clearTimeout(du.t);
+      du.mine.forEach(function(e, k){ store.log.splice(Math.min(du.at[k], store.log.length), 0, e); });
+      gradeFrom = store.log.length; save(); renderTempoLine(); renderGline();
+    }
     if(gradeUndo){ setBpm(gradeUndo.from); visitBpm = store.bpm; gradeUndo = null; }
     if(lastManual){
       var i = store.log.indexOf(lastManual);
@@ -2456,7 +2704,7 @@
   });
 
   /* ---------- Self grade and silent bars ---------- */
-  var optOpen = {grader:false, gaps:false, tmr:false};
+  var optOpen = {grader:false, gaps:false, tmr:false, cin:false};
   function renderOpts(){
     var g = store.grade, q = store.gaps;
     var gd = isGuided(), cal = calActive();
@@ -2471,7 +2719,8 @@
       $(k + 'Head').setAttribute('aria-expanded', optOpen[k] ? 'true' : 'false');
       $(k + 'Chev').innerHTML = optOpen[k] ? '&#9652;' : '&#9662;';
     });
-    [['grader', 'grOn', g.rec, gd], ['gaps', 'gpOn', q.on, q.on]].forEach(function(a){
+    var ci = store.cin;
+    [['grader', 'grOn', g.rec, gd], ['gaps', 'gpOn', gapsOn(), gapsOn()], ['cin', 'ciOn', ci.on, ci.on]].forEach(function(a){
       $(a[1]).classList.toggle('on', a[2]); $(a[1]).setAttribute('aria-checked', a[2] ? 'true' : 'false');
       $(a[0] + 'Set').style.display = a[3] ? 'block' : 'none';
       $(a[0] + 'Body').style.display = optOpen[a[0]] ? 'block' : 'none';
@@ -2479,17 +2728,20 @@
       $(a[0] + 'Chev').innerHTML = optOpen[a[0]] ? '&#9652;' : '&#9662;';
     });
     var t = cur && tgt();
-    $('graderSum').textContent = !gd ? 'Off' : cal ? 'Finding level' : 'On' + (t && t.level ? ' · level ' + t.level + ' BPM' : '') + (g.rec ? ' · rec' : '');
+    $('graderSum').textContent = !gd ? 'Off' : cal ? 'Finding your BPM' : 'On' + (t && t.level ? ' · clean ' + t.level + ' BPM' : '') + (g.rec ? ' · rec' : '');
     $('grUpV').textContent = '+' + g.up + '%';
     $('grDownV').textContent = '−' + g.down + '%';
-    $('gapsSum').textContent = q.on ? q.play + ' on · ' + q.mute + ' off' : 'Off';
+    $('gapsSum').textContent = gapsOn() ? q.play + ' on · ' + q.mute + ' off' : gd ? 'Off · not with Guided' : 'Off';
     $('gpPlayV').textContent = q.play + (q.play === 1 ? ' bar' : ' bars');
     $('gpMuteV').textContent = q.mute + (q.mute === 1 ? ' bar' : ' bars');
+    $('cinSum').textContent = ci.on ? 'On · ' + ci.bars + (ci.bars === 1 ? ' bar' : ' bars') : 'Off';
+    $('ciBarsV').textContent = ci.bars + (ci.bars === 1 ? ' bar' : ' bars');
+    renderModes();
     requestAnimationFrame(spreadPanel);
   }
   function optChange(fn){ fn(); save(); renderOpts(); }
-  ['grader', 'gaps', 'tmr'].forEach(function(k){ $(k + 'Head').addEventListener('click', function(){
-    var o = !optOpen[k]; optOpen = {grader:false, gaps:false, tmr:false}; optOpen[k] = o;
+  ['grader', 'gaps', 'tmr', 'cin'].forEach(function(k){ $(k + 'Head').addEventListener('click', function(){
+    var o = !optOpen[k]; optOpen = {grader:false, gaps:false, tmr:false, cin:false}; optOpen[k] = o;
     if(o && trOpen){ trOpen = false; renderTrainer(); }
     renderOpts();
   }); });
@@ -2503,15 +2755,16 @@
   $('tmChime').addEventListener('click', function(){ optChange(function(){ store.tmr = {chime:!(store.tmr && store.tmr.chime !== false)}; }); });
   $('grOn').addEventListener('click', function(){ optChange(function(){ store.grade.rec = !store.grade.rec; }); });
   $('grGuided').addEventListener('click', function(){
-    if(running || !cur) return;
-    var t = tgt(); t.mode = isGuided() ? 'click' : 'guided'; t.metro = t.mode;
-    entry = null; gradeFrom = store.log.length; save(); applyMode(); renderTempoLine(); renderChips(); renderOpts();
+    setGuided(!isGuided());
   });
   $('grCal').addEventListener('click', function(){
     if(running || !cur || !isGuided()) return;
     if(calActive()) cancelCal(); else startCal(60);
   });
-  $('gpOn').addEventListener('click', function(){ optChange(function(){ store.gaps.on = !store.gaps.on; barCount = 0; }); });
+  $('ciOn').addEventListener('click', function(){ if(running) return; optChange(function(){ store.cin.on = !store.cin.on; }); });
+  $('ciBarsDn').addEventListener('click', function(){ if(running) return; optChange(function(){ store.cin.bars = clamp(store.cin.bars - 1, 1, 4); }); });
+  $('ciBarsUp').addEventListener('click', function(){ if(running) return; optChange(function(){ store.cin.bars = clamp(store.cin.bars + 1, 1, 4); }); });
+  $('gpOn').addEventListener('click', function(){ if(running) return; var on = !gapsOn(); if(on && isGuided()) setGuided(false); optChange(function(){ store.gaps.on = on; barCount = 0; }); });
   $('grUpDn').addEventListener('click', function(){ optChange(function(){ store.grade.up = clamp(store.grade.up - 1, 1, 10); }); });
   $('grUpUp').addEventListener('click', function(){ optChange(function(){ store.grade.up = clamp(store.grade.up + 1, 1, 10); }); });
   $('grDownDn').addEventListener('click', function(){ optChange(function(){ store.grade.down = clamp(store.grade.down - 1, 2, 20); }); });
@@ -2525,9 +2778,9 @@
   // (from below where this session started, if the speed trainer pushed it up)
   var visitLen = 0, visitBpm = 100, gradeUndo = null;
   var GRADES = [
-    {value:'clean',  label:'Clean',  pct:'95–100%',   note:'Right notes, locked with the beat'},
-    {value:'mostly', label:'Mostly', pct:'75–95%',    note:'A slip or two, kept going'},
-    {value:'rough',  label:'Rough',  pct:'under 75%', note:'Stopped, lost the beat, many misses'}
+    {value:'clean',  label:'Clean',  pct:'95–100%',   note:'Every note right and in time with the click, no stops. Nothing you would fix.'},
+    {value:'mostly', label:'Close',  pct:'75–95%',    note:'A slip or two, but you kept going and stayed with the beat.'},
+    {value:'rough',  label:'Rough',  pct:'under 75%', note:'You stopped, lost the beat, or missed a lot of notes.'}
   ];
   var gradeFrom = 0;
   function ungraded(){
@@ -2537,12 +2790,9 @@
     return ms >= 15000 ? mine : null;
   }
   // now = true: graded on the spot (countdown ended), the new tempo applies straight away
-  function askGrade(mine, now, after){
-    var col = getComputedStyle($('practice')).getPropertyValue('--accent').trim();
-    var recRow = store.grade.rec ? gradeRecRow() : null;
-    dialog({title:'How\'d it go?', text:(calActive() ? 'Finding your level · ' : '') + store.bpm + ' BPM', cancelText:'Skip', pills:col, top:recRow,
-      choices:GRADES.map(function(g){ return {value:g.value, html:'<span class="gl">' + g.label + '</span><span class="gp">' + g.pct + '</span><span class="gn">' + g.note + '</span>'}; }),
-      onCancel:function(){ stopPlay(); if(after) after(); }, onOk:function(g){
+  function gradeLabel(g){ return {clean:'Clean', mostly:'Close', rough:'Rough'}[g] || g; }
+  // grading a run: Clean raises the BPM, Close holds it, Rough lowers it (Find your BPM runs follow their own search)
+  function applyGrade(mine, g, now, after){
         stopPlay();
         mine.forEach(function(e){ e.grade = g; });
         entry = null; gradeFrom = store.log.length;
@@ -2556,7 +2806,6 @@
             celebrate('found', null, cr.level);
           } else {
             setBpm(cr.next); session = 0; entry = null; lastClockText = ''; save(); renderGline();   // each calibration run is a fresh minute
-            if(now) showBanner('Run ' + (tgt().cal.run + 1) + ' · next: ' + cr.next + ' BPM', false);
           }
           if(after) after();
           return;
@@ -2566,7 +2815,7 @@
         else if(g === 'rough') next = Math.round(Math.min(end, visitBpm) * (1 - store.grade.down / 100));
         next = clamp(next, 30, 300);
         if(now){
-          if(next !== end){ setBpm(next); gradeUndo = {from:end, to:next, g:g}; showBanner('Next: ' + next + ' BPM · ' + g, true); }
+          if(next !== end){ setBpm(next); gradeUndo = {from:end, to:next, g:g}; showBanner('Next: ' + next + ' BPM · ' + gradeLabel(g), true); }
           visitBpm = store.bpm;
           renderTempoLine(); save();
         } else {
@@ -2577,24 +2826,57 @@
         renderGline();
         if(g === 'clean') checkLevelUp();
         if(after) after();
-      }});
+  }
+  /* ---------- Rate last session: a pop-up after each Guided session ---------- */
+  function rateHtml(g){
+    var eff = calActive() ? '' : g.value === 'clean' ? 'Next run +' + store.grade.up + '% BPM' : g.value === 'rough' ? 'Next run −' + store.grade.down + '% BPM' : 'Next run same BPM';
+    return '<span class="gl">' + g.label + '</span><span class="gp">' + g.pct + '</span><span class="gn">' + g.note + (eff ? '<em>' + eff + '</em>' : '') + '</span>';
+  }
+  function enterRating(mine){
+    var recRow = store.grade.rec ? gradeRecRow() : null;
+    var col = getComputedStyle($('practice')).getPropertyValue('--accent').trim();
+    dialog({title:'Rate last session', text:(calActive() ? 'Finding your BPM · ' : '') + store.bpm + ' BPM · how much of it was right and in time?',
+      pills:col, top:recRow, sticky:true, cancelText:'Delete · don\'t log',
+      choices:GRADES.map(function(g){ return {value:g.value, html:rateHtml(g)}; }),
+      onPick:function(g){ stopPlay(); applyGrade(mine, g, true, null); setRunUI(); },
+      onCancel:function(){ stopPlay(); deleteRun(mine); setRunUI(); }});
+  }
+  function exitRating(){}
+  // Delete takes the run out of the log; Undo on the banner puts it back (its recording is only removed once Undo has gone)
+  var deleteUndo = null;
+  function deleteRun(mine){
+    var at = mine.map(function(e){ return store.log.indexOf(e); });
+    store.log = store.log.filter(function(e){ return mine.indexOf(e) < 0; });
+    entry = null; gradeFrom = store.log.length; visitLen = Math.min(visitLen, store.log.length);
+    var p = lastRecP; lastRecP = null;
+    if(deleteUndo) deleteUndo.finish();
+    var du = deleteUndo = {mine:mine, at:at, done:false, finish:function(){
+      if(du.done) return; du.done = true; clearTimeout(du.t);
+      if(p) p.then(function(id){ if(id) recDel(id); }, function(){});
+      if(deleteUndo === du) deleteUndo = null;
+    }};
+    du.t = setTimeout(du.finish, 6500);
+    gradeUndo = null; lastManual = null;
+    save(); renderTempoLine(); renderGline();
+    showBanner('Run deleted · not logged', true);
   }
   function backClick(){
     if(!cur){ leavePractice(); return; }
     stop(); commit();
-    var mine = ungraded();
-    if(mine) askGrade(mine, false, leavePractice); else leavePractice();
+    leavePractice();
   }
+  function visitMs(){ var ms = 0; store.log.forEach(function(e, i){ if(i >= visitLen) ms += e.ms || 0; }); return ms; }
 
   /* ---------- Guided: find your level, level ups ---------- */
   function calActive(){ var t = cur && tgt(); return !!(t && isGuided() && t.cal && t.cal.active); }
   function renderGline(){
+    renderTempoLine();
     var el = $('gline'); if(!el) return;
     var t = cur && tgt(), txt = '';
     if(t && isGuided()){
-      if(calActive()) txt = 'Finding your level · run ' + (t.cal.run + 1);
-      else if(t.level) txt = 'Level ' + t.level + ' BPM' + (levelDue(t) ? ' · check due' : t.lastGrade ? ' · last run ' + t.lastGrade : '');
-      else txt = 'No level yet · find it in Guided above';
+      if(calActive()) txt = '';
+      else if(t.level) txt = 'Clean BPM ' + t.level + (levelDue(t) ? ' · check due' : t.lastGrade ? ' · last run ' + gradeLabel(t.lastGrade) : '');
+      else txt = 'No Clean BPM yet · find it in Guided mode above';
     }
     el.textContent = txt;
   }
@@ -2652,8 +2934,8 @@
     if(t && v > store.bpm && isGuided() && !calActive() && !running && !nudged && !tourOn && (!t.level || levelDue(t))){
       if($('modal').classList.contains('show')) return;
       nudged = true; renderBpm();
-      dialog({title:'Find your level first?', text:'A few 30-second runs find the fastest BPM you can play clean. Guided builds from there.',
-        ok:'Find my level', cancelText:'Set it myself', onOk:function(){ startCal(60); }, onCancel:function(){ if(t.level) t.checkAt = Date.now(); setBpm(v); save(); renderGline(); }});
+      dialog({title:'Find your BPM first?', text:'A few 30-second runs find the fastest BPM you can play clean. Guided mode builds from there.',
+        ok:'Find my BPM', cancelText:'Set it myself', onOk:function(){ startCal(60); }, onCancel:function(){ if(t.level) t.checkAt = Date.now(); setBpm(v); save(); renderGline(); }});
       return;
     }
     setBpm(v);
@@ -2661,7 +2943,7 @@
   function celebrate(kind, from, to){
     var name = curSub ? curSub.name : cur.name, key = cur.id + '|' + (curSub ? curSub.id : '');
     $('cele').style.setProperty('--cc', getComputedStyle($('practice')).getPropertyValue('--accent').trim() || '#39FF14');
-    $('celeK').textContent = kind === 'found' ? 'Level found' : 'Level up';
+    $('celeK').textContent = kind === 'found' ? 'Clean BPM found' : 'Clean BPM up';
     $('celeT').textContent = kind === 'found' ? to + ' BPM' : from + ' → ' + to + ' BPM';
     $('celeS').textContent = name + (kind === 'found' ? ' · guided practice starts here' : ' · clean on two different days');
     var box = $('celePlay'); box.innerHTML = ''; $('celeTip').innerHTML = ''; $('cele').classList.remove('tiponly'); $('celeOk').textContent = 'Nice';
@@ -2806,11 +3088,11 @@
     var key = cur.id + '|' + (curSub ? curSub.id : ''), wrap = document.createElement('div'); wrap.className = 'reclist';
     recList(key).then(function(list){
       list.sort(function(a, b){ return b.t - a.t; });
-      if(!list.length){ var e = document.createElement('div'); e.className = 'recempty'; e.textContent = 'No recordings yet. Guided runs are recorded when Record each run is on.'; wrap.appendChild(e); }
+      if(!list.length){ var e = document.createElement('div'); e.className = 'recempty'; e.textContent = 'No recordings yet. Guided mode runs are recorded when Record each run is on.'; wrap.appendChild(e); }
       list.forEach(function(r){
         var it = document.createElement('div'); it.className = 'recitem';
         var info = document.createElement('div'); info.className = 'ri';
-        info.innerHTML = esc((r.dayOne ? 'Day one · ' : '') + r.bpm + ' BPM' + (r.grade ? ' · ' + r.grade : '')) + '<small>' + esc(whenText(r.t) + ' · ' + Math.round(r.ms / 1000) + 's') + '</small>';
+        info.innerHTML = esc((r.dayOne ? 'Day one · ' : '') + r.bpm + ' BPM' + (r.grade ? ' · ' + gradeLabel(r.grade) : '')) + '<small>' + esc(whenText(r.t) + ' · ' + Math.round(r.ms / 1000) + 's') + '</small>';
         var pb = document.createElement('button'), sb = document.createElement('button'), db = document.createElement('button');
         pb.textContent = '▶'; sb.textContent = r.star ? '★' : '☆'; db.textContent = '✕';
         pb.setAttribute('aria-label', 'Play'); sb.setAttribute('aria-label', 'Star'); db.setAttribute('aria-label', 'Delete');
@@ -2826,22 +3108,23 @@
 
   /* ---------- Speed trainer ---------- */
   var trOpen = false;
-  $('trHead').addEventListener('click', function(){ trOpen = !trOpen; if(trOpen){ optOpen = {grader:false, gaps:false, tmr:false}; renderOpts(); } renderTrainer(); });
+  $('trHead').addEventListener('click', function(){ trOpen = !trOpen; if(trOpen){ optOpen = {grader:false, gaps:false, tmr:false, cin:false}; renderOpts(); } renderTrainer(); });
   function renderTrainer(){
-    var t = store.trainer; requestAnimationFrame(spreadPanel);
-    $('trOn').classList.toggle('on', t.on);
+    var t = store.trainer; requestAnimationFrame(spreadPanel); if(typeof renderModes === 'function') renderModes();
+    var son = speedOn();
+    $('trOn').classList.toggle('on', son);
     $('trOn').setAttribute('aria-checked', t.on ? 'true' : 'false');
-    $('trSet').style.display = t.on ? 'block' : 'none';
+    $('trSet').style.display = son ? 'block' : 'none';
     $('trBody').style.display = trOpen ? 'block' : 'none';
     $('trHead').setAttribute('aria-expanded', trOpen ? 'true' : 'false');
     $('trChev').innerHTML = trOpen ? '&#9652;' : '&#9662;';
-    $('trSum').textContent = t.on ? '+' + t.step + ' BPM / ' + t.bars + (t.bars === 1 ? ' bar' : ' bars') : 'Off';
+    $('trSum').textContent = son ? '+' + t.step + ' BPM / ' + t.bars + (t.bars === 1 ? ' bar' : ' bars') : isGuided() ? 'Off · not with Guided' : 'Off';
     $('trStepV').textContent = '+' + t.step + ' BPM';
     $('trBarsV').textContent = t.bars + (t.bars === 1 ? ' bar' : ' bars');
     $('trMaxV').textContent = t.max > 0 ? t.max + ' BPM' : 'No limit';
   }
   function trChange(fn){ fn(store.trainer); save(); renderTrainer(); }
-  $('trOn').addEventListener('click', function(){ trChange(function(t){ t.on = !t.on; barCount = 0; }); });
+  $('trOn').addEventListener('click', function(){ if(running) return; var on = !speedOn(); if(on && isGuided()) setGuided(false); trChange(function(t){ t.on = on; barCount = 0; }); });
   $('trStepDn').addEventListener('click', function(){ trChange(function(t){ t.step = clamp(t.step - 1, 1, 10); }); });
   $('trStepUp').addEventListener('click', function(){ trChange(function(t){ t.step = clamp(t.step + 1, 1, 10); }); });
   $('trBarsDn').addEventListener('click', function(){ trChange(function(t){ t.bars = clamp(t.bars - 1, 1, 16); barCount = 0; }); });
@@ -2868,10 +3151,9 @@
     renderBpm(); save();
   }
   function paintRange(el){ var a = +el.min || 0, b = +el.max || 1; el.style.setProperty('--fill', ((el.value - a) / (b - a) * 100) + '%'); }
-  ['bpmSlider', 'vol'].forEach(function(id){ $(id).addEventListener('input', function(){ paintRange($(id)); }); });
+  ['vol'].forEach(function(id){ $(id).addEventListener('input', function(){ paintRange($(id)); }); });
   function renderBpm(){
     $('bpmNum').value = store.bpm;
-    $('bpmSlider').value = store.bpm; paintRange($('bpmSlider'));
     $('tempo').textContent = tempoName(store.bpm);
   }
   function renderBeats(){
@@ -2898,6 +3180,7 @@
     onMeterChange();
   }
   function renderBeatsVal(){
+    if(typeof renderMeter === 'function') renderMeter();
     var box = $('tsChips');
     box.innerHTML = '';
     var preset = TSIGS.some(function(t){ return t[0] === store.beats && t[1] === store.tsd; });
@@ -2923,13 +3206,35 @@
     var act = box.querySelector('.chip.active');
     if(act) box.scrollLeft = Math.max(0, act.offsetLeft - 40);
   }
+  var FOLD_METER = true, meterOpen = false;
+  function renderMeter(){
+    var p = $('practice'); if(!p) return;
+    p.classList.toggle('mfoldon', FOLD_METER);
+    p.classList.toggle('mfolded', FOLD_METER && !meterOpen);
+    var sb = $('seg').querySelector('[data-sub="' + store.sub + '"]');
+    $('meterTxt').textContent = store.beats + '/' + store.tsd + ' · ' + (sb ? sb.textContent : '');
+    $('meterLine').setAttribute('aria-expanded', meterOpen ? 'true' : 'false');
+    $('meterChev').innerHTML = meterOpen ? '&#9652;' : '&#9662;';
+  }
+  $('meterLine').addEventListener('click', function(){ meterOpen = !meterOpen; renderMeter(); requestAnimationFrame(spreadPanel); });
   function renderSub(){
+    renderMeter();
     Array.prototype.forEach.call($('seg').children, function(b){
       b.classList.toggle('active', +b.dataset.sub === store.sub);
     });
   }
   function dur(){ return calActive() ? 0.5 : store.duration; }
+  var durOpen = false;
+  function renderDurLine(){
+    var D = dur(), p = $('practice');
+    p.classList.toggle('dfolded', !durOpen);
+    $('durTxt').textContent = calActive() ? '30 sec · Find your BPM' : D > 0 ? D + ' min' : 'No limit';
+    $('durLine').setAttribute('aria-expanded', durOpen ? 'true' : 'false');
+    $('durChev').innerHTML = durOpen ? '&#9652;' : '&#9662;';
+  }
+  $('durLine').addEventListener('click', function(){ if(running || calActive()) return; durOpen = !durOpen; renderDurLine(); requestAnimationFrame(spreadPanel); });
   function renderChips(){
+    renderDurLine();
     var box = $('chips');
     box.innerHTML = '';
     var D = dur();
@@ -2959,7 +3264,7 @@
   }
   function setDuration(d){
     if(running) return;
-    store.duration = d; session = 0; entry = null;
+    store.duration = d; session = 0; entry = null; durOpen = false;
     $('banner').classList.remove('show');
     save(); renderChips(); lastClockText = '';
   }
@@ -2976,7 +3281,6 @@
   }
   holdable($('bpmDown'), function(){ setBpm(store.bpm - 1); });
   holdable($('bpmUp'),   function(){ userBpm(store.bpm + 1); });
-  $('bpmSlider').addEventListener('input', function(e){ userBpm(+e.target.value); });
   (function(){
     var bn = $('bpmNum');
     bn.addEventListener('focus', function(){
@@ -2989,7 +3293,7 @@
       var v = parseInt(d, 10);
       if(v >= 30 && v <= 300){
         store.bpm = v; if(cur) tgt().bpm = v;
-        $('bpmSlider').value = v; $('tempo').textContent = tempoName(v); save();
+        $('tempo').textContent = tempoName(v); save();
       }
     });
     bn.addEventListener('blur', function(){
@@ -3075,14 +3379,16 @@
     go.gain.setValueAtTime(0.0001, time); go.gain.linearRampToValueAtTime(peak * 0.55, time + 0.001); go.gain.exponentialRampToValueAtTime(0.0001, time + 0.045);
     o.connect(go); go.connect(ctx.destination); o.start(time); o.stop(time + 0.06);
   }
-  // one bar before the music starts; compound 6/8, 9/8, 12/8 count the dotted-quarter pulse
+  // count-in bars (Count-in dropdown) before the music starts; compound 6/8, 9/8, 12/8 count the dotted-quarter pulse
   var countEnd = 0;
   function countIn(){
+    var cin = store.cin || {on:true, bars:1};
+    if(!cin.on) return;
     var compound = store.tsd === 8 && store.beats % 3 === 0 && store.beats >= 6;
-    var step = compound ? 3 : 1, n = store.beats / step, gapS = 60 / store.bpm * step;
+    var step = compound ? 3 : 1, per = store.beats / step, n = per * (cin.bars || 1), gapS = 60 / store.bpm * step;
     for(var i = 0; i < n; i++){
       sticks(nextTime + i * gapS);
-      queue.push({t:nextTime + i * gapS, beat:i * step, isBeat:true, count:true});
+      queue.push({t:nextTime + i * gapS, beat:(i % per) * step, isBeat:true, count:true});
     }
     nextTime += n * gapS;
     countEnd = performance.now() + (nextTime - ctx.currentTime) * 1000;
@@ -3115,10 +3421,10 @@
       var isBeat = tickIdx % sub === 0;
       if(isBeat && beat === 0){
         // start of a bar: speed trainer raises the tempo every N bars
-        if(store.trainer.on && modeOf(tgt()) === 'click' && barCount > 0 && barCount % store.trainer.bars === 0) bump();
+        if(speedOn() && isClick() && !calActive() && barCount > 0 && barCount % store.trainer.bars === 0) bump();
         barCount++;
         var gq = store.gaps;
-        silentBar = !!(gq.on && ((barCount - 1) % (gq.play + gq.mute)) >= gq.play);
+        silentBar = !!(gapsOn() && ((barCount - 1) % (gq.play + gq.mute)) >= gq.play);
       }
       if(!silentBar){
         if(isBeat){
@@ -3204,16 +3510,14 @@
     var logged = session;
     stop();
     if(modeOf(tgt()) !== 'timer' || !store.tmr || store.tmr.chime !== false) chime();
-    var extra = isClick() ? ' · ' + store.bpm + ' BPM saved' : '';
-    showBanner('Session complete · ' + fmt(logged) + ' logged to ' + cur.name + extra, false);
     try{ if(navigator.vibrate) navigator.vibrate([200, 100, 200]); }catch(e){}
     var mine = ungraded();
-    if(mine) setTimeout(function(){ if(inPractice && !$('modal').classList.contains('show')) askGrade(mine, true, null); }, 250);
+    if(mine) enterRating(mine);
   }
 
   function setRunUI(){
     var b = $('goBtn');
-    b.textContent = running ? 'Pause' : (isGuided() ? 'Start run' : 'Start');
+    b.textContent = running ? 'Pause' : calActive() ? 'Start run ' + (tgt().cal.run + 1) : isGuided() ? 'Start run' : 'Start';
     b.classList.toggle('running', running);
     $('chips').classList.toggle('locked', running || calActive());
   }
@@ -3221,7 +3525,7 @@
     if(!running){ start(); return; }
     stop();
     var mine = ungraded();
-    if(mine) askGrade(mine, true, null);
+    if(mine) enterRating(mine);
   });
 
   async function lock(){
@@ -3237,18 +3541,49 @@
   });
   window.addEventListener('pagehide', flush);
   document.addEventListener('visibilitychange', function(){ if(!document.hidden && !inPractice) spinLogo(); });
-  var TIPS = [["Slow down until it's perfect. Clean reps at a slow tempo build skill faster than sloppy reps at speed.", "The Talent Code"], ["Practice at the edge: just past what you can do. The small struggle is where the learning happens.", "The Talent Code"], ["Break a hard passage into small chunks. Master each piece, then link them together.", "The Talent Code"], ["Mistakes are information. Notice exactly where it broke, fix that spot, then play it again.", "The Talent Code"], ["Watch a player you admire, then copy one small thing. Imitation is how skills spread.", "The Talent Code"], ["Take in the whole piece first. Listen to it all the way through before you chop it up.", "The Talent Code"], ["Reach, miss, adjust, reach again. That loop is what deep practice looks like.", "The Talent Code"], ["Feeling clumsy at the edge is a good sign. It means you're building something new.", "The Talent Code"], ["Get one bar right, then two, then four. Grow the passage outward from what's clean.", "The Talent Code"], ["Repetition still matters. Skills get faster and more automatic the more clean reps you stack.", "The Talent Code"], ["Practice the transition, not just the parts. The jump between two chords is its own skill.", "The Talent Code"], ["Make it obvious: leave your guitar on a stand, not in its case.", "Atomic Habits"], ["Make it easy: on a busy day, play for just two minutes. Showing up is the habit.", "Atomic Habits"], ["Never miss twice. One skipped day is life; two starts a new habit.", "Atomic Habits"], ["Stack it: practice right after something you already do every day, like your morning coffee.", "Atomic Habits"], ["Set a time and place: \"I'll practice at 7pm in the living room\" beats \"I'll practice later.\"", "Atomic Habits"], ["Reduce friction. Keep picks, capo and tuner next to the guitar so starting takes seconds.", "Atomic Habits"], ["Make distractions harder: put your phone on Do Not Disturb before you start.", "Atomic Habits"], ["Pair practice with something you enjoy: your favorite tea, a good chair, the window light.", "Atomic Habits"], ["Join a culture where practice is normal. Friends who play make practicing feel natural.", "Atomic Habits"], ["Don't break the chain. A visible streak makes you want to keep it going.", "Atomic Habits"], ["Have one clear goal per session: one passage, one tempo, one problem to solve.", "Deliberate practice"], ["Short, focused sessions beat long, distracted ones. Ten sharp minutes counts.", "Deliberate practice"], ["Right after your warm-up, tackle the hardest part while you're freshest.", "Deliberate practice"], ["Know what good sounds like. Build a clear picture of the target before you chase it.", "Deliberate practice"], ["Find your weakest spot and spend most of your time there.", "Deliberate practice"], ["Plan before you play: what will you work on, and how will you know it's better?", "Deliberate practice"], ["Rest when your focus fades. Tired, sloppy reps teach your hands the wrong thing.", "Deliberate practice"], ["Change the task when you stall. Try a new rhythm, a new tempo, or a new fingering.", "Deliberate practice"], ["Write down what worked. A one-line note today saves you ten minutes tomorrow.", "Deliberate practice"], ["Practice like you'll perform. Run it once a session as if someone is listening.", "Deliberate practice"], ["Effort without attention is just playing. Stay curious about what's happening in your hands.", "Deliberate practice"], ["Measure progress in weeks, not days. Day-to-day changes are too small to notice.", "Deliberate practice"], ["Sleep locks in practice. A passage that fought you tonight is often easier tomorrow.", "Learning science"], ["Spread it out. Three short sessions in a week beat one long one.", "Learning science"], ["Mix it up. Switching between two or three skills feels harder but often sticks better.", "Learning science"], ["Vary the practice: same lick, different tempos, positions and dynamics. Variety makes it robust.", "Learning science"], ["Take short breaks. A few minutes away can help your brain lock in what you just did.", "Learning science"], ["Mental practice helps. Picture your fingers playing the passage when you're away from the guitar.", "Learning science"], ["Focus on the sound, not your fingers. An outward focus often makes movement smoother.", "Learning science"], ["Come back to old material. A quick review keeps skills from fading.", "Learning science"], ["Practice feels worse but sticks better when it's varied. Don't judge a session by how smooth it felt.", "Learning science"], ["Stop while it's still clean. Ending on a good rep is what your hands will remember.", "Learning science"], ["Get enough rest between hard sessions. Recovery is part of practice.", "Learning science"], ["Relax. Check your shoulders, jaw and fretting thumb. Tension is the speed limit.", "Guitar technique"], ["Use the lightest touch that still sounds clean. Less pressure means faster, easier hands.", "Guitar technique"], ["Keep fingers close to the strings. Small movements are fast movements.", "Guitar technique"], ["Fret just behind the fret wire, not on top or in the middle. Less effort, cleaner note.", "Guitar technique"], ["Mute what you're not playing. Clean playing is as much about silence as sound.", "Guitar technique"], ["Watch your picking hand. Most speed problems are sync problems between the two hands.", "Guitar technique"], ["Keep your pick strokes small. A big swing wastes time and accuracy.", "Guitar technique"], ["Tune before every session. Practicing out of tune trains your ear wrong.", "Guitar technique"], ["Check your posture. Sit tall, guitar close, neck slightly up.", "Guitar technique"], ["Keep your fretting thumb relaxed behind the neck. A death grip slows everything down.", "Guitar technique"], ["Play chord changes slowly with your eyes closed. Feel the shapes instead of looking.", "Guitar technique"], ["Move all fingers of a chord together. Land them at once, not one at a time.", "Guitar technique"], ["Leave a finger down when chords share a note. Pivot fingers make changes easier.", "Guitar technique"], ["Practice with a clean tone first. Distortion hides mistakes.", "Guitar technique"], ["Count out loud. If you can't count it, you don't know the rhythm yet.", "Guitar technique"], ["Tap your foot. Your body keeping time frees your hands to play.", "Guitar technique"], ["Play quietly sometimes. Soft playing reveals uneven notes that loud playing hides.", "Guitar technique"], ["Strum from the wrist and keep your arm moving even on the beats you skip.", "Guitar technique"], ["Learn the notes you're playing. Knowing the fretboard turns shapes into music.", "Guitar technique"], ["Practice scales with a purpose: as melodies, in sequences, or over a backing track.", "Guitar technique"], ["Short nails on your fretting hand help notes ring clean.", "Guitar technique"], ["Pain is a stop sign, not a challenge. Rest and check your technique.", "Guitar technique"], ["Change strings when they go dull. Fresh strings are easier to play in tune.", "Guitar technique"], ["Learn songs, not just exercises. Music is the point of all the technique.", "Guitar technique"], ["Can't play it slow? You can't play it fast. Speed is accuracy, repeated.", "Rhythm"], ["Try the click on 2 and 4. It makes you feel the groove instead of chasing beats.", "Rhythm"], ["Half-time practice: set the click to half your tempo and fill the space yourself.", "Rhythm"], ["Play right on the click until it disappears. When you can't hear it, you're locked in.", "Rhythm"], ["Speed bursts: play a short fragment fast, then rest. Short bursts build speed without tension.", "Rhythm"], ["Practice rhythms on one muted string first. Get the timing right before adding notes.", "Rhythm"], ["Subdivide in your head. Feeling the eighth notes keeps quarter notes even.", "Rhythm"], ["Record with the click, then listen without it. Is your time still steady?", "Rhythm"], ["Play the same phrase at three tempos: slow, medium and just over your edge.", "Rhythm"], ["Grade honestly. The level only works if Clean really means clean.", "TOAN"], ["Silent mode tests your inner clock. If you drift when the click drops out, slow down.", "TOAN"], ["Record yourself. You hear things while listening back that you miss while playing.", "TOAN"], ["Star a take you're proud of. Months from now, it shows how far you've come.", "TOAN"], ["Listen to Day one now and then. Progress is easy to forget until you hear it.", "TOAN"], ["A Rough grade isn't failure. It just tells Guided where your edge is today.", "TOAN"], ["Find your level again after a break. Your edge moves, and that's normal.", "TOAN"], ["Set a goal BPM for each piece. A target makes every small step count.", "TOAN"], ["Use subcategories to split a song into sections. Practice the hard part on its own.", "TOAN"], ["Check the pie now and then. Are you practicing what you need, or just what's fun?", "TOAN"], ["Set a practice goal you can hit on a bad week. Consistency beats intensity.", "TOAN"], ["Timer only is for playing along: songs, lessons, or just exploring ideas.", "TOAN"], ["Mostly is a fine grade. Holding the tempo while it settles is part of the process.", "TOAN"], ["Warm up slowly. Easy chromatic runs or open chords get your hands ready before the hard stuff.", "Guitar technique"], ["Practice the way you'll play: standing if you'll stand, with a strap, at real volume.", "Learning science"], ["Play it once without stopping, mistakes and all. Real playing means keeping going.", "Guitar technique"], ["Hear it before you play it. Hum or imagine the phrase first, then let your hands follow.", "Guitar technique"], ["Compare yourself to last month, not to other players.", "Mindset"], ["Have fun at the end. Five minutes of just playing reminds you why you practice.", "Mindset"], ["Learn by ear sometimes. Working out a melody trains your ear and your hands together.", "Guitar technique"], ["Play with others when you can. Nothing tests your timing like a real band.", "Guitar technique"]];
+  var TIPS = [["Slow down until it's perfect. Clean reps at a slow tempo build skill faster than sloppy reps at speed.", "The Talent Code"], ["Practice at the edge: just past what you can do. The small struggle is where the learning happens.", "The Talent Code"], ["Break a hard passage into small chunks. Master each piece, then link them together.", "The Talent Code"], ["Mistakes are information. Notice exactly where it broke, fix that spot, then play it again.", "The Talent Code"], ["Watch a player you admire, then copy one small thing. Imitation is how skills spread.", "The Talent Code"], ["Take in the whole piece first. Listen to it all the way through before you chop it up.", "The Talent Code"], ["Reach, miss, adjust, reach again. That loop is what deep practice looks like.", "The Talent Code"], ["Feeling clumsy at the edge is a good sign. It means you're building something new.", "The Talent Code"], ["Get one bar right, then two, then four. Grow the passage outward from what's clean.", "The Talent Code"], ["Repetition still matters. Skills get faster and more automatic the more clean reps you stack.", "The Talent Code"], ["Practice the transition, not just the parts. The jump between two chords is its own skill.", "The Talent Code"], ["Make it obvious: leave your guitar on a stand, not in its case.", "Atomic Habits"], ["Make it easy: on a busy day, play for just two minutes. Showing up is the habit.", "Atomic Habits"], ["Never miss twice. One skipped day is life; two starts a new habit.", "Atomic Habits"], ["Stack it: practice right after something you already do every day, like your morning coffee.", "Atomic Habits"], ["Set a time and place: \"I'll practice at 7pm in the living room\" beats \"I'll practice later.\"", "Atomic Habits"], ["Reduce friction. Keep picks, capo and tuner next to the guitar so starting takes seconds.", "Atomic Habits"], ["Make distractions harder: put your phone on Do Not Disturb before you start.", "Atomic Habits"], ["Pair practice with something you enjoy: your favorite tea, a good chair, the window light.", "Atomic Habits"], ["Join a culture where practice is normal. Friends who play make practicing feel natural.", "Atomic Habits"], ["Don't break the chain. A visible streak makes you want to keep it going.", "Atomic Habits"], ["Have one clear goal per session: one passage, one tempo, one problem to solve.", "Deliberate practice"], ["Short, focused sessions beat long, distracted ones. Ten sharp minutes counts.", "Deliberate practice"], ["Right after your warm-up, tackle the hardest part while you're freshest.", "Deliberate practice"], ["Know what good sounds like. Build a clear picture of the target before you chase it.", "Deliberate practice"], ["Find your weakest spot and spend most of your time there.", "Deliberate practice"], ["Plan before you play: what will you work on, and how will you know it's better?", "Deliberate practice"], ["Rest when your focus fades. Tired, sloppy reps teach your hands the wrong thing.", "Deliberate practice"], ["Change the task when you stall. Try a new rhythm, a new tempo, or a new fingering.", "Deliberate practice"], ["Write down what worked. A one-line note today saves you ten minutes tomorrow.", "Deliberate practice"], ["Practice like you'll perform. Run it once a session as if someone is listening.", "Deliberate practice"], ["Effort without attention is just playing. Stay curious about what's happening in your hands.", "Deliberate practice"], ["Measure progress in weeks, not days. Day-to-day changes are too small to notice.", "Deliberate practice"], ["Sleep locks in practice. A passage that fought you tonight is often easier tomorrow.", "Learning science"], ["Spread it out. Three short sessions in a week beat one long one.", "Learning science"], ["Mix it up. Switching between two or three skills feels harder but often sticks better.", "Learning science"], ["Vary the practice: same lick, different tempos, positions and dynamics. Variety makes it robust.", "Learning science"], ["Take short breaks. A few minutes away can help your brain lock in what you just did.", "Learning science"], ["Mental practice helps. Picture your fingers playing the passage when you're away from the guitar.", "Learning science"], ["Focus on the sound, not your fingers. An outward focus often makes movement smoother.", "Learning science"], ["Come back to old material. A quick review keeps skills from fading.", "Learning science"], ["Practice feels worse but sticks better when it's varied. Don't judge a session by how smooth it felt.", "Learning science"], ["Stop while it's still clean. Ending on a good rep is what your hands will remember.", "Learning science"], ["Get enough rest between hard sessions. Recovery is part of practice.", "Learning science"], ["Relax. Check your shoulders, jaw and fretting thumb. Tension is the speed limit.", "Guitar technique"], ["Use the lightest touch that still sounds clean. Less pressure means faster, easier hands.", "Guitar technique"], ["Keep fingers close to the strings. Small movements are fast movements.", "Guitar technique"], ["Fret just behind the fret wire, not on top or in the middle. Less effort, cleaner note.", "Guitar technique"], ["Mute what you're not playing. Clean playing is as much about silence as sound.", "Guitar technique"], ["Watch your picking hand. Most speed problems are sync problems between the two hands.", "Guitar technique"], ["Keep your pick strokes small. A big swing wastes time and accuracy.", "Guitar technique"], ["Tune before every session. Practicing out of tune trains your ear wrong.", "Guitar technique"], ["Check your posture. Sit tall, guitar close, neck slightly up.", "Guitar technique"], ["Keep your fretting thumb relaxed behind the neck. A death grip slows everything down.", "Guitar technique"], ["Play chord changes slowly with your eyes closed. Feel the shapes instead of looking.", "Guitar technique"], ["Move all fingers of a chord together. Land them at once, not one at a time.", "Guitar technique"], ["Leave a finger down when chords share a note. Pivot fingers make changes easier.", "Guitar technique"], ["Practice with a clean tone first. Distortion hides mistakes.", "Guitar technique"], ["Count out loud. If you can't count it, you don't know the rhythm yet.", "Guitar technique"], ["Tap your foot. Your body keeping time frees your hands to play.", "Guitar technique"], ["Play quietly sometimes. Soft playing reveals uneven notes that loud playing hides.", "Guitar technique"], ["Strum from the wrist and keep your arm moving even on the beats you skip.", "Guitar technique"], ["Learn the notes you're playing. Knowing the fretboard turns shapes into music.", "Guitar technique"], ["Practice scales with a purpose: as melodies, in sequences, or over a backing track.", "Guitar technique"], ["Short nails on your fretting hand help notes ring clean.", "Guitar technique"], ["Pain is a stop sign, not a challenge. Rest and check your technique.", "Guitar technique"], ["Change strings when they go dull. Fresh strings are easier to play in tune.", "Guitar technique"], ["Learn songs, not just exercises. Music is the point of all the technique.", "Guitar technique"], ["Can't play it slow? You can't play it fast. Speed is accuracy, repeated.", "Rhythm"], ["Try the click on 2 and 4. It makes you feel the groove instead of chasing beats.", "Rhythm"], ["Half-time practice: set the click to half your tempo and fill the space yourself.", "Rhythm"], ["Play right on the click until it disappears. When you can't hear it, you're locked in.", "Rhythm"], ["Speed bursts: play a short fragment fast, then rest. Short bursts build speed without tension.", "Rhythm"], ["Practice rhythms on one muted string first. Get the timing right before adding notes.", "Rhythm"], ["Subdivide in your head. Feeling the eighth notes keeps quarter notes even.", "Rhythm"], ["Record with the click, then listen without it. Is your time still steady?", "Rhythm"], ["Play the same phrase at three tempos: slow, medium and just over your edge.", "Rhythm"], ["Grade honestly. Your Clean BPM is only as true as your Clean grades.", "TOAN"], ["Silent mode tests your inner clock. If you drift when the click drops out, slow down.", "TOAN"], ["Record yourself. You hear things while listening back that you miss while playing.", "TOAN"], ["Star a take you're proud of. Months from now, it shows how far you've come.", "TOAN"], ["Listen to Day one now and then. Progress is easy to forget until you hear it.", "TOAN"], ["A Rough grade isn't failure. It just tells Guided mode where your edge is today.", "TOAN"], ["Find your BPM again after a break. Your edge moves, and that's normal.", "TOAN"], ["Set a goal BPM for each piece. A target makes every small step count.", "TOAN"], ["Use subcategories to split a song into sections. Practice the hard part on its own.", "TOAN"], ["Check the pie now and then. Are you practicing what you need, or just what's fun?", "TOAN"], ["Set a practice goal you can hit on a bad week. Consistency beats intensity.", "TOAN"], ["Timer only is for playing along: songs, lessons, or just exploring ideas.", "TOAN"], ["Close is a fine grade. Holding the BPM while it settles is part of the process.", "TOAN"], ["Warm up slowly. Easy chromatic runs or open chords get your hands ready before the hard stuff.", "Guitar technique"], ["Practice the way you'll play: standing if you'll stand, with a strap, at real volume.", "Learning science"], ["Play it once without stopping, mistakes and all. Real playing means keeping going.", "Guitar technique"], ["Hear it before you play it. Hum or imagine the phrase first, then let your hands follow.", "Guitar technique"], ["Compare yourself to last month, not to other players.", "Mindset"], ["Have fun at the end. Five minutes of just playing reminds you why you practice.", "Mindset"], ["Learn by ear sometimes. Working out a melody trains your ear and your hands together.", "Guitar technique"], ["Play with others when you can. Nothing tests your timing like a real band.", "Guitar technique"]];
   // share the free space evenly between sections (worked out with the dropdowns closed, kept while one is open)
+  // the metronome screen always fills evenly: spare room first grows the timer, the BPM (always the same size
+  // as the timer, and never wider than its box) and the beat dots; what is left becomes one even gap top to bottom
+  var GAP_AIM = 30, fitCanvas = null;
+  function bpmFit(el){
+    var box = el.parentNode; if(!box || !box.clientWidth) return 999;
+    fitCanvas = fitCanvas || document.createElement('canvas');
+    var c = fitCanvas.getContext('2d'), cs = getComputedStyle(el);
+    c.font = cs.fontWeight + ' 100px ' + cs.fontFamily;
+    var w = c.measureText('300').width * 1.04;                // widest BPM, letter-spacing included roughly
+    return box.clientWidth / w * 100;
+  }
   function spreadPanel(){
-    var q = document.querySelector('.panel'); if(!q || !inPractice) return;
-    if(optOpen.grader || optOpen.gaps || optOpen.tmr || trOpen) return;
-    q.style.setProperty('--pgap', '6px');
-    var kids = Array.prototype.filter.call(q.children, function(e){ return e.offsetHeight > 0; });
-    if(kids.length < 2) return;
-    var cs = getComputedStyle(q), used = 0;
-    kids.forEach(function(e){ used += e.offsetHeight; });
-    var free = q.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom) - used;
-    q.style.setProperty('--pgap', clamp(free / (kids.length - 1), 6, 40) + 'px');
+    var q = document.querySelector('.panel'), pb = $('pbot'), pr = $('practice'); if(!q || !pb || !inPractice) return;
+    if(modesOpen || optOpen.grader || optOpen.gaps || optOpen.tmr || optOpen.cin || trOpen) return;
+    var clock = document.querySelector('.timer .clock'), num = $('bpmNum'), withBpm = num.offsetHeight > 0;
+    clock.style.fontSize = ''; num.style.fontSize = ''; pr.style.setProperty('--bk', '1');
+    function measure(){
+      var kids = Array.prototype.filter.call(q.children, function(e){ return e.offsetHeight > 0; });
+      var used = 0; kids.forEach(function(e){ used += e.offsetHeight; });
+      var curB = parseFloat(getComputedStyle(pr).getPropertyValue('--bgap')) || 9;
+      var nb = Array.prototype.filter.call(pb.children, function(e){ return e.offsetHeight > 0; }).length;
+      var botFixed = pb.offsetHeight - Math.max(0, nb - 1) * curB, padTopB = parseFloat(getComputedStyle(pb).paddingTop) || 0;
+      var slots = kids.length + Math.max(0, nb - 1);
+      return {room:q.clientHeight - parseFloat(getComputedStyle(q).paddingTop) - used - botFixed + padTopB, slots:slots};
+    }
+    var base = parseFloat(getComputedStyle(clock).fontSize) || 60, cap = withBpm ? bpmFit(num) : 999;
+    var size = Math.min(base, cap);
+    var m = measure(); if(!m.slots) return;
+    var spare = m.room - GAP_AIM * m.slots - (withBpm ? 0 : 0);
+    if(spare > 0){
+      var f = Math.min(1, spare / (withBpm ? 100 : 62));
+      size = Math.min(base + 44 * f, cap);
+      pr.style.setProperty('--bk', (1 + 0.45 * f).toFixed(3));
+    }
+    clock.style.fontSize = Math.round(size) + 'px';
+    if(withBpm) num.style.fontSize = Math.round(size) + 'px';
+    m = measure();
+    var g = clamp(m.room / m.slots, 6, 90);
+    q.style.setProperty('--pgap', g + 'px');
+    var curB2 = parseFloat(getComputedStyle(pr).getPropertyValue('--bgap')) || 9;
+    if(Math.abs(g - curB2) > 0.5) pr.style.setProperty('--bgap', g + 'px');
   }
   function setBotH(){ var b = $('pbot'); if(b && b.offsetHeight) $('practice').style.setProperty('--botH', b.offsetHeight + 'px'); spreadPanel(); }
   try{ new ResizeObserver(setBotH).observe($('pbot')); }catch(e){}
@@ -3293,6 +3628,302 @@
     requestAnimationFrame(frame);
   }
 
+
+
+  /* ---------- Modes: one dropdown for all modes, with the line-metronome icon family ---------- */
+  var ICO = {
+    guided:'<path d="M6 5h4l3.5 16H2.5z"/><path d="M8 17 10.8 8.5"/><path d="M15 13.5l2.5 2.5L22 11"/>',
+    silent:'<path d="M9.5 3h5L19 21H5z"/><path d="M12 17 16 7"/><path d="M3 3l18 18"/>',
+    cin:'<path d="M5 21 15 5"/><path d="M19 21 9 5"/><circle cx="15.5" cy="4.2" r="1.2"/><circle cx="8.5" cy="4.2" r="1.2"/>',
+    speed:'<path d="M6 5h4l3.5 16H2.5z"/><path d="M8 17 10.8 8.5"/><path d="M19 13V4"/><path d="M16 7l3-3 3 3"/>',
+    timer:'<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2"/><path d="M10 3h4"/>'
+  };
+  function ico(k){ return '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICO[k] + '</svg>'; }
+  [['graderHead', 'guided'], ['gapsHead', 'silent'], ['cinHead', 'cin'], ['trHead', 'speed'], ['tmrHead', 'timer']].forEach(function(a){ $(a[0]).insertAdjacentHTML('afterbegin', ico(a[1])); });
+  var modesOpen = false;
+  function renderModes(){
+    if(!$('modesHead') || !ICO) return; // ICO is set further down the script; skip calls made before that
+    var on = [];
+    if(cur && modeOf(tgt()) === 'timer') on.push(['timer', 'Timer only']);
+    else {
+      if(isGuided()) on.push(['guided', 'Guided']);
+      if(gapsOn()) on.push(['silent', 'Silent']);
+      if(store.cin && store.cin.on) on.push(['cin', 'Count-in ' + store.cin.bars + (store.cin.bars === 1 ? ' bar' : ' bars')]);
+      if(speedOn()) on.push(['speed', 'Speed']);
+    }
+    $('modesIcons').innerHTML = on.map(function(x){ return ico(x[0]); }).join('');
+    $('modesSum').textContent = on.length ? on.map(function(x){ return x[1]; }).join(' · ') : 'Metronome';
+    $('modesBody').style.display = modesOpen ? 'block' : 'none';
+    $('modesHead').setAttribute('aria-expanded', modesOpen ? 'true' : 'false');
+    $('modesChev').innerHTML = modesOpen ? '&#9652;' : '&#9662;';
+  }
+  $('modesHead').addEventListener('click', function(){
+    modesOpen = !modesOpen;
+    if(!modesOpen){ optOpen = {grader:false, gaps:false, tmr:false, cin:false}; trOpen = false; renderOpts(); renderTrainer(); }
+    renderModes(); requestAnimationFrame(spreadPanel);
+  });
+
+  /* ---------- bar graph: the selected period, split into days / hours / months, stacked by category ---------- */
+  var MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'], WD = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  function barBuckets(){
+    var r = store.range, out = [], now = new Date(), d0 = new Date(rangeStart(r));
+    function push(a, b, lab, tick, full){ out.push({a:a.getTime(), b:b.getTime(), lab:lab, tick:tick, full:full}); }
+    if(r === 'day'){
+      for(var h = 0; h < 24; h++){ var a = new Date(d0); a.setHours(h); var b = new Date(d0); b.setHours(h + 1);
+        var hl = (h % 12 || 12) + (h < 12 ? 'a' : 'p'); push(a, b, hl, h % 6 === 0 ? hl : '', hl + ' – ' + ((h + 1) % 12 || 12) + (h + 1 < 12 || h + 1 === 24 ? 'a' : 'p')); }
+      return {b:out, per:'hour', by:'by hour'};
+    }
+    if(r === 'week' || r === 'month'){
+      var n = r === 'week' ? 7 : new Date(d0.getFullYear(), d0.getMonth() + 1, 0).getDate();
+      for(var i = 0; i < n; i++){ var a2 = new Date(d0); a2.setDate(d0.getDate() + i); var b2 = new Date(a2); b2.setDate(a2.getDate() + 1);
+        var dn = a2.getDate();
+        push(a2, b2, r === 'week' ? WD[a2.getDay()].charAt(0) : String(dn), r === 'week' ? WD[a2.getDay()].charAt(0) : (dn === 1 || dn % 7 === 1 ? String(dn) : ''), WD[a2.getDay()] + ' ' + MON[a2.getMonth()] + ' ' + dn); }
+      return {b:out, per:'day', by:'by day'};
+    }
+    if(r === 'year'){
+      for(var m = 0; m < 12; m++){ var a3 = new Date(d0.getFullYear(), m, 1), b3 = new Date(d0.getFullYear(), m + 1, 1); push(a3, b3, MON[m].charAt(0), MON[m].charAt(0), MON[m] + ' ' + a3.getFullYear()); }
+      return {b:out, per:'month', by:'by month'};
+    }
+    // all time: by month, or by year once there is more than two years of practice
+    var first = null; store.log.forEach(function(e){ if(e.t > 0 && (first === null || e.t < first)) first = e.t; });
+    var f = new Date(first === null ? Date.now() : first), months = (now.getFullYear() - f.getFullYear()) * 12 + now.getMonth() - f.getMonth() + 1;
+    if(months <= 24){
+      for(var k = 0; k < Math.max(months, 1); k++){ var a4 = new Date(f.getFullYear(), f.getMonth() + k, 1), b4 = new Date(f.getFullYear(), f.getMonth() + k + 1, 1);
+        push(a4, b4, MON[a4.getMonth()].charAt(0), a4.getMonth() % 3 === 0 || months <= 8 ? MON[a4.getMonth()].charAt(0) + (a4.getMonth() === 0 ? ' ' + String(a4.getFullYear()).slice(2) : '') : '', MON[a4.getMonth()] + ' ' + a4.getFullYear()); }
+      return {b:out, per:'month', by:'by month'};
+    }
+    for(var y = f.getFullYear(); y <= now.getFullYear(); y++) push(new Date(y, 0, 1), new Date(y + 1, 0, 1), String(y).slice(2), String(y), String(y));
+    return {b:out, per:'year', by:'by year'};
+  }
+  function openBars(){
+    var bk = barBuckets(), B = bk.b, nowT = Date.now(), cats = store.cats;
+    var data = B.map(function(x){ var m = {}, tot = 0; store.log.forEach(function(e){ if(e.t > 0 && e.t >= x.a && e.t < x.b && catById(e.c)){ m[e.c] = (m[e.c] || 0) + e.ms; tot += e.ms; } }); return {m:m, tot:tot}; });
+    var total = 0, maxV = 0; data.forEach(function(d){ total += d.tot; if(d.tot > maxV) maxV = d.tot; });
+    var elapsed = B.filter(function(x){ return x.a <= nowT; }).length || 1, avg = total / elapsed;
+    $('barsK').textContent = {day:'Today', week:'This week', month:'This month', year:'This year', all:'All time'}[store.range] + ' · ' + bk.by;
+    $('barsT').textContent = fmt(total);
+    $('barsS').textContent = total > 0 ? 'Average ' + fmt(avg) + ' / ' + bk.per : 'No practice in this period';
+    // chart geometry (viewBox units = CSS px at the box's width)
+    var W = Math.max(260, Math.min(388, window.innerWidth - 68)), H = 170, top = 16, base = H - 20, n = B.length;
+    var col = W / n, bw = Math.max(3, Math.min(26, col * 0.62)), unit = maxV > 0 ? (base - top) / maxV : 0;
+    var NSs = 'http://www.w3.org/2000/svg', h = '';
+    h += '<line x1="0" y1="' + base + '" x2="' + W + '" y2="' + base + '" stroke="#3a414c" stroke-width="1"/>';
+    if(maxV > 0) h += '<line x1="0" y1="' + top + '" x2="' + W + '" y2="' + top + '" stroke="#242a33" stroke-width="1"/>' +
+      '<text x="0" y="' + (top - 5) + '" fill="#8a93a0" font-size="9" letter-spacing="1">' + esc(fmt(maxV).toUpperCase()) + '</text>';
+    data.forEach(function(d, i){
+      var x = i * col + (col - bw) / 2, y = base, g = '';
+      var segs = cats.filter(function(c){ return d.m[c.id] > 0; });
+      segs.forEach(function(c, k){
+        var hgt = d.m[c.id] * unit, gap = k < segs.length - 1 ? 2 : 0, hh = Math.max(0, hgt - gap);
+        if(hh > 0) g += '<rect x="' + x.toFixed(2) + '" y="' + (y - hh).toFixed(2) + '" width="' + bw.toFixed(2) + '" height="' + hh.toFixed(2) + '" fill="' + c.color + '"/>';
+        y -= hgt;
+      });
+      // rounded top on the bar as a whole: clip the stack
+      var bh = base - y, rx = Math.min(4, bw / 2, bh);
+      var clip = bh > 0 ? 'M' + x + ' ' + base + 'V' + (y + rx) + 'Q' + x + ' ' + y + ' ' + (x + rx) + ' ' + y + 'H' + (x + bw - rx) + 'Q' + (x + bw) + ' ' + y + ' ' + (x + bw) + ' ' + (y + rx) + 'V' + base + 'Z' : '';
+      h += '<defs><clipPath id="bc' + i + '"><path d="' + clip + '"/></clipPath></defs>';
+      h += '<g class="bbar" data-i="' + i + '" clip-path="url(#bc' + i + ')">' + g + '</g>';
+      if(B[i].tick) h += '<text x="' + (i * col + col / 2).toFixed(2) + '" y="' + (H - 5) + '" fill="#8a93a0" font-size="9" letter-spacing="1" text-anchor="middle">' + esc(B[i].tick.toUpperCase()) + '</text>';
+      h += '<rect class="bcol" data-i="' + i + '" x="' + (i * col).toFixed(2) + '" y="0" width="' + col.toFixed(2) + '" height="' + H + '" fill="transparent"/>';
+    });
+    // average per bar: dashed silver line, labelled on the right
+    if(total > 0){
+      var ay = base - avg * unit;
+      h += '<line x1="0" y1="' + ay.toFixed(2) + '" x2="' + W + '" y2="' + ay.toFixed(2) + '" stroke="#d5dae2" stroke-width="1.2" stroke-dasharray="4 4" pointer-events="none"/>' +
+           '<text x="' + W + '" y="' + (ay - 5).toFixed(2) + '" fill="#d5dae2" font-size="9" letter-spacing="1" text-anchor="end" pointer-events="none">AVG ' + esc(fmt(avg).toUpperCase()) + '</text>';
+    }
+    var box = $('barsChart');
+    box.classList.remove('pick');
+    box.innerHTML = '<svg viewBox="0 -4 ' + W + ' ' + (H + 4) + '" role="img" aria-label="Practice time ' + bk.by + '">' + h + '</svg>';
+    function tipFor(i){
+      var d = data[i], parts = cats.filter(function(c){ return d.m[c.id] > 0; }).map(function(c){ return c.name + ' ' + fmt(d.m[c.id]); });
+      return esc(B[i].full) + ' · ' + esc(fmt(d.tot)) + (parts.length ? '<small>' + esc(parts.join(' · ')) + '</small>' : '');
+    }
+    var sel = -1;
+    function pick(i){
+      sel = sel === i ? -1 : i;
+      box.classList.toggle('pick', sel >= 0);
+      Array.prototype.forEach.call(box.querySelectorAll('.bbar'), function(e){ e.classList.toggle('sel', +e.getAttribute('data-i') === sel); });
+      $('barsTip').innerHTML = sel >= 0 ? tipFor(sel) : '<small>Tap a bar for its time</small>';
+    }
+    Array.prototype.forEach.call(box.querySelectorAll('.bcol'), function(e){ e.addEventListener('click', function(){ pick(+e.getAttribute('data-i')); }); });
+    $('barsTip').innerHTML = '<small>' + (total > 0 ? 'Tap a bar for its time' : '') + '</small>';
+    // legend: the categories in this period, colour beside the name, times in text colour
+    var tot = {}; data.forEach(function(d){ for(var k in d.m) tot[k] = (tot[k] || 0) + d.m[k]; });
+    $('barsLeg').innerHTML = cats.filter(function(c){ return tot[c.id] > 0; }).map(function(c){
+      return '<span style="--dc:' + c.color + '"><i></i>' + esc(c.name) + ' ' + esc(fmt(tot[c.id])) + '</span>'; }).join('');
+    $('bars').classList.add('show');
+  }
+  $('avgW').addEventListener('click', function(){ if(!editing && !expandedCat()) openBars(); });
+  // tap the lightbulb: one learning strategy to try
+  $('tipW').addEventListener('click', function(){
+    if(editing || expandedCat() || tourOn) return;
+    var tip = nextTip(), c = $('cele');
+    c.style.setProperty('--cc', '#d5dae2'); c.classList.add('tiponly');
+    $('celeK').textContent = 'Strategy to try';
+    $('celePlay').innerHTML = '';
+    $('celeTip').innerHTML = esc(tip[0]) + '<small>' + esc(tip[1]) + '</small>';
+    $('celeOk').textContent = 'Got it';
+    c.classList.add('show');
+  });
+  // tap the streak icon: the streak card, in silver
+  $('streakW').addEventListener('click', function(){
+    if(editing || expandedCat() || tourOn) return;
+    var st = calcStreak(), t0 = new Date(); t0.setHours(0, 0, 0, 0);
+    var today = store.log.some(function(e){ return e.t >= t0.getTime() && e.ms > 0; });
+    var c = $('cele'); c.style.setProperty('--cc', '#d5dae2'); c.classList.remove('tiponly');
+    $('celeK').textContent = 'Day streak';
+    $('celeT').textContent = st.n + (st.n === 1 ? ' day' : ' days');
+    $('celeS').textContent = today ? 'Practiced today · keep it going' : st.n ? 'Practice today to keep it going' : 'Practice today to start one';
+    $('celePlay').innerHTML = '';
+    $('celeTip').innerHTML = 'One rest day a week keeps the streak going.';
+    $('celeOk').textContent = 'OK';
+    c.classList.add('show');
+  });
+  $('barsOk').addEventListener('click', function(){ $('bars').classList.remove('show'); });
+  $('bars').addEventListener('click', function(e){ if(e.target === $('bars')) $('bars').classList.remove('show'); });
+
+  /* ---------- share: a picture of the main chart for the selected period, plus the latest recording of each thing practised ---------- */
+  function shareStamp(){ var d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+  function drawShareCard(){
+    var S = 3, Wc = 390, cats = store.cats, total = homeTotal, start = rangeStart();
+    var times = {}; cats.forEach(function(c){ times[c.id] = homeTimes[c.id] || 0; });
+    var rows = cats.length, Hc = 120 + 360 + 26 + rows * 50 + 70;
+    var cv = document.createElement('canvas'); cv.width = Wc * S; cv.height = Hc * S;
+    var x = cv.getContext('2d'); x.scale(S, S);
+    var FONT = '"Avenir Next","Helvetica Neue","SF Pro Display","Segoe UI",Roboto,Arial,sans-serif';
+    x.fillStyle = '#090b0e'; x.fillRect(0, 0, Wc, Hc);
+    function spaced(t, cx, y, ls, align){
+      var w = 0, ch = String(t).split(''); ch.forEach(function(c){ w += x.measureText(c).width + ls; }); w -= ls;
+      var px = align === 'left' ? cx : align === 'right' ? cx - w : cx - w / 2;
+      ch.forEach(function(c){ x.fillText(c, px, y); px += x.measureText(c).width + ls; });
+      return w;
+    }
+    // logo: TOAN TRACKER in silver, the O as a small pie of this period
+    x.textBaseline = 'alphabetic'; x.font = '400 25px ' + FONT;
+    var g = x.createLinearGradient(40, 0, 350, 0); g.addColorStop(0, '#7c8594'); g.addColorStop(.55, '#ffffff'); g.addColorStop(1, '#ffffff');
+    x.fillStyle = g;
+    // the O's slot is as wide as a real O; the pie is drawn in it
+    var logo = 'TOAN TRACKER', lw = 0, LS = 6; logo.split('').forEach(function(c){ lw += x.measureText(c).width + LS; }); lw -= LS;
+    var lx = (Wc - lw) / 2, oX = 0;
+    logo.split('').forEach(function(c, i){ if(i === 1) oX = lx + x.measureText(c).width / 2; else x.fillText(c, lx, 56); lx += x.measureText(c).width + LS; });
+    var oc = {x:oX, y:47, r:8.2};
+    if(total > 0){
+      var a0 = -Math.PI / 2;
+      cats.forEach(function(c){ var f = times[c.id] / total; if(!(f > 0)) return; x.beginPath(); x.arc(oc.x, oc.y, oc.r, a0 + .05, a0 + f * 2 * Math.PI - .05); x.strokeStyle = c.color; x.lineWidth = 3.2; x.stroke(); a0 += f * 2 * Math.PI; });
+    } else { x.beginPath(); x.arc(oc.x, oc.y, oc.r, 0, 2 * Math.PI); x.strokeStyle = '#aeb5c0'; x.lineWidth = .8; x.stroke(); }
+    // period
+    x.font = '500 11px ' + FONT; x.fillStyle = '#8a93a0';
+    spaced(rangeLabel().toUpperCase(), Wc / 2, 88, 2.4);
+    // pie: same proportions as the app (ring 50–86 of a 200 box, goal ring at 91.75)
+    var cx = Wc / 2, cy = 120 + 170, k = 1.62, RI = 50 * k, RO = 86 * k, RG = GOAL_R * k;
+    var tsum = 0; cats.forEach(function(c){ if(c.target > 0) tsum += c.target; });
+    if(tsum > 0){
+      x.beginPath(); x.arc(cx, cy, RG, 0, 2 * Math.PI); x.strokeStyle = '#242a33'; x.lineWidth = 4 * k; x.stroke();
+      var off = -Math.PI / 2, sc = tsum > 100 ? 100 / tsum : 1;
+      cats.forEach(function(c){ if(!(c.target > 0)) return; var l = c.target * sc / 100 * 2 * Math.PI, a0 = off + .012, a1 = off + l - .012, fd = goalFill(c);
+        x.lineWidth = 4 * k; x.strokeStyle = c.color;
+        x.globalAlpha = .25; x.beginPath(); x.arc(cx, cy, RG, a0, a1); x.stroke(); x.globalAlpha = 1;
+        if(fd > 0){ x.beginPath(); x.arc(cx, cy, RG, a0, a0 + (a1 - a0) * fd); x.stroke(); }
+        off += l; });
+    }
+    if(total > 0){
+      var aa = -Math.PI / 2, gapA = 2.2 / 68 / 2;
+      cats.forEach(function(c){
+        var f = times[c.id] / total; if(!(f > 0)) return;
+        var b = aa + f * 2 * Math.PI, s0 = f < 1 ? aa + gapA : aa, s1 = f < 1 ? b - gapA : b;
+        var p = hexToHsl(c.color), deep = hslToHex(p.h, Math.min(1, p.s * 1.05), p.l * 0.55);
+        var gr = x.createLinearGradient(cx + RO * Math.cos(aa), cy + RO * Math.sin(aa), cx + RO * Math.cos(b), cy + RO * Math.sin(b));
+        if(f >= 1) gr = x.createLinearGradient(cx - RO, cy, cx + RO, cy);
+        gr.addColorStop(0, deep); gr.addColorStop(1, c.color);
+        x.beginPath(); x.arc(cx, cy, RO, s0, s1); x.arc(cx, cy, RI, s1, s0, true); x.closePath();
+        x.fillStyle = gr; x.fill(); aa = b;
+      });
+    } else {
+      x.beginPath(); x.arc(cx, cy, RO, 0, 2 * Math.PI); x.arc(cx, cy, RI, 2 * Math.PI, 0, true); x.closePath();
+      x.fillStyle = 'rgba(0,0,0,.55)'; x.fill(); x.strokeStyle = '#aeb5c0'; x.lineWidth = 1.2;
+      x.beginPath(); x.arc(cx, cy, RO, 0, 2 * Math.PI); x.stroke(); x.beginPath(); x.arc(cx, cy, RI, 0, 2 * Math.PI); x.stroke();
+    }
+    if(store.dailyGoal > 0){
+      var gR = 44 * k, gf2 = Math.min(1, total / (store.dailyGoal * goalDays(store.range) * 60000));
+      x.beginPath(); x.arc(cx, cy, gR, 0, 2 * Math.PI); x.strokeStyle = '#242a33'; x.lineWidth = 5.5 * k; x.stroke();
+      if(gf2 > 0){ var pgr = x.createLinearGradient(cx - gR, cy - gR, cx + gR, cy + gR); pgr.addColorStop(0, '#7c8594'); pgr.addColorStop(.6, '#ffffff'); pgr.addColorStop(1, '#ffffff');
+        x.beginPath(); x.arc(cx, cy, gR, -Math.PI / 2, -Math.PI / 2 + gf2 * 2 * Math.PI); x.strokeStyle = pgr; x.lineCap = 'round'; x.stroke(); x.lineCap = 'butt'; }
+    }
+    x.fillStyle = '#eef1f5'; x.font = '300 ' + (store.dailyGoal > 0 ? 27 : 34) + 'px ' + FONT; x.textAlign = 'center'; x.fillText(fmt(total).toUpperCase(), cx, cy + 8);
+    x.fillStyle = '#8a93a0'; x.font = '500 9px ' + FONT; x.textAlign = 'left'; spaced(RANGE_WORD[store.range].toUpperCase(), cx, cy + 28, 2.2);
+    // corner widgets, read from the screen
+    function corner(wid, left, ytop, valueFirst){
+      var w = $(wid), kt = (w && w.querySelector('.ck') ? w.querySelector('.ck').textContent : '').replace('›', '').trim().toUpperCase(), vt = (w && w.querySelector('.cv') ? w.querySelector('.cv').textContent : '').toUpperCase();
+      var ax = left ? 14 : Wc - 14, al = left ? 'left' : 'right';
+      x.font = '500 8.5px ' + FONT; x.fillStyle = '#8a93a0';
+      var ky = valueFirst ? ytop + 30 : ytop, vy = valueFirst ? ytop + 16 : ytop + 20;
+      spaced(kt, ax, ky, 1.6, al);
+      x.font = '400 16px ' + FONT; x.fillStyle = '#eef1f5'; spaced(vt, ax, vy, .8, al);
+    }
+    corner('streakW', true, 432, true); corner('avgW', false, 432, true);
+    // category rows, as on the main screen
+    var ry = 120 + 360 + 26;
+    cats.forEach(function(c){
+      var t = times[c.id], pct = total > 0 ? Math.round(t / total * 100) : 0, rx0 = 20, rw = Wc - 40, rh = 40, rr = 20;
+      x.beginPath(); x.moveTo(rx0 + rr, ry); x.arcTo(rx0 + rw, ry, rx0 + rw, ry + rh, rr); x.arcTo(rx0 + rw, ry + rh, rx0, ry + rh, rr); x.arcTo(rx0, ry + rh, rx0, ry, rr); x.arcTo(rx0, ry, rx0 + rw, ry, rr); x.closePath();
+      x.globalAlpha = .08; x.fillStyle = c.color; x.fill(); x.globalAlpha = 1; x.strokeStyle = c.color; x.lineWidth = 2; x.stroke();
+      x.fillStyle = '#eef1f5'; x.font = '500 14px ' + FONT; spaced(c.name.toUpperCase(), rx0 + 14, ry + 25, .9, 'left');
+      x.font = '400 13px ' + FONT; spaced(fmt(t).toUpperCase(), rx0 + rw - 14, ry + 25, .3, 'right');
+      ry += 50;
+    });
+    x.fillStyle = '#8a93a0'; x.font = '500 9px ' + FONT; spaced('PLAY IT CLEAN. THEN A LITTLE FASTER.', Wc / 2, Hc - 30, 2.2);
+    return cv;
+  }
+  var EXT = {'audio/mp4':'m4a', 'audio/aac':'aac', 'audio/mpeg':'mp3', 'audio/webm':'webm', 'audio/ogg':'ogg', 'audio/wav':'wav'};
+  function recFileName(c, sub, r){
+    var d = new Date(r.t), base = c.name + (sub ? ' - ' + sub.name : '') + ' - ' + r.bpm + ' BPM - ' + MON[d.getMonth()] + ' ' + d.getDate();
+    var mime = String(r.mime || (r.blob && r.blob.type) || 'audio/mp4').split(';')[0];
+    return base.replace(/[\\/:*?"<>|]/g, '') + '.' + (EXT[mime] || 'm4a');
+  }
+  // gather everything first; the Share button then hands the files to the share sheet in one tap
+  function prepareShare(){
+    var start = rangeStart(), cv = drawShareCard();
+    var cardP = new Promise(function(res){ cv.toBlob(function(b){ res(b); }, 'image/png'); });
+    var recP = allRecs().then(function(list){
+      var latest = {};
+      list.forEach(function(r){ if(r && r.blob && r.t >= start && (!latest[r.key] || r.t > latest[r.key].t)) latest[r.key] = r; });
+      var out = [];
+      store.cats.forEach(function(c){
+        [''].concat(subsOf(c).map(function(x){ return x.id; })).forEach(function(sid){
+          var r = latest[c.id + '|' + sid]; if(!r) return;
+          var sub = sid ? subById(c, sid) : null;
+          out.push({r:r, c:c, sub:sub, label:c.name + (sub ? ' · ' + sub.name : '') + ' · ' + r.bpm + ' BPM'});
+        });
+      });
+      return out;
+    });
+    Promise.all([cardP, recP]).then(function(v){
+      var blob = v[0], recs = v[1]; if(!blob) return;
+      var period = {day:'Today', week:'This week', month:'This month', year:'This year', all:'All time'}[store.range];
+      var files = [];
+      try{ files.push(new File([blob], 'TOAN ' + period + ' ' + shareStamp() + '.png', {type:'image/png'})); }catch(e){}
+      recs.forEach(function(o){ try{ files.push(new File([o.r.blob], recFileName(o.c, o.sub, o.r), {type:String(o.r.mime || o.r.blob.type || 'audio/mp4').split(';')[0]})); }catch(e){} });
+      var url = URL.createObjectURL(blob);
+      var can = function(f){ try{ return !!(navigator.canShare && navigator.canShare({files:f})); }catch(e){ return false; } };
+      var all = files, pic = files.slice(0, 1), mode = can(all) ? 'all' : can(pic) ? 'pic' : 'save';
+      var top = document.createElement('div');
+      top.innerHTML = '<img class="shprev" alt="Share picture">' +
+        '<div class="shrecs">' + (recs.length ? recs.length + (recs.length === 1 ? ' recording' : ' recordings') + ' · the latest of each:<br>' + recs.map(function(o){ return esc(o.label); }).join('<br>') : 'No recordings in this period · the picture only') +
+        (mode === 'pic' && recs.length ? '<br>This device can only share the picture, so the recordings stay out.' : mode === 'save' ? '<br>No share sheet here · the files will download instead.' : '') + '</div>';
+      top.querySelector('img').src = url;
+      dialog({title:'Share ' + period.toLowerCase(), text:'', top:top, ok:mode === 'save' ? 'Download' : 'Share', onOk:function(){
+        var done = function(){ setTimeout(function(){ URL.revokeObjectURL(url); }, 4000); };
+        if(mode !== 'save') navigator.share({files:mode === 'all' ? all : pic, title:'TOAN TRACKER · ' + period}).catch(function(){}).then(done);
+        else {
+          // no share sheet (most desktop browsers): download the files instead
+          all.forEach(function(f, i){ setTimeout(function(){ var a = document.createElement('a'); a.href = URL.createObjectURL(f); a.download = f.name; document.body.appendChild(a); a.click(); setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 2000); }, i * 300); });
+          done();
+        }
+      }, onCancel:function(){ URL.revokeObjectURL(url); }});
+    });
+  }
+
   /* ---------- tour ---------- */
   var tourOn = false, tourSteps = null, tourIdx = 0, tourName = '';
   function firstVisible(sel){
@@ -3302,45 +3933,23 @@
   }
   var TOURS = {
     home: [
-      {t:'TOAN TRACKER · practice log and metronome'},
-      {sel:'#rseg', t:'Time period'},
-      {sel:'#donut', shape:'pie', t:'Practice time by category'},
-      {sel:'#donut', shape:'ring', t:'Goal ring · set it with Edit below'},
-      {sel:'#sinceW', t:'Time since last practice'},
-      {sel:'#goalW', t:'Daily practice goal · tap to set'},
-      {sel:'#streakW', t:'Day streak · one rest day a week is fine'},
-      {sel:'#avgW', t:'Average practice time'},
-      {sel:'#legend .pill', t:'Categories · tap to open · hold to find its slice, drag to reorder'},
-      {sel:'#legend .editbtn', t:'Edit · add, rename or delete categories, set goals, adjust time'},
-      {sel:'#menuBtn', t:'Menu · time units, tour, backup'}
+      {sel:'#donut', shape:'pie', t:'Practice pie · time by category'},
+      {sel:'#donut', shape:'ring', t:'Goal ring · your goal % for each category'},
+      {sel:'#legend .pill', t:'Tap a row to open it · hold to highlight its slice'},
+      {demo:'move', rows:'#legend .catblk > .row.pill', t:'Hold, then drag to reorder'},
+      {demo:'merge', rows:'#legend .catblk > .row.pill', t:'Hold over another row to merge'},
+      {sel:'#legend .editbtn', t:'Edit · add, rename, set goals'}
     ],
     cat: [
-      {sel:'#catBack', t:'Back to all categories'},
-      {sel:'#donut', shape:'pie', t:'Subcategories · tap to practice'},
-      {sel:'#donut', shape:'arc', t:'Share of all practice'},
-      {sel:'#legend .pill', t:'Hold a row or a section to see which is which · drag rows to reorder'},
-      {sel:'#legend .editbtn', t:'Edit · rename, add, set goals, adjust time'}
+      {sel:'#donut', shape:'pie', t:'Tap a slice to practice it'},
+      {demo:'move', rows:'#legend .row.pill[data-lk]:not([data-lk=""])', t:'Hold, then drag to reorder'},
+      {demo:'merge', rows:'#legend .row.pill[data-lk]:not([data-lk=""])', t:'Hold over another row to merge'},
+      {sel:'#legend .editbtn', t:'Edit · add subcategories, set goal BPM'}
     ],
     practice: [
-      {sel:'#back', t:'Back to practice log'},
-      {sel:'.timer', t:'Countdown timer'},
-      {sel:'#chips', t:'Preset time buttons'},
-      {sel:'#beats', t:'Beats · tap for light accent, accent, or mute'},
-      {sel:'#tsChips', t:'Time signature'},
-      {sel:'#seg', t:'Clicks per beat'},
-      {sel:'.bpmbox', t:'BPM'},
-      {sel:'#lastW', t:'Last BPM'},
-      {sel:'#goalTempo', t:'Goal BPM · tap to set'},
-      {sel:'#gline', t:'Your level'},
-      {sel:'#bpmSlider', t:'BPM slider'},
-      {sel:'#vol', t:'Volume'},
-      {sel:'#grader', t:'Guided · grade each run, the BPM follows · find your level here'},
-      {sel:'#gaps', t:'Silent mode · keep time on your own'},
-      {sel:'#trainer', t:'Speed mode'},
-      {sel:'#tmr', t:'Timer only · no click'},
-      {sel:'#tapBtn', t:'Tap to set the BPM'},
-      {sel:'#goBtn', t:'Start / pause · one-bar count-in first'},
-      {sel:'#pMenuBtn', t:'Recordings and more'}
+      {sel:'#modes', open:'grader', t:'Modes · Guided mode grades each run, the BPM follows'},
+      {sel:'#graderSet .trl', open:'grader', t:'Find your BPM · short runs find your Clean BPM'},
+      {sel:'#goBtn', t:'Start · count-in, then the click'}
     ]
   };
   function startTour(name){
@@ -3349,29 +3958,159 @@
     $('tour').classList.add('show');
     showTourStep();
   }
+  // a tour step on a dropdown opens it, so the features it names are on screen
+  function tourOpen(k){
+    if(typeof optOpen === 'undefined' || !inPractice) return;
+    optOpen = {grader:false, gaps:false, tmr:false, cin:false};
+    if(k && k !== 'tr') optOpen[k] = true;
+    modesOpen = !!k; renderModes();
+    Array.prototype.forEach.call(document.querySelectorAll('.card.tpeek'), function(e){ e.classList.remove('tpeek'); });
+    var card = k && $({tr:'trainer'}[k] || k); if(card) card.classList.add('tpeek');
+    trOpen = k === 'tr';
+    renderOpts(); renderTrainer();
+  }
   function endTour(){
+    demoStop(); tourOpen(null);
     tourOn = false;
     $('tour').classList.remove('show');
     store.tour[tourName] = 1; save();
     if(tourName === 'home') window.scrollTo(0, 0);
   }
   function showTourStep(){
+    demoStop();
     var st = tourSteps[tourIdx];
     if(!st){ endTour(); return; }
-    var el = st.sel ? firstVisible(st.sel) : null;
-    if(st.sel && !el){ tourIdx++; showTourStep(); return; } // feature not on screen right now
+    tourOpen(st.open || null);
+    var el = st.sel ? firstVisible(st.sel) : st.demo ? demoBox(st) : null;
+    if((st.sel || st.demo) && !el){ tourIdx++; showTourStep(); return; } // feature not on screen right now
     var acc = '#8a93a0'; // neutral grey outline and leader, to sit with the span-button colours
     $('tour').style.setProperty('--tc', acc);
     var pill = $('tourPill');
     $('tourText').textContent = st.t;
-    var n = tourSteps.filter(function(x){ return !x.sel || firstVisible(x.sel); }).length;
-    var pos = tourSteps.slice(0, tourIdx + 1).filter(function(x){ return !x.sel || firstVisible(x.sel); }).length;
+    function shown(x){ return x.demo ? !!demoRows(x) : x.open ? !!document.querySelector(x.sel) : !x.sel || firstVisible(x.sel); }
+    var n = tourSteps.filter(shown).length;
+    var pos = tourSteps.slice(0, tourIdx + 1).filter(shown).length;
     $('tourN').textContent = pos + ' / ' + n;
     if(el){
       var r0 = el.getBoundingClientRect();
       if(r0.top < 70 || r0.bottom > window.innerHeight - 70) el.scrollIntoView({block:'center'});
     }
-    requestAnimationFrame(function(){ placeTour(el, acc, st); });
+    requestAnimationFrame(function(){ placeTour(st.demo ? demoBox(st) : el, acc, st); if(st.demo) demoStart(st); });
+  }
+  /* ---------- tour demo: drag to reorder, and merge ---------- */
+  var demo = null;
+  function demoRows(st){
+    var a = Array.prototype.filter.call(document.querySelectorAll(st.rows), function(e){ var r = e.getBoundingClientRect(); return r.width > 0 && r.height > 0; });
+    return a.length >= 2 ? a.slice(0, 2) : null;
+  }
+  // the two rows as one box, for the lit-up hole in the dimmed screen
+  function demoBox(st){
+    var rs = demoRows(st); if(!rs) return null;
+    return {getBoundingClientRect:function(){
+      var a = rs[0].getBoundingClientRect(), b = rs[1].getBoundingClientRect();
+      return {left:Math.min(a.left, b.left), top:Math.min(a.top, b.top), right:Math.max(a.right, b.right), bottom:Math.max(a.bottom, b.bottom),
+              width:Math.max(a.right, b.right) - Math.min(a.left, b.left), height:Math.max(a.bottom, b.bottom) - Math.min(a.top, b.top)};
+    }, scrollIntoView:function(o){ rs[0].scrollIntoView(o); }, demo:true};
+  }
+  function demoStop(){
+    if(!demo) return;
+    demo.timers.forEach(clearTimeout);
+    demo.real.forEach(function(e){ e.style.visibility = ''; });
+    demo.box.remove();
+    demo = null;
+  }
+  function demoStart(st){
+    demoStop();
+    var real = demoRows(st); if(!real) return;
+    var box = document.createElement('div'); box.id = 'tourDemo';
+    $('tour').appendChild(box);
+    var d = demo = {timers:[], real:real, box:box};
+    var ra = real[0].getBoundingClientRect(), rb = real[1].getBoundingClientRect(), step = rb.top - ra.top;
+    // copies of the real rows sit exactly over them; the real rows hide underneath
+    var rows = real.map(function(e, k){
+      var c = e.cloneNode(true), r = k ? rb : ra;
+      c.removeAttribute('data-lk'); c.classList.remove('mhit', 'reo-lift', 'reo-liftv', 'reo-merge', 'reo-into');
+      c.style.setProperty('--pc', getComputedStyle(e).getPropertyValue('--pc'));
+      c.style.left = r.left + 'px'; c.style.top = r.top + 'px'; c.style.width = r.width + 'px'; c.style.height = r.height + 'px';
+      c.style.boxSizing = 'border-box';
+      box.appendChild(c); e.style.visibility = 'hidden';
+      return c;
+    });
+    var A = rows[0], B = rows[1];
+    // the finger: one beat dot; above it, three small beat dots count the hold
+    var f = document.createElement('div'); f.className = 'tdf';
+    f.innerHTML = '<div class="tdh"><span class="beat"></span><span class="beat"></span><span class="beat"></span></div><div class="beat"></div><div class="tdl"></div>';
+    box.appendChild(f);
+    var fx = ra.left + ra.width * 0.46, fy = ra.top + ra.height / 2;
+    f.style.left = fx + 'px'; f.style.top = fy + 'px';
+    var fdot = f.children[1], holds = f.children[0], hdots = holds.children, lab = f.children[2];
+    var tA = A.querySelector('.time'), tB = B.querySelector('.time'), tBtext = tB ? tB.textContent : '';
+    function at(ms, fn){ d.timers.push(setTimeout(function(){ if(demo === d) fn(); }, ms)); }
+    function label(t){ lab.textContent = t; }
+    function hold(t0){
+      at(t0, function(){ label('Hold'); holds.classList.add('show'); Array.prototype.forEach.call(hdots, function(x){ x.classList.remove('on'); }); });
+      [0, 1, 2].forEach(function(k){ at(t0 + 180 + k * 230, function(){ hdots[k].classList.add('on'); }); });
+      return t0 + 180 + 3 * 230;
+    }
+    function trail(t0, len, dy){
+      for(var k = 1; k <= 5; k++) (function(k){
+        at(t0 + len * k / 6, function(){
+          var tr = document.createElement('div'); tr.className = 'tdt';
+          tr.style.left = fx + 'px'; tr.style.top = (fy + dy * k / 6) + 'px'; box.appendChild(tr);
+          requestAnimationFrame(function(){ tr.style.opacity = '0'; tr.style.transform = 'scale(.4)'; });
+          d.timers.push(setTimeout(function(){ tr.remove(); }, 700));
+        });
+      })(k);
+    }
+    function reset(){
+      [A, B].forEach(function(r){ r.style.transition = 'none'; r.style.transform = ''; r.style.opacity = ''; r.classList.remove('dlift', 'dmerge'); });
+      if(tB) tB.textContent = tBtext;
+      f.style.transition = 'none'; f.style.transform = ''; f.classList.remove('show');
+      fdot.classList.remove('on'); holds.classList.remove('show'); label('');
+      void A.offsetWidth;
+      [A, B, f].forEach(function(r){ r.style.transition = ''; });
+    }
+    function run(){
+      reset();
+      var t = 350;
+      at(t, function(){ f.classList.add('show'); fdot.classList.add('on'); label('Press'); });
+      t = hold(t + 450);
+      at(t, function(){ holds.classList.remove('show'); A.classList.add('dlift'); A.style.transform = 'scale(1.03)'; label('Lifted'); });
+      t += 450;
+      if(st.demo === 'move'){
+        // drag past the other row: it moves aside, the rows swap
+        at(t, function(){ label('Drag'); A.style.transform = 'translateY(' + step + 'px) scale(1.03)'; f.style.transform = 'translateY(' + step + 'px)'; });
+        trail(t, 500, step);
+        at(t + 250, function(){ B.style.transform = 'translateY(' + (-step) + 'px)'; });
+        t += 800;
+        at(t, function(){ label('Let go'); fdot.classList.remove('on'); A.classList.remove('dlift'); A.style.transform = 'translateY(' + step + 'px)'; });
+        at(t + 350, function(){ f.classList.remove('show'); label('Reordered'); });
+        t += 2000;
+      } else {
+        // drag onto the middle of the other row and hold there: it lights up, then the two become one
+        at(t, function(){ label('Drag'); A.style.transform = 'translateY(' + step + 'px) scale(1.03)'; f.style.transform = 'translateY(' + step + 'px)'; });
+        trail(t, 500, step);
+        t = hold(t + 650);
+        at(t, function(){ holds.classList.remove('show'); B.classList.add('dmerge'); B.style.transform = 'scale(1.04)'; A.style.transform = 'translateY(' + step + 'px) scale(.94)'; A.style.opacity = '.5'; });
+        t += 550;
+        at(t, function(){ label('Let go'); fdot.classList.remove('on'); A.style.opacity = '0'; A.style.transform = 'translateY(' + step + 'px) scale(.8)'; });
+        at(t + 400, function(){
+          f.classList.remove('show'); label('Merged'); B.classList.remove('dmerge'); B.style.transform = '';
+          var ta = parseTimeText(tA && tA.textContent), tb = parseTimeText(tBtext);
+          if(tB && ta !== null && tb !== null) tB.textContent = fmt(ta + tb);
+        });
+        t += 2200;
+      }
+      at(t, run);
+    }
+    run();
+  }
+  // reads a row's time back, e.g. "1H 20M" or "25M"; null if it can't
+  function parseTimeText(x){
+    if(!x) return null;
+    var m = String(x).toLowerCase().match(/^\s*(?:(\d+)\s*h)?\s*(?:(\d+)\s*m)?\s*$/);
+    if(!m || (!m[1] && !m[2])) return null;
+    return ((+m[1] || 0) * 60 + (+m[2] || 0)) * 60000;
   }
   // highlight: a box (or circle, for the pie) that encloses only the feature; where that is not possible
   // (it would take in a neighbouring feature, or the feature is a thin ring), just the leader, no box
@@ -3410,7 +4149,7 @@
     } else {
       var box = {l:r.left - PAD, t:r.top - PAD, r:r.right + PAD, b:r.bottom + PAD};
       // would the box take in another feature from this tour?
-      var clash = tourSteps.some(function(o){
+      var clash = !el.demo && tourSteps.some(function(o){
         if(o === st || !o.sel) return false;
         var e2 = firstVisible(o.sel); if(!e2 || e2 === el || e2.contains(el) || el.contains(e2)) return false;
         if(o.sel === '#donut'){ // round: test against the circle out to the goal ring
