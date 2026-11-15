@@ -121,7 +121,7 @@
   .corner.icn .cv,.corner.icn .ck{display:none}
   .corner.icn .cvr .ico{width:28px;height:28px;color:#aeb5c0;transition:color .15s ease,transform .15s ease}
   .corner.icn:active .ico{color:#fff;transform:scale(.92)}
-  #goalW.hit .ico{color:#fff}
+  #goalW.hit .ico,#gtW.hit .ico{color:#fff}
   .center .small{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:4px}
   .hint{text-align:center;color:var(--muted);font-size:14px;margin:6px 0 4px}
   .ringkey{text-align:center;color:var(--muted);font-size:12px;opacity:.8;margin:0 0 4px}
@@ -367,6 +367,30 @@
   .go-btn:active{transform:scale(.985)}
   .go-btn.running{background:var(--surface2);color:var(--text);border:1px solid var(--line)}
 
+  /* first-launch setup: a few questions that get the app ready, then the tour */
+  .setup{display:none;position:fixed;inset:0;z-index:170;background:var(--bg);flex-direction:column;padding:calc(env(safe-area-inset-top) + 18px) 24px calc(env(safe-area-inset-bottom) + 20px);max-width:480px;margin:0 auto}
+  .setup.show{display:flex}
+  .suskip{align-self:flex-end;padding:6px 4px;font-size:11px;letter-spacing:.16em;color:var(--muted)}
+  .sumain{flex:1;display:flex;flex-direction:column;justify-content:center;min-height:0}
+  .suk{font-size:10.5px;letter-spacing:.24em;color:var(--muted);margin-bottom:10px}
+  .sut{margin:0 0 14px;font-family:var(--disp);font-weight:300;font-size:30px;letter-spacing:.14em;line-height:1.15;background:linear-gradient(120deg,#7c8594 0%,#ffffff 55%,#ffffff 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .sux{font-size:13px;letter-spacing:.06em;line-height:1.55;color:var(--text);margin-bottom:22px}
+  .such{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .such.one{grid-template-columns:1fr}
+  .such button{height:48px;border-radius:24px;border:1.5px solid var(--line);font-size:13px;letter-spacing:.1em;color:var(--muted);background:transparent}
+  .such button.on{border-color:#d5dae2;background:color-mix(in srgb,#d5dae2 12%,transparent);color:#fff}
+  .such input{grid-column:1/-1;height:48px;border-radius:24px;border:1.5px solid var(--line);background:transparent;padding:0 18px;font-size:13px;letter-spacing:.08em}
+  .sun{margin-top:16px;font-size:11px;letter-spacing:.1em;line-height:1.5;color:var(--muted)}
+  .sufoot{display:flex;flex-direction:column;gap:16px}
+  .sudots{display:flex;justify-content:center;gap:12px}
+  .sudots i{width:10px;height:10px;border-radius:50%;border:1.5px solid #4a5463;background:#2a303a}
+  .sudots i.on{background:radial-gradient(circle at 35% 30%,#f4f6f9,#8a93a0);border-color:#d5dae2;transform:scale(1.2)}
+  .subtns{display:flex;gap:10px}
+  .suback{width:96px;height:52px;border-radius:26px;border:1px solid var(--line);font-size:13px;letter-spacing:.1em;color:var(--muted)}
+  .sunext{flex:1;height:52px;border-radius:26px;background:linear-gradient(120deg,#7c8594 0%,#ffffff 60%,#ffffff 100%);color:#0b0d10;font-weight:700;font-size:15px;letter-spacing:.08em}
+  /* tour pills: the feature's name, then what it does */
+  #tourText b{display:block;font-weight:600;letter-spacing:.16em;font-size:13px;margin-bottom:3px}
+  #tourText span{display:block;font-size:12px;letter-spacing:.06em;color:var(--muted)}
   /* first-open tour: dimmed screen, the feature outlined, a leader to a text pill; tap to continue */
   .tour{display:none;position:fixed;inset:0;z-index:150;cursor:pointer;-webkit-tap-highlight-color:transparent}
   .tour.show{display:block}
@@ -413,6 +437,15 @@
   .bleg i{width:9px;height:9px;border-radius:50%;background:var(--dc)}
   .bbox .cok{margin-top:4px;background:linear-gradient(120deg,#7c8594 0%,#ffffff 60%,#ffffff 100%)}
   #avgW{cursor:pointer}
+  /* strings card */
+  .sbar{height:10px;border-radius:5px;background:#242a33;overflow:hidden;margin:16px 6px 10px}
+  .sbar i{display:block;height:100%;width:0;border-radius:5px;background:linear-gradient(90deg,#7c8594,#ffffff);transition:width .4s ease}
+  .sdue{display:flex;align-items:center;justify-content:center;gap:12px;font-size:11px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase}
+  .sdue .sb{width:30px;height:30px;border-radius:50%;border:1px solid var(--line);color:var(--text);font-size:15px}
+  .snote{display:block;margin:14px auto 4px;padding:6px 14px;border-radius:999px;border:1px dashed var(--line);font-size:11px;letter-spacing:.12em;color:var(--text)}
+  .snote.empty{color:var(--muted)}
+  .sclose{display:block;width:100%;margin-top:8px;height:40px;border-radius:20px;color:var(--muted);font-size:13px;letter-spacing:.1em}
+  #strPop .cok{margin-top:14px;background:linear-gradient(120deg,#7c8594 0%,#ffffff 60%,#ffffff 100%)}
   /* share preview */
   .shprev{display:block;width:100%;max-height:46vh;object-fit:contain;border-radius:12px;border:1px solid var(--line);margin:4px 0 10px;background:#090b0e}
   .shrecs{font-size:11px;letter-spacing:.08em;line-height:1.5;color:var(--muted);text-align:left;margin-bottom:6px}
@@ -551,7 +584,15 @@
   .reo-into{opacity:.5}
   .row.pill .time{font-size:14px}
   .row.pill .pct{font-size:13px;color:color-mix(in srgb,var(--text) 70%,transparent)}
-  #legend .row.pill:not(.mhit) .pct{display:none}
+  #legend .row.pill:not(.mhit) .pct,#tourDemo .row.pill .pct{display:none}
+  /* rows fill like a bar graph as each category nears its share of the practice duration; --fill animates smoothly */
+  @property --fill{syntax:'<percentage>';inherits:false;initial-value:0%}
+  #legend .row.pill.gfill,#tourDemo .row.pill.gfill{background:linear-gradient(90deg,var(--deep) 0,var(--pc) var(--fill),color-mix(in srgb,var(--pc) 8%,transparent) var(--fill),color-mix(in srgb,var(--pc) 8%,transparent) 100%)}
+  .row.pill.gfill .name b,.row.pill.gfill .time,.row.pill.gfill .chev{text-shadow:0 1px 3px rgba(0,0,0,.8),0 0 1px rgba(0,0,0,.6)}
+  #legend .row.pill[data-ec]{touch-action:pan-y}
+  #legend .row.pill.gfill,#tourDemo .row.pill.gfill{transition:--fill 1.5s linear,opacity .18s ease}
+  .addsub.addbtn{font-size:20px;line-height:1;padding:6px 14px;letter-spacing:0}
+  .enote{font-size:10.5px;letter-spacing:.08em;color:var(--muted);text-align:right;padding:0 6px 6px;text-transform:uppercase}
   .row.pill .rt{padding-left:0}
   .row.pill{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
   .reo-sib{transition:transform .18s ease}
@@ -605,10 +646,10 @@
     <div class="hsp" style="--min:22px"></div>
     <div class="chart">
       <svg id="donut" viewBox="0 0 200 200" role="img" aria-label="Practice time by category"></svg>
-      <button type="button" class="corner cl icn" id="goalW" aria-label="Daily goal (tap to see or set it)"><span class="cvr"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/></svg></span></button>
-      <button type="button" class="corner cr icn" id="tipW" aria-label="A learning strategy to try"><span class="cvr"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg></span></button>
+      <button type="button" class="corner cl icn" id="goalW" aria-label="Practice duration (tap to see or set it)"><span class="cvr"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/></svg></span></button>
+      <button type="button" class="corner cr icn" id="gtW" aria-label="Strings (tap to see hours played on them)"><span class="cvr"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="7.5"/><path d="M8 2.5v19M12 2.5v19M16 2.5v19"/></svg></span></button>
       <button type="button" class="corner cl cb icn" id="streakW" aria-label="Day streak (tap to see it)"><span class="cvr"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M3 10h18M8 3v4M16 3v4"/><text id="streakNum" x="12" y="18.6" text-anchor="middle" font-size="8" font-weight="600" fill="currentColor" stroke="none" font-family="-apple-system,'Helvetica Neue',Arial,sans-serif">0</text></svg><span class="cv" id="streakV">0 days</span></span><span class="ck">Day streak</span></button>
-      <button class="corner cr cb icn" id="avgW" aria-label="Average practice per day (tap for the bar graph)"><span class="cvr"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 20V12M12 20V5M19 20v-9"/><path d="M3 20h18"/></svg><span class="cv" id="avgV">—</span></span><span class="ck" id="avgK">Average / day ›</span></button>
+      <button class="corner cr cb icn" id="avgW" aria-label="Average practice per day (tap for the bar graph)"><span class="cvr"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 20v-7M9.5 20V6M14.5 20v-10M19.5 20v-4"/><path d="M2.5 20h19"/></svg><span class="cv" id="avgV">—</span></span><span class="ck" id="avgK">Average / day ›</span></button>
       <div class="center">
         <div class="big" id="total">0m</div>
         <div class="small" id="totalLbl">this week</div>
@@ -689,7 +730,7 @@
                 <div class="mini"><button class="sb" id="grUpDn" aria-label="Less">&minus;</button><div class="val" id="grUpV"></div><button class="sb" id="grUpUp" aria-label="More">+</button></div></div>
               <div class="trl"><span>After rough</span>
                 <div class="mini"><button class="sb" id="grDownDn" aria-label="Less">&minus;</button><div class="val" id="grDownV"></div><button class="sb" id="grDownUp" aria-label="More">+</button></div></div>
-              <div class="optnote">Rate each session when it ends. The BPM goes up, stays, or comes down. Find your BPM: 30-second runs from 60 BPM until we find your edge, about 3 minutes. Recordings keep your starred takes plus the latest 10.</div>
+
             </div>
             <div class="optnote" id="graderOff">Turn on to grade each run and let the BPM follow.</div>
           </div>
@@ -797,9 +838,11 @@
   </section>
 </div>
 
+<div class="setup" id="setup" role="dialog" aria-modal="true" aria-labelledby="suT"><button type="button" class="suskip" id="suSkip">Skip setup</button><div class="sumain"><div class="suk" id="suK"></div><h2 class="sut" id="suT"></h2><div class="sux" id="suX"></div><div class="such" id="suCh"></div><div class="sun" id="suN"></div></div><div class="sufoot"><div class="sudots" id="suDots"></div><div class="subtns"><button type="button" class="suback" id="suBack">Back</button><button type="button" class="sunext" id="suNext">Next</button></div></div></div>
 <div class="tour" id="tour" role="dialog" aria-modal="true" aria-live="polite"><svg id="tourSvg"></svg><div class="tourpill" id="tourPill"><div id="tourText"></div><div class="tourn" id="tourN"></div></div></div>
 <div class="cele" id="cele" role="dialog" aria-modal="true"><div class="cbox"><div class="ck" id="celeK"></div><div class="cbig" id="celeT"></div><div class="csub" id="celeS"></div><div class="ctip" id="celeTip"></div><div class="cplay" id="celePlay"></div><button class="cok" id="celeOk">Nice</button></div></div>
 <div class="bars" id="bars" role="dialog" aria-modal="true" aria-labelledby="barsK"><div class="bbox"><div class="bk" id="barsK"></div><div class="bt" id="barsT"></div><div class="bs" id="barsS"></div><div class="bchart" id="barsChart"></div><div class="btip" id="barsTip"></div><div class="bleg" id="barsLeg"></div><button class="cok" id="barsOk">Close</button></div></div>
+<div class="bars" id="strPop" role="dialog" aria-modal="true" aria-labelledby="strK"><div class="bbox"><div class="bk" id="strK">Strings</div><div class="bt" id="strHrs">0m</div><div class="bs" id="strSub">played on these strings</div><div class="sbar"><i id="strFill"></i></div><div class="sdue"><button type="button" class="sb" id="strDn" aria-label="Remind sooner">&minus;</button><span id="strDue">Change around 30 hours</span><button type="button" class="sb" id="strUp" aria-label="Remind later">+</button></div><button type="button" class="snote" id="strNote">Add string type</button><button class="cok" id="strChanged">Changed strings</button><button type="button" class="sclose" id="strClose">Close</button></div></div>
 <div class="modal" id="modal" role="dialog" aria-modal="true">
   <div class="mbox">
     <div class="mt" id="mTitle"></div>
@@ -829,8 +872,8 @@
   var KEY = 'woodshed.v1';
   // TEST BUILDS: every new iteration opens like a first launch. When BUILD changes, saved data from the
   // previous iteration is cleared once, then saving works normally. Set RESET_ON_NEW_BUILD = false before release.
-  var BUILD = '2026-11-07-n';
-  var RESET_ON_NEW_BUILD = true; // ON for the 2026-11-07 fresh-start test builds: opens like a first launch. Turn OFF when testing is done.
+  var BUILD = '2026-11-14-e';
+  var RESET_ON_NEW_BUILD = true; // ON for the fresh-start test builds: opens like a first launch. Turn OFF when testing is done.
   var UNITS = {
     min:{n:'Minutes', s:'min', ms:6e4},
     hr: {n:'Hours',   s:'hr',  ms:36e5},
@@ -909,6 +952,7 @@
         out.cin = Object.assign({}, d.cin, s.cin || {}); out.cin.bars = clamp(Math.round(+out.cin.bars) || 1, 1, 4);
         if(['day','week','month','year','all'].indexOf(out.range) < 0) out.range = 'week';
         if(!out.tour || typeof out.tour !== 'object') out.tour = {};
+        if(out.setupDone === undefined && out.log.length) out.setupDone = true;
         if(!(out.dailyGoal > 0)) delete out.dailyGoal;
         if(out.unit !== 'auto' && !UNITS[out.unit]) out.unit = 'auto';
         // goals can never total more than 100%
@@ -1115,7 +1159,7 @@
   function reduceMotion(){ try{ return window.matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(e){ return false; } }
   function enterFocus(id){
     if(editing || chartBusy) return;
-    expandedId = id; renderHome(); spinLogo();
+    expandedId = id; inlineEdit = null; renderHome(); spinLogo();
     if(!store.tour.cat) setTimeout(function(){ if(expandedCat() && !inPractice) startTour('cat'); }, 650);
   }
   // back to the whole pie: the pie grows back, the pulled-out slice settles in
@@ -1353,7 +1397,8 @@
   }
   function renderCorners(ex){
     var hide = !!ex || editing;
-    ['goalW', 'tipW', 'streakW', 'avgW'].forEach(function(id){ $(id).classList.toggle('off', hide); });
+    ['goalW', 'gtW', 'streakW', 'avgW'].forEach(function(id){ $(id).classList.toggle('off', hide); });
+    $('gtW').classList.toggle('hit', stringMs() >= (store.stringDue || 30) * 36e5);
     var DAY = 864e5, today = new Date(); today.setHours(0, 0, 0, 0);
     var streak = calcStreak().n;
     $('streakV').textContent = streak + (streak === 1 ? ' day' : ' days');
@@ -1377,7 +1422,7 @@
       var gms = cur * goalDays(store.range) * 60000, pc = Math.round(homeTotal / gms * 100);
       prog = {day:'Today', week:'This week', month:'This month', year:'This year', all:'All time'}[store.range] + ': ' + fmt(homeTotal) + ' of ' + goalText(gms) + ' · ' + pc + '%' + (pc >= 100 ? ' ✓' : '') + '. ';
     }
-    dialog({title:'Daily goal', accent:'#d5dae2', text:prog + 'Minutes or hours a day (for example 45 or 1.5h). Leave empty to clear.',
+    dialog({title:'Practice duration', accent:'#d5dae2', text:prog + 'Enter daily practice duration.',
       input:{value:cur ? (cur % 60 === 0 && cur >= 60 ? (cur / 60) + 'h' : String(cur)) : '', mode:'text'}, ok:'Set', onOk:function(v){
       var t = String(v).trim().toLowerCase().replace(/\s/g, ''), mins = 0;
       if(t){
@@ -1394,8 +1439,8 @@
   function goalFill(c){
     if(!(c.target > 0)) return 0;
     var t = homeTimes[c.id] || 0;
-    if(store.dailyGoal > 0) return Math.min(1, t / (c.target / 100 * store.dailyGoal * goalDays(store.range) * 60000));
-    return homeTotal > 0 ? Math.min(1, (t / homeTotal * 100) / c.target) : 0;
+    if(!(store.dailyGoal > 0)) return 0;
+    return Math.min(1, t / (c.target / 100 * store.dailyGoal * goalDays(store.range) * 60000));
   }
   function renderChart(){
     var svg = $('donut'), total = homeTotal;
@@ -1441,19 +1486,15 @@
       store.cats.forEach(function(c){
         if(!(c.target > 0)) return;
         var len = c.target * scale / 100 * CT;
-        var dash = Math.max(len - 1.6, 0.8), done = goalFill(c);
-        // each category's section: a dim track, filled clockwise as it gets closer to its goal
-        [['goal gtrack', dash], ['goal', dash * done]].forEach(function(a){
-          if(!(a[1] > 0.05)) return;
-          var g = document.createElementNS(NS, 'circle');
-          g.setAttribute('cx', 100); g.setAttribute('cy', 100); g.setAttribute('r', RT);
-          g.setAttribute('class', a[0]); g.setAttribute('stroke', c.color); g.style.stroke = V(c.color);
-          g.setAttribute('stroke-dasharray', a[1] + ' ' + (CT - a[1]));
-          g.setAttribute('stroke-dashoffset', -(off + 0.8));
-          g.setAttribute('transform', 'rotate(-90 100 100)');
-          g.setAttribute('aria-hidden', 'true');
-          bg.appendChild(g);
-        });
+        var dash = Math.max(len - 1.6, 0.8);
+        var g = document.createElementNS(NS, 'circle');
+        g.setAttribute('cx', 100); g.setAttribute('cy', 100); g.setAttribute('r', RT);
+        g.setAttribute('class', 'goal'); g.setAttribute('stroke', c.color); g.style.stroke = V(c.color);
+        g.setAttribute('stroke-dasharray', dash + ' ' + (CT - dash));
+        g.setAttribute('stroke-dashoffset', -(off + 0.8));
+        g.setAttribute('transform', 'rotate(-90 100 100)');
+        g.setAttribute('aria-hidden', 'true');
+        bg.appendChild(g);
         goalArcs.push([off / CT * 360, (off + len) / CT * 360]);
         off += len;
       });
@@ -1555,7 +1596,7 @@
         gp.setAttribute('stroke', 'url(#progG)'); gp.setAttribute('stroke-width', GW);
         gp.setAttribute('stroke-dasharray', (gf * GC).toFixed(2) + ' ' + GC.toFixed(2));
         gp.setAttribute('transform', 'rotate(-90 100 100)');
-        gp.setAttribute('role', 'img'); gp.setAttribute('aria-label', Math.round(gf * 100) + '% of your goal for this period');
+        gp.setAttribute('role', 'img'); gp.setAttribute('aria-label', Math.round(gf * 100) + '% of your practice duration for this period');
         bg.appendChild(gp);
       }
     }
@@ -1855,7 +1896,7 @@
   function timeRow(c, sid, label){
     var r = document.createElement('div'); r.className = 'row edit ef trow' + (sid ? ' subedit' : '');
     var t = subsOf(c).length || sid ? subSince(c, sid) : catSince(c.id, 0);
-    r.innerHTML = '<span class="tl">' + esc(label) + '</span><span class="tv">' + fmt(t) + '</span><button type="button" class="tbtn">± Time</button>';
+    r.innerHTML = '<span class="tl">' + esc(label) + '</span><span class="tv">' + fmt(t) + '</span><button type="button" class="tbtn">Adjust</button>';
     r.querySelector('.tbtn').addEventListener('click', function(){ askTimeEdit(c, sid); });
     return r;
   }
@@ -1938,8 +1979,8 @@
     if(!store.cats.length && !editing){
       var eb = document.createElement('button');
       eb.className = 'emptyadd';
-      eb.textContent = '+ Add your first category';
-      eb.addEventListener('click', startAdd);
+      eb.textContent = 'Add your first category';
+      eb.addEventListener('click', askNewCat);
       box.appendChild(eb);
     }
     var exc = expandedCat(), listKey = exc ? exc.id : '', listChanged = listKey !== lastListKey;
@@ -2023,7 +2064,11 @@
         var pct = total > 0 ? Math.round(t / total * 100) : 0;
         var b = document.createElement('button');
         b.className = 'row' + (exc ? ' hdr' : ' pill');
-        if(!exc){ b.style.setProperty('--pc', V(c.color)); b.dataset.lk = c.id; catEls.push(blk); }
+        if(!exc){
+          b.style.setProperty('--pc', V(c.color)); b.dataset.lk = c.id; b.dataset.ec = c.id; b.dataset.es = ''; catEls.push(blk);
+          var gfv = goalFill(c);
+          if(gfv > 0){ var hp = hexToHsl(c.color); b.classList.add('gfill'); b.style.setProperty('--fill', (gfv * 100).toFixed(1) + '%'); b.style.setProperty('--deep', V(hslToHex(hp.h, Math.min(1, hp.s * 1.05), hp.l * 0.55))); }
+        }
         var small = [];
         if(!exc && c.note) small.push(esc(c.note));
         b.innerHTML =
@@ -2033,7 +2078,7 @@
           '<span class="chev' + (exc ? ' up' : '') + '">›</span>';
         b.setAttribute('aria-label', exc ? 'Back to all categories' : 'Open ' + c.name);
         b.addEventListener('click', function(){ if(exc) exitFocus(); else enterFocus(c.id); });
-        blk.appendChild(b);
+        if(!exc && inlineIs(c.id, '')) catEditor(blk, c); else blk.appendChild(b);
         if(exc){
           // opened category: one card, General first, then each subsection as a tinted pill
           blk.classList.add('open');
@@ -2048,8 +2093,9 @@
               '<span class="time">' + fmt(time) + '</span>' +
               '<span class="pct">' + pctv + '%</span>' +
               '<span class="chev">›</span>' + tempo;
-            pb.dataset.lk = key;
+            pb.dataset.lk = key; pb.dataset.ec = c.id; pb.dataset.es = key;
             pb.addEventListener('click', onClick);
+            if(inlineIs(c.id, key)){ if(key) subEditor(blk, c, subById(c, key)); else catEditor(blk, c); return; }
             blk.appendChild(pb);
             if(key) subEls.push(pb);
           }
@@ -2063,27 +2109,120 @@
                  tempoLineHtml(x, c.id, x.id), x.id, function(){ openPractice(c.id, x.id); });
           });
           var ab2 = document.createElement('button');
-          ab2.className = 'addsub editbtn';
-          ab2.textContent = 'Edit';
-          ab2.addEventListener('click', function(){ startEdit(c); });
+          ab2.className = 'addsub editbtn addbtn';
+          ab2.textContent = '+'; ab2.setAttribute('aria-label', 'Add a subcategory');
+          ab2.addEventListener('click', function(){ askNewSub(c); });
           blk.appendChild(ab2);
-          reorderable(subEls, function(from, to){ moveItem(c.subs, from, to); }, previewOrder(function(){ return c.subs; }, function(a){ c.subs = a; }),
+          if(!inlineEdit) reorderable(subEls, function(from, to){ moveItem(c.subs, from, to); }, previewOrder(function(){ return c.subs; }, function(a){ c.subs = a; }),
                       function(from, into){ askMergeSubs(c, c.subs[from], c.subs[into]); });
         }
       }
       box.appendChild(blk);
     });
-    if(!exc && !editing) reorderable(catEls, function(from, to){ moveItem(store.cats, from, to); }, previewOrder(function(){ return store.cats; }, function(a){ store.cats = a; }),
+    if(!exc && !editing && !inlineEdit) reorderable(catEls, function(from, to){ moveItem(store.cats, from, to); }, previewOrder(function(){ return store.cats; }, function(a){ store.cats = a; }),
       function(from, into){ askMergeCats(store.cats[from], store.cats[into]); });
     if(editing || (!exc && store.cats.length)){
       var ac = document.createElement('button');
-      ac.className = 'addsub addcat editbtn' + (editing ? ' done' : '');
-      ac.textContent = editing ? 'Done' : 'Edit';
-      ac.addEventListener('click', function(){ if(editing) endEdit(); else startEdit(null); });
+      ac.className = 'addsub addcat editbtn' + (editing ? ' done' : ' addbtn');
+      ac.textContent = editing ? 'Done' : '+';
+      if(!editing) ac.setAttribute('aria-label', 'Add a category');
+      ac.addEventListener('click', function(){ if(editing) endEdit(); else askNewCat(); });
       // while editing, Done is pinned to the bottom of the screen and the list scrolls behind it
       if(editing) $('editDone').appendChild(ac); else box.appendChild(ac);
     }
   }
+
+  /* ---------- edit in place: swipe a row left; one editor open at a time ---------- */
+  var inlineEdit = null;
+  function inlineIs(cid, sid){ return !!inlineEdit && inlineEdit.cid === cid && inlineEdit.sid === (sid || ''); }
+  function openInline(cid, sid){ inlineEdit = {cid:cid, sid:sid || ''}; renderHome(); }
+  function closeInline(){ if(document.activeElement && document.activeElement.blur) document.activeElement.blur(); inlineEdit = null; renderHome(); }
+  function targetField(c){
+    var tgw = document.createElement('label'); tgw.className = 'tg';
+    tgw.innerHTML = '<input class="tgi" type="text" inputmode="numeric" maxlength="3" placeholder="–" aria-label="Target percent of practice for ' + esc(c.name) + '"><span>percent</span>';
+    var tgi = tgw.querySelector('.tgi');
+    tgi.value = c.target > 0 ? c.target : '';
+    tgi.addEventListener('input', function(){
+      var digits = tgi.value.replace(/\D/g, '').slice(0, 3), v = parseInt(digits, 10), others = 0;
+      store.cats.forEach(function(x){ if(x !== c && x.target > 0) others += x.target; });
+      var room = Math.max(0, 100 - others);
+      if(!(v > 0)){ delete c.target; if(digits === '' || v === 0) tgi.value = ''; }
+      else { c.target = Math.min(v, room); if(c.target <= 0){ delete c.target; tgi.value = ''; } else if(String(c.target) !== digits) tgi.value = c.target; }
+      save(); renderChart();
+      var n = tgw.parentNode && tgw.parentNode.nextSibling; if(n && n.classList && n.classList.contains('enote')) n.textContent = targetNote(c);
+    });
+    tgi.addEventListener('keydown', function(e){ if(e.key === 'Enter') tgi.blur(); });
+    return tgw;
+  }
+  function targetNote(c){
+    var others = 0; store.cats.forEach(function(x){ if(x !== c && x.target > 0) others += x.target; });
+    return 'Up to ' + Math.max(0, 100 - others) + ' percent available';
+  }
+  function catEditor(blk, c){
+    var subs = subsOf(c);
+    blk.appendChild(editHead(c.color, c, '', true, closeInline, false, 20));
+    blk.appendChild(efRow('Target percent of practice', targetField(c)));
+    var nt = document.createElement('div'); nt.className = 'enote'; nt.textContent = targetNote(c); blk.appendChild(nt);
+    blk.appendChild(timeRow(c, '', subs.length ? 'Add or remove General time' : 'Add or remove time'));
+    blk.appendChild(delRow('Delete category', function(){
+      var all = catSince(c.id, 0);
+      dialog({title:'Delete ' + c.name + '?', text:(all > 0 ? 'Its ' + fmt(all) + ' of practice time will be deleted too.' : '') + (subs.length ? ' Its subcategories will be deleted as well.' : ''), ok:'Delete', danger:true, onOk:function(){
+        store.cats = store.cats.filter(function(x){ return x.id !== c.id; });
+        store.log = store.log.filter(function(e){ return e.c !== c.id; });
+        if(expandedId === c.id) expandedId = null;
+        inlineEdit = null; save(); renderHome();
+      }});
+    }));
+  }
+  function subEditor(blk, c, x){
+    if(!x){ inlineEdit = null; return; }
+    blk.appendChild(editHead(subColor(c, x), x, '', true, closeInline, true, SUB_NAME_MAX));
+    blk.appendChild(efRow('Goal BPM', bpmField(x), true));
+    blk.appendChild(timeRow(c, x.id, 'Add or remove time'));
+    blk.appendChild(delRow('Delete subcategory', function(){
+      var all = 0; store.log.forEach(function(e){ if(e.c === c.id && e.s === x.id) all += e.ms; });
+      dialog({title:'Delete ' + x.name + '?', text:all > 0 ? 'Its ' + fmt(all) + ' of practice time stays in ' + c.name + ' under General.' : '', ok:'Delete', danger:true, onOk:function(){
+        store.log.forEach(function(e){ if(e.c === c.id && e.s === x.id) delete e.s; });
+        c.subs = c.subs.filter(function(y){ return y.id !== x.id; });
+        if(!c.subs.length) delete c.subs;
+        inlineEdit = null; save(); renderHome();
+      }});
+    }, true));
+  }
+  function askNewCat(){
+    dialog({title:'New category', accent:'#d5dae2', input:{value:'', mode:'text', max:20}, ok:'Add', onOk:function(v){
+      var name = String(v).trim().slice(0, 20); if(name) addCatNamed(name);
+    }});
+  }
+  function askNewSub(c){
+    dialog({title:'New subcategory', text:'Add a subcategory to ' + c.name + '.', accent:nextSubColor(c), input:{value:'', mode:'text', max:SUB_NAME_MAX}, ok:'Add', onOk:function(v){
+      var name = String(v).trim().slice(0, SUB_NAME_MAX); if(name) addSub(c, name);
+    }});
+  }
+  // swipe left on a row (no hold first): the row follows the finger, then its editor opens in place
+  var sw = null;
+  $('legend').addEventListener('pointerdown', function(e){
+    var r = e.target.closest('.row.pill[data-ec]'); if(!r || e.button > 0) return;
+    sw = {r:r, x0:e.clientX, y0:e.clientY, on:false};
+  });
+  document.addEventListener('pointermove', function(e){
+    if(!sw) return;
+    if(reo && reo.on){ sw = null; return; }
+    var dx = e.clientX - sw.x0, dy = e.clientY - sw.y0;
+    if(!sw.on){
+      if(Math.abs(dy) > 12 && Math.abs(dy) > Math.abs(dx)){ sw = null; return; }
+      if(dx < -12 && Math.abs(dx) > Math.abs(dy) * 1.5){ sw.on = true; if(reo){ clearTimeout(reo.timer); reo = null; } if(typeof mHold !== 'undefined' && mHold){ clearTimeout(mHold); mHold = null; } }
+    }
+    if(sw.on){ sw.r.style.transition = 'none'; sw.r.style.transform = 'translateX(' + Math.max(dx, -90) + 'px)'; }
+  });
+  function swEnd(e, cancel){
+    if(!sw) return; var s = sw; sw = null; if(!s.on) return;
+    var dx = e.clientX - s.x0; s.r.style.transition = 'transform .18s ease'; s.r.style.transform = '';
+    reoEat = Date.now();
+    if(!cancel && dx < -50) setTimeout(function(){ openInline(s.r.dataset.ec, s.r.dataset.es); }, 120);
+  }
+  document.addEventListener('pointerup', function(e){ swEnd(e, false); });
+  document.addEventListener('pointercancel', function(e){ swEnd(e, true); });
 
   /* ---------- touch to match: hold a row or a section, everything else dims ---------- */
   function matchKey(k, quiet){
@@ -2416,7 +2555,7 @@
   function askTimeEdit(c, sid, back){
     var sub = sid ? subById(c, sid) : null, sign = 1;
     var seg = document.createElement('div'); seg.className = 'pmseg tmpseg';
-    [['+ Add', 1], ['− Remove', -1]].forEach(function(o){
+    [['Add', 1], ['Remove', -1]].forEach(function(o){
       var b = document.createElement('button'); b.type = 'button'; b.textContent = o[0];
       b.classList.toggle('active', o[1] === sign);
       b.addEventListener('click', function(){ sign = o[1]; Array.prototype.forEach.call(seg.children, function(x){ x.classList.toggle('active', x === b); }); });
@@ -2829,7 +2968,7 @@
   }
   /* ---------- Rate last session: a pop-up after each Guided session ---------- */
   function rateHtml(g){
-    var eff = calActive() ? '' : g.value === 'clean' ? 'Next run +' + store.grade.up + '% BPM' : g.value === 'rough' ? 'Next run −' + store.grade.down + '% BPM' : 'Next run same BPM';
+    var eff = calActive() ? '' : g.value === 'clean' ? 'Next run ' + store.grade.up + ' percent faster' : g.value === 'rough' ? 'Next run ' + store.grade.down + ' percent slower' : 'Next run same BPM';
     return '<span class="gl">' + g.label + '</span><span class="gp">' + g.pct + '</span><span class="gn">' + g.note + (eff ? '<em>' + eff + '</em>' : '') + '</span>';
   }
   function enterRating(mine){
@@ -3216,7 +3355,7 @@
     $('meterLine').setAttribute('aria-expanded', meterOpen ? 'true' : 'false');
     $('meterChev').innerHTML = meterOpen ? '&#9652;' : '&#9662;';
   }
-  $('meterLine').addEventListener('click', function(){ meterOpen = !meterOpen; renderMeter(); requestAnimationFrame(spreadPanel); });
+  $('meterLine').addEventListener('click', function(){ meterOpen = !meterOpen; if(meterOpen && modesOpen){ modesOpen = false; optOpen = {grader:false, gaps:false, tmr:false, cin:false}; trOpen = false; renderOpts(); renderTrainer(); } renderMeter(); requestAnimationFrame(spreadPanel); });
   function renderSub(){
     renderMeter();
     Array.prototype.forEach.call($('seg').children, function(b){
@@ -3232,7 +3371,7 @@
     $('durLine').setAttribute('aria-expanded', durOpen ? 'true' : 'false');
     $('durChev').innerHTML = durOpen ? '&#9652;' : '&#9662;';
   }
-  $('durLine').addEventListener('click', function(){ if(running || calActive()) return; durOpen = !durOpen; renderDurLine(); requestAnimationFrame(spreadPanel); });
+  $('durLine').addEventListener('click', function(){ if(running || calActive()) return; durOpen = !durOpen; if(durOpen && modesOpen){ modesOpen = false; optOpen = {grader:false, gaps:false, tmr:false, cin:false}; trOpen = false; renderOpts(); renderTrainer(); } renderDurLine(); requestAnimationFrame(spreadPanel); });
   function renderChips(){
     renderDurLine();
     var box = $('chips');
@@ -3556,9 +3695,9 @@
   }
   function spreadPanel(){
     var q = document.querySelector('.panel'), pb = $('pbot'), pr = $('practice'); if(!q || !pb || !inPractice) return;
-    if(modesOpen || optOpen.grader || optOpen.gaps || optOpen.tmr || optOpen.cin || trOpen) return;
     var clock = document.querySelector('.timer .clock'), num = $('bpmNum'), withBpm = num.offsetHeight > 0;
-    clock.style.fontSize = ''; num.style.fontSize = ''; pr.style.setProperty('--bk', '1');
+    var body = $('modesBody'), expanded = !!modesOpen;
+    clock.style.fontSize = ''; num.style.fontSize = ''; pr.style.setProperty('--bk', '1'); body.style.maxHeight = ''; body.style.overflowY = '';
     function measure(){
       var kids = Array.prototype.filter.call(q.children, function(e){ return e.offsetHeight > 0; });
       var used = 0; kids.forEach(function(e){ used += e.offsetHeight; });
@@ -3569,10 +3708,15 @@
       return {room:q.clientHeight - parseFloat(getComputedStyle(q).paddingTop) - used - botFixed + padTopB, slots:slots};
     }
     var base = parseFloat(getComputedStyle(clock).fontSize) || 60, cap = withBpm ? bpmFit(num) : 999;
-    var size = Math.min(base, cap);
+    var size = Math.min(base, cap), aim = expanded ? 14 : GAP_AIM;
     var m = measure(); if(!m.slots) return;
-    var spare = m.room - GAP_AIM * m.slots - (withBpm ? 0 : 0);
-    if(spare > 0){
+    var spare = m.room - aim * m.slots;
+    if(spare < 0){
+      // not enough room (a mode is open): shrink the timer, the BPM and the dots, as far as needed
+      var need = -spare, MIN = 38, cut = Math.min(size - MIN, need / (withBpm ? 2 : 1));
+      if(cut > 0){ size -= cut; need -= cut * (withBpm ? 2 : 1); }
+      if(need > 0) pr.style.setProperty('--bk', Math.max(0.8, 1 - need / 40).toFixed(3));
+    } else if(spare > 0){
       var f = Math.min(1, spare / (withBpm ? 100 : 62));
       size = Math.min(base + 44 * f, cap);
       pr.style.setProperty('--bk', (1 + 0.45 * f).toFixed(3));
@@ -3580,7 +3724,9 @@
     clock.style.fontSize = Math.round(size) + 'px';
     if(withBpm) num.style.fontSize = Math.round(size) + 'px';
     m = measure();
-    var g = clamp(m.room / m.slots, 6, 90);
+    // still too tall at the smallest sizes: the open mode scrolls inside its own box instead
+    if(expanded && m.room < 4 * m.slots){ body.style.maxHeight = Math.max(110, body.offsetHeight + m.room - 4 * m.slots) + 'px'; body.style.overflowY = 'auto'; m = measure(); }
+    var g = clamp(m.room / m.slots, 4, expanded ? 32 : 90);
     q.style.setProperty('--pgap', g + 'px');
     var curB2 = parseFloat(getComputedStyle(pr).getPropertyValue('--bgap')) || 9;
     if(Math.abs(g - curB2) > 0.5) pr.style.setProperty('--bgap', g + 'px');
@@ -3659,9 +3805,11 @@
   }
   $('modesHead').addEventListener('click', function(){
     modesOpen = !modesOpen;
+    if(modesOpen){ durOpen = false; meterOpen = false; renderDurLine(); renderMeter(); }
     if(!modesOpen){ optOpen = {grader:false, gaps:false, tmr:false, cin:false}; trOpen = false; renderOpts(); renderTrainer(); }
     renderModes(); requestAnimationFrame(spreadPanel);
   });
+  ['graderHead', 'gapsHead', 'tmrHead', 'cinHead', 'trHead'].forEach(function(id){ $(id).addEventListener('click', function(){ requestAnimationFrame(spreadPanel); }); });
 
   /* ---------- bar graph: the selected period, split into days / hours / months, stacked by category ---------- */
   var MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'], WD = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
@@ -3755,17 +3903,38 @@
     $('bars').classList.add('show');
   }
   $('avgW').addEventListener('click', function(){ if(!editing && !expandedCat()) openBars(); });
-  // tap the lightbulb: one learning strategy to try
-  $('tipW').addEventListener('click', function(){
-    if(editing || expandedCat() || tourOn) return;
-    var tip = nextTip(), c = $('cele');
-    c.style.setProperty('--cc', '#d5dae2'); c.classList.add('tiponly');
-    $('celeK').textContent = 'Strategy to try';
-    $('celePlay').innerHTML = '';
-    $('celeTip').innerHTML = esc(tip[0]) + '<small>' + esc(tip[1]) + '</small>';
-    $('celeOk').textContent = 'Got it';
-    c.classList.add('show');
+  // guitar and strings: which guitar, which strings, and how many hours have been played on them
+  function curGuitar(){
+    if(!Array.isArray(store.guitars) || !store.guitars.length){ store.guitars = [{id:'g1', name:'My guitar', strings:'', changedAt:Date.now()}]; store.guitarId = 'g1'; save(); }
+    return store.guitars.filter(function(g){ return g.id === store.guitarId; })[0] || store.guitars[0];
+  }
+  function stringMs(){ var g = curGuitar(), ms = g.offsetMs || 0; store.log.forEach(function(e){ if(e.t >= g.changedAt) ms += e.ms; }); return ms; }
+  function renderStrings(){
+    var g = curGuitar(), due = store.stringDue || 30, ms = stringMs(), f = Math.min(1, ms / (due * 36e5));
+    $('strHrs').textContent = goalText(ms);
+    $('strSub').textContent = f >= 1 ? 'played · time to change them' : 'played on these strings';
+    $('strFill').style.width = (f * 100).toFixed(1) + '%';
+    $('strDue').textContent = 'Change around ' + due + ' hours';
+    $('strNote').textContent = g.strings || 'Add string type';
+    $('strNote').classList.toggle('empty', !g.strings);
+  }
+  function openGuitar(){ renderStrings(); $('strPop').classList.add('show'); }
+  function closeStrings(){ $('strPop').classList.remove('show'); renderHome(); }
+  $('strClose').addEventListener('click', closeStrings);
+  $('strPop').addEventListener('click', function(e){ if(e.target === $('strPop')) closeStrings(); });
+  $('strDn').addEventListener('click', function(){ store.stringDue = clamp((store.stringDue || 30) - 5, 5, 200); save(); renderStrings(); });
+  $('strUp').addEventListener('click', function(){ store.stringDue = clamp((store.stringDue || 30) + 5, 5, 200); save(); renderStrings(); });
+  $('strNote').addEventListener('click', function(){
+    var g = curGuitar(); $('strPop').classList.remove('show');
+    dialog({title:'String type', text:'Brand and gauge, for example Elixir Nanoweb 10–46.', accent:'#d5dae2', input:{value:g.strings || '', mode:'text', max:40}, ok:'Save',
+      onOk:function(t){ g.strings = String(t).trim().slice(0, 40); save(); openGuitar(); }, onCancel:openGuitar});
   });
+  $('strChanged').addEventListener('click', function(){
+    var g = curGuitar(); $('strPop').classList.remove('show');
+    dialog({title:'Changed strings?', text:'The hours on your strings start again from zero.', ok:'Changed', accent:'#d5dae2',
+      onOk:function(){ g.changedAt = Date.now(); g.offsetMs = 0; save(); openGuitar(); }, onCancel:openGuitar});
+  });
+  $('gtW').addEventListener('click', function(){ if(editing || expandedCat() || tourOn) return; openGuitar(); });
   // tap the streak icon: the streak card, in silver
   $('streakW').addEventListener('click', function(){
     if(editing || expandedCat() || tourOn) return;
@@ -3822,9 +3991,7 @@
       x.beginPath(); x.arc(cx, cy, RG, 0, 2 * Math.PI); x.strokeStyle = '#242a33'; x.lineWidth = 4 * k; x.stroke();
       var off = -Math.PI / 2, sc = tsum > 100 ? 100 / tsum : 1;
       cats.forEach(function(c){ if(!(c.target > 0)) return; var l = c.target * sc / 100 * 2 * Math.PI, a0 = off + .012, a1 = off + l - .012, fd = goalFill(c);
-        x.lineWidth = 4 * k; x.strokeStyle = c.color;
-        x.globalAlpha = .25; x.beginPath(); x.arc(cx, cy, RG, a0, a1); x.stroke(); x.globalAlpha = 1;
-        if(fd > 0){ x.beginPath(); x.arc(cx, cy, RG, a0, a0 + (a1 - a0) * fd); x.stroke(); }
+        x.lineWidth = 4 * k; x.strokeStyle = c.color; x.beginPath(); x.arc(cx, cy, RG, a0, a1); x.stroke();
         off += l; });
     }
     if(total > 0){
@@ -3867,7 +4034,11 @@
     cats.forEach(function(c){
       var t = times[c.id], pct = total > 0 ? Math.round(t / total * 100) : 0, rx0 = 20, rw = Wc - 40, rh = 40, rr = 20;
       x.beginPath(); x.moveTo(rx0 + rr, ry); x.arcTo(rx0 + rw, ry, rx0 + rw, ry + rh, rr); x.arcTo(rx0 + rw, ry + rh, rx0, ry + rh, rr); x.arcTo(rx0, ry + rh, rx0, ry, rr); x.arcTo(rx0, ry, rx0 + rw, ry, rr); x.closePath();
-      x.globalAlpha = .08; x.fillStyle = c.color; x.fill(); x.globalAlpha = 1; x.strokeStyle = c.color; x.lineWidth = 2; x.stroke();
+      x.globalAlpha = .08; x.fillStyle = c.color; x.fill(); x.globalAlpha = 1;
+      var rf = goalFill(c);
+      if(rf > 0){ var hq = hexToHsl(c.color), rg = x.createLinearGradient(rx0, 0, rx0 + rw * rf, 0); rg.addColorStop(0, hslToHex(hq.h, Math.min(1, hq.s * 1.05), hq.l * 0.55)); rg.addColorStop(1, c.color);
+        x.save(); x.clip(); x.fillStyle = rg; x.fillRect(rx0, ry, rw * rf, rh); x.restore(); }
+      x.strokeStyle = c.color; x.lineWidth = 2; x.stroke();
       x.fillStyle = '#eef1f5'; x.font = '500 14px ' + FONT; spaced(c.name.toUpperCase(), rx0 + 14, ry + 25, .9, 'left');
       x.font = '400 13px ' + FONT; spaced(fmt(t).toUpperCase(), rx0 + rw - 14, ry + 25, .3, 'right');
       ry += 50;
@@ -3933,25 +4104,105 @@
   }
   var TOURS = {
     home: [
-      {sel:'#donut', shape:'pie', t:'Practice pie · time by category'},
-      {sel:'#donut', shape:'ring', t:'Goal ring · your goal % for each category'},
-      {sel:'#legend .pill', t:'Tap a row to open it · hold to highlight its slice'},
-      {demo:'move', rows:'#legend .catblk > .row.pill', t:'Hold, then drag to reorder'},
-      {demo:'merge', rows:'#legend .catblk > .row.pill', t:'Hold over another row to merge'},
-      {sel:'#legend .editbtn', t:'Edit · add, rename, set goals'}
+      {sel:'#donut', shape:'pie', t:'Practice pie · Your practice time this period'},
+      {sel:'#donut .progtrack', shape:'inner', t:'Practice duration ring · Fills toward your daily practice duration'},
+      {sel:'#donut', shape:'ring', t:'Target ring · Target category practice percentage'},
+      {sel:'#legend .pill', fillDemo:true, t:'Categories · Tap to open, fills as you practice toward percentage goal'},
+      {demo:'move', rows:'#legend .catblk > .row.pill', t:'Move · Hold, then drag'},
+      {demo:'merge', rows:'#legend .catblk > .row.pill', t:'Merge · Hold over another row'},
+      {demo:'swipe', rows:'#legend .row.pill[data-ec]', t:'Edit · Swipe a row left'},
+      {sel:'#legend .addcat', t:'Add · New category'},
+      {sel:'#goalW', t:'Practice duration · Enter daily practice duration'},
+      {sel:'#gtW', t:'Strings · Hours on your strings'}
     ],
     cat: [
-      {sel:'#donut', shape:'pie', t:'Tap a slice to practice it'},
-      {demo:'move', rows:'#legend .row.pill[data-lk]:not([data-lk=""])', t:'Hold, then drag to reorder'},
-      {demo:'merge', rows:'#legend .row.pill[data-lk]:not([data-lk=""])', t:'Hold over another row to merge'},
-      {sel:'#legend .editbtn', t:'Edit · add subcategories, set goal BPM'}
+      {sel:'#donut', shape:'pie', t:'Subcategories · Time spent on each subcategory'},
+      {demo:'move', rows:'#legend .row.pill[data-lk]:not([data-lk=\"\"])', t:'Move · Hold, then drag'},
+      {demo:'merge', rows:'#legend .row.pill[data-lk]:not([data-lk=\"\"])', t:'Merge · Hold over another row'},
+      {demo:'swipe', rows:'#legend .row.pill[data-ec]', t:'Edit · Swipe a row left'},
+      {sel:'#legend .addbtn', t:'Add · New subcategory'}
     ],
     practice: [
-      {sel:'#modes', open:'grader', t:'Modes · Guided mode grades each run, the BPM follows'},
-      {sel:'#graderSet .trl', open:'grader', t:'Find your BPM · short runs find your Clean BPM'},
-      {sel:'#goBtn', t:'Start · count-in, then the click'}
+      {sel:'#durLine', t:'Timer · Tap to set run length'},
+      {sel:'#meterLine', t:'Time signature · Tap to change it'},
+      {sel:'#modes', open:'grader', t:'Modes · How you practice'},
+      {sel:'#graderSet .trl', open:'grader', t:'Find your BPM · Short test runs set your Clean BPM'},
+      {sel:'#lastW', t:'Clean BPM · Your fastest clean run'},
+      {sel:'#goBtn', t:'Start · Count-in, then the click'}
     ]
   };
+  /* ---------- first-launch setup ---------- */
+  var su = null;
+  var SU_STEPS = ['welcome', 'goal', 'cats', 'strings', 'done'];
+  function openSetup(){
+    su = {i:0, goal:30, keep:store.cats.map(function(c){ return c.id; }), hours:0, strings:''};
+    $('setup').classList.add('show'); renderSetup();
+  }
+  function renderSetup(){
+    var k = SU_STEPS[su.i], ch = $('suCh'); ch.innerHTML = ''; ch.className = 'such';
+    $('suDots').innerHTML = SU_STEPS.map(function(x, i){ return '<i' + (i === su.i ? ' class="on"' : '') + '></i>'; }).join('');
+    $('suBack').style.visibility = su.i > 0 && k !== 'done' ? 'visible' : 'hidden';
+    $('suSkip').style.visibility = k === 'done' ? 'hidden' : 'visible';
+    function pick(opts, cur, onPick, multi){
+      opts.forEach(function(o){
+        var b = document.createElement('button'); b.type = 'button'; b.textContent = o[1];
+        var on = multi ? cur.indexOf(o[0]) >= 0 : cur === o[0];
+        b.classList.toggle('on', on); b.setAttribute('aria-pressed', on ? 'true' : 'false');
+        b.addEventListener('click', function(){ onPick(o[0]); renderSetup(); });
+        ch.appendChild(b);
+      });
+    }
+    if(k === 'welcome'){
+      $('suK').textContent = 'Welcome'; $('suT').textContent = 'TOAN Tracker';
+      $('suX').textContent = 'A practice log and metronome. It doesn\'t tell you what to play. It shows how whatever you are working on grows.';
+      $('suN').textContent = 'Play it clean. Then a little faster.'; $('suNext').textContent = 'Set up';
+    } else if(k === 'goal'){
+      $('suK').textContent = 'Step 1 of 3'; $('suT').textContent = 'Practice duration';
+      $('suX').textContent = 'How long do you want to practice each day?';
+      pick([[15, '15 minutes'], [30, '30 minutes'], [45, '45 minutes'], [60, '1 hour'], [90, '1.5 hours'], [120, '2 hours']], su.goal, function(v){ su.goal = v; });
+      $('suN').textContent = 'The practice duration ring and the category rows fill as you practice toward it. Change it anytime with the target icon.';
+      $('suNext').textContent = 'Next';
+    } else if(k === 'cats'){
+      $('suK').textContent = 'Step 2 of 3'; $('suT').textContent = 'What you practice';
+      $('suX').textContent = 'Keep the categories you will use.';
+      pick(store.cats.map(function(c){ return [c.id, c.name]; }), su.keep, function(id){
+        var i = su.keep.indexOf(id); if(i >= 0){ if(su.keep.length > 1) su.keep.splice(i, 1); } else su.keep.push(id);
+      }, true);
+      $('suN').textContent = 'Add more later with the plus button under the list. Their targets split evenly to start.';
+      $('suNext').textContent = 'Next';
+    } else if(k === 'strings'){
+      $('suK').textContent = 'Step 3 of 3'; $('suT').textContent = 'Strings';
+      $('suX').textContent = 'About how many hours are on your strings right now?';
+      pick([[0, 'Brand new'], [5, 'About 5 hours'], [15, 'About 15 hours'], [30, 'About 30 hours'], [-1, 'Not sure']], su.hours, function(v){ su.hours = v; });
+      var inp = document.createElement('input'); inp.type = 'text'; inp.maxLength = 40; inp.placeholder = 'String type (optional)'; inp.value = su.strings;
+      inp.setAttribute('aria-label', 'String type, optional'); inp.addEventListener('input', function(){ su.strings = inp.value; });
+      ch.appendChild(inp);
+      $('suN').textContent = 'Practice time adds up on your strings so you know when to change them. See it with the sound-hole icon.';
+      $('suNext').textContent = 'Next';
+    } else {
+      $('suK').textContent = 'Ready'; $('suT').textContent = 'You are set';
+      $('suX').textContent = 'Next, a quick look around. Tap anywhere to move through it.';
+      $('suN').textContent = ''; $('suNext').textContent = 'Start the tour';
+    }
+  }
+  function finishSetup(apply){
+    if(apply){
+      store.dailyGoal = su.goal;
+      if(!store.log.length){
+        store.cats = store.cats.filter(function(c){ return su.keep.indexOf(c.id) >= 0; });
+        var n = store.cats.length, b = Math.floor(100 / n), extra = 100 - b * n;
+        store.cats.forEach(function(c, i){ c.target = b + (i < extra ? 1 : 0); });
+      }
+      var g = curGuitar(); g.changedAt = Date.now(); g.offsetMs = Math.max(0, su.hours) * 36e5; g.strings = String(su.strings || '').trim().slice(0, 40);
+    }
+    store.setupDone = true; save();
+    $('setup').classList.remove('show'); su = null;
+    renderHome(); setTimeout(function(){ startTour('home'); }, 350);
+  }
+  $('suNext').addEventListener('click', function(){ if(!su) return; if(su.i >= SU_STEPS.length - 1) finishSetup(true); else { su.i++; renderSetup(); } });
+  $('suBack').addEventListener('click', function(){ if(su && su.i > 0){ su.i--; renderSetup(); } });
+  $('suSkip').addEventListener('click', function(){ if(su) finishSetup(false); });
+
   function startTour(name){
     if(tourOn) return;
     tourName = name; tourSteps = TOURS[name]; tourIdx = 0; tourOn = true;
@@ -3986,7 +4237,8 @@
     var acc = '#8a93a0'; // neutral grey outline and leader, to sit with the span-button colours
     $('tour').style.setProperty('--tc', acc);
     var pill = $('tourPill');
-    $('tourText').textContent = st.t;
+    var tp = st.t.split(' · ');
+    $('tourText').innerHTML = '<b>' + esc(tp.shift()) + '</b>' + (tp.length ? '<span>' + esc(tp.join(' · ')) + '</span>' : '');
     function shown(x){ return x.demo ? !!demoRows(x) : x.open ? !!document.querySelector(x.sel) : !x.sel || firstVisible(x.sel); }
     var n = tourSteps.filter(shown).length;
     var pos = tourSteps.slice(0, tourIdx + 1).filter(shown).length;
@@ -3995,24 +4247,50 @@
       var r0 = el.getBoundingClientRect();
       if(r0.top < 70 || r0.bottom > window.innerHeight - 70) el.scrollIntoView({block:'center'});
     }
-    requestAnimationFrame(function(){ placeTour(st.demo ? demoBox(st) : el, acc, st); if(st.demo) demoStart(st); });
+    requestAnimationFrame(function(){ placeTour(st.demo ? demoBox(st) : el, acc, st); if(st.demo) demoStart(st); if(st.fillDemo && el) fillDemoStart(el); });
   }
   /* ---------- tour demo: drag to reorder, and merge ---------- */
   var demo = null;
   function demoRows(st){
     var a = Array.prototype.filter.call(document.querySelectorAll(st.rows), function(e){ var r = e.getBoundingClientRect(); return r.width > 0 && r.height > 0; });
-    return a.length >= 2 ? a.slice(0, 2) : null;
+    var need = st.demo === 'swipe' ? 1 : 2;
+    return a.length >= need ? a.slice(0, need) : null;
   }
   // the two rows as one box, for the lit-up hole in the dimmed screen
   function demoBox(st){
     var rs = demoRows(st); if(!rs) return null;
     return {getBoundingClientRect:function(){
-      var a = rs[0].getBoundingClientRect(), b = rs[1].getBoundingClientRect();
+      var a = rs[0].getBoundingClientRect(), b = (rs[1] || rs[0]).getBoundingClientRect();
       return {left:Math.min(a.left, b.left), top:Math.min(a.top, b.top), right:Math.max(a.right, b.right), bottom:Math.max(a.bottom, b.bottom),
               width:Math.max(a.right, b.right) - Math.min(a.left, b.left), height:Math.max(a.bottom, b.bottom) - Math.min(a.top, b.top)};
     }, scrollIntoView:function(o){ rs[0].scrollIntoView(o); }, demo:true};
   }
+  var fillDemo = null;
+  function fillDemoStop(){
+    if(!fillDemo) return;
+    clearInterval(fillDemo.t);
+    var el = fillDemo.el;
+    el.style.transition = 'none';
+    el.classList.toggle('gfill', fillDemo.had);
+    el.style.setProperty('--fill', fillDemo.fill); el.style.setProperty('--deep', fillDemo.deep);
+    void el.offsetWidth; el.style.transition = '';
+    fillDemo = null;
+  }
+  function fillDemoStart(el){
+    fillDemoStop();
+    var cid = el.getAttribute('data-lk'), c = catById(cid); if(!c) return;
+    var hp = hexToHsl(c.color);
+    fillDemo = {el:el, had:el.classList.contains('gfill'), fill:el.style.getPropertyValue('--fill'), deep:el.style.getPropertyValue('--deep'), k:0};
+    el.classList.add('gfill'); el.style.setProperty('--deep', V(hslToHex(hp.h, Math.min(1, hp.s * 1.05), hp.l * 0.55)));
+    function tick(){
+      var k = fillDemo.k % 5; fillDemo.k++;
+      if(k === 0){ el.style.transition = 'none'; el.style.setProperty('--fill', '0%'); void el.offsetWidth; el.style.transition = ''; return; }
+      el.style.setProperty('--fill', (k * 25) + '%');
+    }
+    tick(); requestAnimationFrame(function(){ if(fillDemo && fillDemo.el === el) tick(); }); fillDemo.t = setInterval(tick, 1500);
+  }
   function demoStop(){
+    fillDemoStop();
     if(!demo) return;
     demo.timers.forEach(clearTimeout);
     demo.real.forEach(function(e){ e.style.visibility = ''; });
@@ -4025,6 +4303,7 @@
     var box = document.createElement('div'); box.id = 'tourDemo';
     $('tour').appendChild(box);
     var d = demo = {timers:[], real:real, box:box};
+    if(st.demo === 'swipe'){ demoSwipe(st, real[0], box, d); return; }
     var ra = real[0].getBoundingClientRect(), rb = real[1].getBoundingClientRect(), step = rb.top - ra.top;
     // copies of the real rows sit exactly over them; the real rows hide underneath
     var rows = real.map(function(e, k){
@@ -4105,6 +4384,35 @@
     }
     run();
   }
+  // swipe demo: the finger (a beat dot) presses a row and slides it left; the row springs back as its editor would open
+  function demoSwipe(st, real, box, d){
+    var r = real.getBoundingClientRect(), A = real.cloneNode(true);
+    A.removeAttribute('data-lk'); A.classList.remove('mhit');
+    A.style.setProperty('--pc', getComputedStyle(real).getPropertyValue('--pc'));
+    A.style.left = r.left + 'px'; A.style.top = r.top + 'px'; A.style.width = r.width + 'px'; A.style.height = r.height + 'px'; A.style.boxSizing = 'border-box';
+    box.appendChild(A); real.style.visibility = 'hidden';
+    var f = document.createElement('div'); f.className = 'tdf';
+    f.innerHTML = '<div class="tdh"></div><div class="beat"></div><div class="tdl"></div>';
+    box.appendChild(f);
+    var fx = r.left + r.width * 0.7, fy = r.top + r.height / 2, fdot = f.children[1], lab = f.children[2];
+    f.style.left = fx + 'px'; f.style.top = fy + 'px';
+    function at(ms, fn){ d.timers.push(setTimeout(function(){ if(demo === d) fn(); }, ms)); }
+    function run(){
+      A.style.transition = 'none'; A.style.transform = ''; f.style.transition = 'none'; f.style.transform = ''; f.classList.remove('show'); fdot.classList.remove('on'); lab.textContent = '';
+      void A.offsetWidth; A.style.transition = ''; f.style.transition = '';
+      at(350, function(){ f.classList.add('show'); fdot.classList.add('on'); lab.textContent = 'Press'; });
+      at(800, function(){ lab.textContent = 'Swipe left'; A.style.transform = 'translateX(-80px)'; f.style.transform = 'translateX(-80px)'; });
+      for(var k = 1; k <= 5; k++) (function(k){ at(800 + k * 80, function(){
+        var tr = document.createElement('div'); tr.className = 'tdt'; tr.style.left = (fx - 80 * k / 6) + 'px'; tr.style.top = fy + 'px'; box.appendChild(tr);
+        requestAnimationFrame(function(){ tr.style.opacity = '0'; tr.style.transform = 'scale(.4)'; });
+        d.timers.push(setTimeout(function(){ tr.remove(); }, 700));
+      }); })(k);
+      at(1500, function(){ fdot.classList.remove('on'); lab.textContent = 'Let go · edit opens'; A.style.transform = ''; });
+      at(1900, function(){ f.classList.remove('show'); });
+      at(3300, run);
+    }
+    run();
+  }
   // reads a row's time back, e.g. "1H 20M" or "25M"; null if it can't
   function parseTimeText(x){
     if(!x) return null;
@@ -4137,6 +4445,11 @@
       outline = hole;
       below = G.cy + cr + GAP + ph <= H - 12;
       tx = G.cx; ty = below ? G.cy + cr : G.cy - cr;
+    } else if(st.shape === 'inner'){
+      var rI = 44 * FOCUS_SCALE * G.k;
+      tx = G.cx; ty = G.cy + rI; below = true;
+      hole = circ(rI + 7) + circ(rI - 7);
+      if(G.cy + ringOut + GAP + ph > H - 12) below = false;
     } else if(st.shape === 'ring' || st.shape === 'arc'){
       // point on the ring itself: the bottom of the goal ring, or the middle of the context arc
       var ang = Math.PI / 2;
@@ -4175,7 +4488,7 @@
     }
     // pill: centred over the leader point where it fits, on the open side of the feature
     var top;
-    if(st.shape === 'ring' || st.shape === 'arc'){
+    if(st.shape === 'ring' || st.shape === 'arc' || st.shape === 'inner'){
       var ext2 = ringOut;
       top = below ? Math.max(ty, G.cy + ext2) + GAP : Math.min(ty, G.cy - ext2) - GAP - ph;
     } else top = below ? ty + GAP : ty - GAP - ph;
@@ -4197,7 +4510,7 @@
 
   renderHome();
   fitTitle();
-  setTimeout(function(){ if(!store.tour.home) startTour('home'); }, 500);
+  setTimeout(function(){ if(!store.setupDone) openSetup(); else if(!store.tour.home) startTour('home'); }, 500);
   if(document.fonts && document.fonts.ready) document.fonts.ready.then(fitTitle);
 })();
 </script>
