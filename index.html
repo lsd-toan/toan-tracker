@@ -380,6 +380,21 @@
   .such button{height:48px;border-radius:24px;border:1.5px solid var(--line);font-size:13px;letter-spacing:.1em;color:var(--muted);background:transparent}
   .such button.on{border-color:#d5dae2;background:color-mix(in srgb,#d5dae2 12%,transparent);color:#fff}
   .such input{grid-column:1/-1;height:48px;border-radius:24px;border:1.5px solid var(--line);background:transparent;padding:0 18px;font-size:13px;letter-spacing:.08em}
+  .sumain{overflow-y:auto}
+  .such .suplus{font-size:22px;letter-spacing:0;color:var(--text);border-style:dashed}
+  .such .sunew{grid-column:auto;height:48px;border-radius:24px;border:1.5px solid #d5dae2;padding:0 16px;text-align:center}
+  .sutg{gap:6px}
+  .suring{position:relative;width:128px;height:128px;margin:0 auto 10px}
+  .suring svg{width:100%;height:100%}
+  .suring div{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .suring b{font-family:var(--disp);font-weight:300;font-size:28px;color:var(--text)}
+  .suring span{font-size:9px;letter-spacing:.2em;color:var(--muted)}
+  .sutrow{display:grid;grid-template-columns:12px 1fr 34px 46px 34px;align-items:center;gap:10px;height:38px;padding:0 4px}
+  .sutrow i{width:10px;height:10px;border-radius:50%;background:var(--pc)}
+  .sutrow .sun2{font-size:13px;letter-spacing:.1em;color:var(--text)}
+  .sutrow b{font-weight:500;font-size:15px;text-align:center;color:var(--text)}
+  .sutrow .sb{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);color:var(--text);font-size:16px}
+  .sutrow .sb:disabled{opacity:.3}
   .sun{margin-top:16px;font-size:11px;letter-spacing:.1em;line-height:1.5;color:var(--muted)}
   .sufoot{display:flex;flex-direction:column;gap:16px}
   .sudots{display:flex;justify-content:center;gap:12px}
@@ -872,8 +887,8 @@
   var KEY = 'woodshed.v1';
   // TEST BUILDS: every new iteration opens like a first launch. When BUILD changes, saved data from the
   // previous iteration is cleared once, then saving works normally. Set RESET_ON_NEW_BUILD = false before release.
-  var BUILD = '2026-11-14-e';
-  var RESET_ON_NEW_BUILD = true; // ON for the fresh-start test builds: opens like a first launch. Turn OFF when testing is done.
+  var BUILD = '2026-11-15-b';
+  var RESET_ON_NEW_BUILD = false; // OFF: saved practice data is kept when a new build is uploaded
   var UNITS = {
     min:{n:'Minutes', s:'min', ms:6e4},
     hr: {n:'Hours',   s:'hr',  ms:36e5},
@@ -3487,6 +3502,16 @@
     }
   }
 
+  // output bus for the metronome: boosts the clicks, and a fast limiter keeps the peaks clean on phone speakers
+  function bus(){
+    if(!bus.n || bus.ctx !== ctx){
+      var g = ctx.createGain(), c = ctx.createDynamicsCompressor();
+      g.gain.value = 2.5;
+      c.threshold.value = -3; c.knee.value = 0; c.ratio.value = 20; c.attack.value = 0.0003; c.release.value = 0.06;
+      g.connect(c); c.connect(ctx.destination); bus.n = g; bus.ctx = ctx;
+    }
+    return bus.n;
+  }
   function click(time, kind){
     var o = ctx.createOscillator(), g = ctx.createGain();
     var freq = kind === 'accent' ? 1700 : kind === 'light' ? 1400 : kind === 'normal' ? 1150 : 820;
@@ -3496,9 +3521,9 @@
     o.frequency.value = freq;
     g.gain.setValueAtTime(0.0001, time);
     g.gain.linearRampToValueAtTime(peak, time + 0.001);
-    g.gain.exponentialRampToValueAtTime(0.0001, time + 0.055);
-    o.connect(g); g.connect(ctx.destination);
-    o.start(time); o.stop(time + 0.07);
+    g.gain.exponentialRampToValueAtTime(0.0001, time + 0.065);
+    o.connect(g); g.connect(bus());
+    o.start(time); o.stop(time + 0.08);
   }
 
   // drumsticks hitting each other: a short bright noise crack plus a woody knock
@@ -3512,11 +3537,11 @@
     var n = ctx.createBufferSource(), bp = ctx.createBiquadFilter(), gn = ctx.createGain();
     n.buffer = noiseBuf; bp.type = 'bandpass'; bp.frequency.value = 3200; bp.Q.value = 1.4;
     gn.gain.setValueAtTime(0.0001, time); gn.gain.linearRampToValueAtTime(peak, time + 0.001); gn.gain.exponentialRampToValueAtTime(0.0001, time + 0.035);
-    n.connect(bp); bp.connect(gn); gn.connect(ctx.destination); n.start(time); n.stop(time + 0.05);
+    n.connect(bp); bp.connect(gn); gn.connect(bus()); n.start(time); n.stop(time + 0.05);
     var o = ctx.createOscillator(), go = ctx.createGain();
     o.type = 'triangle'; o.frequency.setValueAtTime(2300, time); o.frequency.exponentialRampToValueAtTime(1500, time + 0.03);
     go.gain.setValueAtTime(0.0001, time); go.gain.linearRampToValueAtTime(peak * 0.55, time + 0.001); go.gain.exponentialRampToValueAtTime(0.0001, time + 0.045);
-    o.connect(go); go.connect(ctx.destination); o.start(time); o.stop(time + 0.06);
+    o.connect(go); go.connect(bus()); o.start(time); o.stop(time + 0.06);
   }
   // count-in bars (Count-in dropdown) before the music starts; compound 6/8, 9/8, 12/8 count the dotted-quarter pulse
   var countEnd = 0;
@@ -3680,7 +3705,7 @@
   });
   window.addEventListener('pagehide', flush);
   document.addEventListener('visibilitychange', function(){ if(!document.hidden && !inPractice) spinLogo(); });
-  var TIPS = [["Slow down until it's perfect. Clean reps at a slow tempo build skill faster than sloppy reps at speed.", "The Talent Code"], ["Practice at the edge: just past what you can do. The small struggle is where the learning happens.", "The Talent Code"], ["Break a hard passage into small chunks. Master each piece, then link them together.", "The Talent Code"], ["Mistakes are information. Notice exactly where it broke, fix that spot, then play it again.", "The Talent Code"], ["Watch a player you admire, then copy one small thing. Imitation is how skills spread.", "The Talent Code"], ["Take in the whole piece first. Listen to it all the way through before you chop it up.", "The Talent Code"], ["Reach, miss, adjust, reach again. That loop is what deep practice looks like.", "The Talent Code"], ["Feeling clumsy at the edge is a good sign. It means you're building something new.", "The Talent Code"], ["Get one bar right, then two, then four. Grow the passage outward from what's clean.", "The Talent Code"], ["Repetition still matters. Skills get faster and more automatic the more clean reps you stack.", "The Talent Code"], ["Practice the transition, not just the parts. The jump between two chords is its own skill.", "The Talent Code"], ["Make it obvious: leave your guitar on a stand, not in its case.", "Atomic Habits"], ["Make it easy: on a busy day, play for just two minutes. Showing up is the habit.", "Atomic Habits"], ["Never miss twice. One skipped day is life; two starts a new habit.", "Atomic Habits"], ["Stack it: practice right after something you already do every day, like your morning coffee.", "Atomic Habits"], ["Set a time and place: \"I'll practice at 7pm in the living room\" beats \"I'll practice later.\"", "Atomic Habits"], ["Reduce friction. Keep picks, capo and tuner next to the guitar so starting takes seconds.", "Atomic Habits"], ["Make distractions harder: put your phone on Do Not Disturb before you start.", "Atomic Habits"], ["Pair practice with something you enjoy: your favorite tea, a good chair, the window light.", "Atomic Habits"], ["Join a culture where practice is normal. Friends who play make practicing feel natural.", "Atomic Habits"], ["Don't break the chain. A visible streak makes you want to keep it going.", "Atomic Habits"], ["Have one clear goal per session: one passage, one tempo, one problem to solve.", "Deliberate practice"], ["Short, focused sessions beat long, distracted ones. Ten sharp minutes counts.", "Deliberate practice"], ["Right after your warm-up, tackle the hardest part while you're freshest.", "Deliberate practice"], ["Know what good sounds like. Build a clear picture of the target before you chase it.", "Deliberate practice"], ["Find your weakest spot and spend most of your time there.", "Deliberate practice"], ["Plan before you play: what will you work on, and how will you know it's better?", "Deliberate practice"], ["Rest when your focus fades. Tired, sloppy reps teach your hands the wrong thing.", "Deliberate practice"], ["Change the task when you stall. Try a new rhythm, a new tempo, or a new fingering.", "Deliberate practice"], ["Write down what worked. A one-line note today saves you ten minutes tomorrow.", "Deliberate practice"], ["Practice like you'll perform. Run it once a session as if someone is listening.", "Deliberate practice"], ["Effort without attention is just playing. Stay curious about what's happening in your hands.", "Deliberate practice"], ["Measure progress in weeks, not days. Day-to-day changes are too small to notice.", "Deliberate practice"], ["Sleep locks in practice. A passage that fought you tonight is often easier tomorrow.", "Learning science"], ["Spread it out. Three short sessions in a week beat one long one.", "Learning science"], ["Mix it up. Switching between two or three skills feels harder but often sticks better.", "Learning science"], ["Vary the practice: same lick, different tempos, positions and dynamics. Variety makes it robust.", "Learning science"], ["Take short breaks. A few minutes away can help your brain lock in what you just did.", "Learning science"], ["Mental practice helps. Picture your fingers playing the passage when you're away from the guitar.", "Learning science"], ["Focus on the sound, not your fingers. An outward focus often makes movement smoother.", "Learning science"], ["Come back to old material. A quick review keeps skills from fading.", "Learning science"], ["Practice feels worse but sticks better when it's varied. Don't judge a session by how smooth it felt.", "Learning science"], ["Stop while it's still clean. Ending on a good rep is what your hands will remember.", "Learning science"], ["Get enough rest between hard sessions. Recovery is part of practice.", "Learning science"], ["Relax. Check your shoulders, jaw and fretting thumb. Tension is the speed limit.", "Guitar technique"], ["Use the lightest touch that still sounds clean. Less pressure means faster, easier hands.", "Guitar technique"], ["Keep fingers close to the strings. Small movements are fast movements.", "Guitar technique"], ["Fret just behind the fret wire, not on top or in the middle. Less effort, cleaner note.", "Guitar technique"], ["Mute what you're not playing. Clean playing is as much about silence as sound.", "Guitar technique"], ["Watch your picking hand. Most speed problems are sync problems between the two hands.", "Guitar technique"], ["Keep your pick strokes small. A big swing wastes time and accuracy.", "Guitar technique"], ["Tune before every session. Practicing out of tune trains your ear wrong.", "Guitar technique"], ["Check your posture. Sit tall, guitar close, neck slightly up.", "Guitar technique"], ["Keep your fretting thumb relaxed behind the neck. A death grip slows everything down.", "Guitar technique"], ["Play chord changes slowly with your eyes closed. Feel the shapes instead of looking.", "Guitar technique"], ["Move all fingers of a chord together. Land them at once, not one at a time.", "Guitar technique"], ["Leave a finger down when chords share a note. Pivot fingers make changes easier.", "Guitar technique"], ["Practice with a clean tone first. Distortion hides mistakes.", "Guitar technique"], ["Count out loud. If you can't count it, you don't know the rhythm yet.", "Guitar technique"], ["Tap your foot. Your body keeping time frees your hands to play.", "Guitar technique"], ["Play quietly sometimes. Soft playing reveals uneven notes that loud playing hides.", "Guitar technique"], ["Strum from the wrist and keep your arm moving even on the beats you skip.", "Guitar technique"], ["Learn the notes you're playing. Knowing the fretboard turns shapes into music.", "Guitar technique"], ["Practice scales with a purpose: as melodies, in sequences, or over a backing track.", "Guitar technique"], ["Short nails on your fretting hand help notes ring clean.", "Guitar technique"], ["Pain is a stop sign, not a challenge. Rest and check your technique.", "Guitar technique"], ["Change strings when they go dull. Fresh strings are easier to play in tune.", "Guitar technique"], ["Learn songs, not just exercises. Music is the point of all the technique.", "Guitar technique"], ["Can't play it slow? You can't play it fast. Speed is accuracy, repeated.", "Rhythm"], ["Try the click on 2 and 4. It makes you feel the groove instead of chasing beats.", "Rhythm"], ["Half-time practice: set the click to half your tempo and fill the space yourself.", "Rhythm"], ["Play right on the click until it disappears. When you can't hear it, you're locked in.", "Rhythm"], ["Speed bursts: play a short fragment fast, then rest. Short bursts build speed without tension.", "Rhythm"], ["Practice rhythms on one muted string first. Get the timing right before adding notes.", "Rhythm"], ["Subdivide in your head. Feeling the eighth notes keeps quarter notes even.", "Rhythm"], ["Record with the click, then listen without it. Is your time still steady?", "Rhythm"], ["Play the same phrase at three tempos: slow, medium and just over your edge.", "Rhythm"], ["Grade honestly. Your Clean BPM is only as true as your Clean grades.", "TOAN"], ["Silent mode tests your inner clock. If you drift when the click drops out, slow down.", "TOAN"], ["Record yourself. You hear things while listening back that you miss while playing.", "TOAN"], ["Star a take you're proud of. Months from now, it shows how far you've come.", "TOAN"], ["Listen to Day one now and then. Progress is easy to forget until you hear it.", "TOAN"], ["A Rough grade isn't failure. It just tells Guided mode where your edge is today.", "TOAN"], ["Find your BPM again after a break. Your edge moves, and that's normal.", "TOAN"], ["Set a goal BPM for each piece. A target makes every small step count.", "TOAN"], ["Use subcategories to split a song into sections. Practice the hard part on its own.", "TOAN"], ["Check the pie now and then. Are you practicing what you need, or just what's fun?", "TOAN"], ["Set a practice goal you can hit on a bad week. Consistency beats intensity.", "TOAN"], ["Timer only is for playing along: songs, lessons, or just exploring ideas.", "TOAN"], ["Close is a fine grade. Holding the BPM while it settles is part of the process.", "TOAN"], ["Warm up slowly. Easy chromatic runs or open chords get your hands ready before the hard stuff.", "Guitar technique"], ["Practice the way you'll play: standing if you'll stand, with a strap, at real volume.", "Learning science"], ["Play it once without stopping, mistakes and all. Real playing means keeping going.", "Guitar technique"], ["Hear it before you play it. Hum or imagine the phrase first, then let your hands follow.", "Guitar technique"], ["Compare yourself to last month, not to other players.", "Mindset"], ["Have fun at the end. Five minutes of just playing reminds you why you practice.", "Mindset"], ["Learn by ear sometimes. Working out a melody trains your ear and your hands together.", "Guitar technique"], ["Play with others when you can. Nothing tests your timing like a real band.", "Guitar technique"]];
+  var TIPS = [["Slow down until it's perfect. Clean reps at a slow tempo build skill faster than sloppy reps at speed.", "The Talent Code"], ["Practice at the edge: just past what you can do. The small struggle is where the learning happens.", "The Talent Code"], ["Break a hard passage into small chunks. Master each piece, then link them together.", "The Talent Code"], ["Mistakes are information. Notice exactly where it broke, fix that spot, then play it again.", "The Talent Code"], ["Watch a player you admire, then copy one small thing. Imitation is how skills spread.", "The Talent Code"], ["Take in the whole piece first. Listen to it all the way through before you chop it up.", "The Talent Code"], ["Reach, miss, adjust, reach again. That loop is what deep practice looks like.", "The Talent Code"], ["Feeling clumsy at the edge is a good sign. It means you're building something new.", "The Talent Code"], ["Get one bar right, then two, then four. Grow the passage outward from what's clean.", "The Talent Code"], ["Repetition still matters. Skills get faster and more automatic the more clean reps you stack.", "The Talent Code"], ["Practice the transition, not just the parts. The jump between two chords is its own skill.", "The Talent Code"], ["Make it obvious: leave your guitar on a stand, not in its case.", "Atomic Habits"], ["Make it easy: on a busy day, play for just two minutes. Showing up is the habit.", "Atomic Habits"], ["Never miss twice. One skipped day is life; two starts a new habit.", "Atomic Habits"], ["Stack it: practice right after something you already do every day, like your morning coffee.", "Atomic Habits"], ["Set a time and place: \"I'll practice at 7pm in the living room\" beats \"I'll practice later.\"", "Atomic Habits"], ["Reduce friction. Keep picks, capo and tuner next to the guitar so starting takes seconds.", "Atomic Habits"], ["Make distractions harder: put your phone on Do Not Disturb before you start.", "Atomic Habits"], ["Pair practice with something you enjoy: your favorite tea, a good chair, the window light.", "Atomic Habits"], ["Join a culture where practice is normal. Friends who play make practicing feel natural.", "Atomic Habits"], ["Don't break the chain. A visible streak makes you want to keep it going.", "Atomic Habits"], ["Have one clear goal per session: one passage, one tempo, one problem to solve.", "Deliberate practice"], ["Short, focused sessions beat long, distracted ones. Ten sharp minutes counts.", "Deliberate practice"], ["Right after your warm-up, tackle the hardest part while you're freshest.", "Deliberate practice"], ["Know what good sounds like. Build a clear picture of the target before you chase it.", "Deliberate practice"], ["Find your weakest spot and spend most of your time there.", "Deliberate practice"], ["Plan before you play: what will you work on, and how will you know it's better?", "Deliberate practice"], ["Rest when your focus fades. Tired, sloppy reps teach your hands the wrong thing.", "Deliberate practice"], ["Change the task when you stall. Try a new rhythm, a new tempo, or a new fingering.", "Deliberate practice"], ["Write down what worked. A one-line note today saves you ten minutes tomorrow.", "Deliberate practice"], ["Practice like you'll perform. Run it once a session as if someone is listening.", "Deliberate practice"], ["Effort without attention is just playing. Stay curious about what's happening in your hands.", "Deliberate practice"], ["Measure progress in weeks, not days. Day-to-day changes are too small to notice.", "Deliberate practice"], ["Sleep locks in practice. A passage that fought you tonight is often easier tomorrow.", "Learning science"], ["Spread it out. Three short sessions in a week beat one long one.", "Learning science"], ["Mix it up. Switching between two or three skills feels harder but often sticks better.", "Learning science"], ["Vary the practice: same lick, different tempos, positions and dynamics. Variety makes it robust.", "Learning science"], ["Take short breaks. A few minutes away can help your brain lock in what you just did.", "Learning science"], ["Mental practice helps. Picture your fingers playing the passage when you're away from the guitar.", "Learning science"], ["Focus on the sound, not your fingers. An outward focus often makes movement smoother.", "Learning science"], ["Come back to old material. A quick review keeps skills from fading.", "Learning science"], ["Practice feels worse but sticks better when it's varied. Don't judge a session by how smooth it felt.", "Learning science"], ["Stop while it's still clean. Ending on a good rep is what your hands will remember.", "Learning science"], ["Get enough rest between hard sessions. Recovery is part of practice.", "Learning science"], ["Relax. Check your shoulders, jaw and fretting thumb. Tension is the speed limit.", "Guitar technique"], ["Use the lightest touch that still sounds clean. Less pressure means faster, easier hands.", "Guitar technique"], ["Keep fingers close to the strings. Small movements are fast movements.", "Guitar technique"], ["Fret just behind the fret wire, not on top or in the middle. Less effort, cleaner note.", "Guitar technique"], ["Mute what you're not playing. Clean playing is as much about silence as sound.", "Guitar technique"], ["Watch your picking hand. Most speed problems are sync problems between the two hands.", "Guitar technique"], ["Keep your pick strokes small. A big swing wastes time and accuracy.", "Guitar technique"], ["Tune before every session. Practicing out of tune trains your ear wrong.", "Guitar technique"], ["Check your posture. Sit tall, guitar close, neck slightly up.", "Guitar technique"], ["Keep your fretting thumb relaxed behind the neck. A death grip slows everything down.", "Guitar technique"], ["Play chord changes slowly with your eyes closed. Feel the shapes instead of looking.", "Guitar technique"], ["Move all fingers of a chord together. Land them at once, not one at a time.", "Guitar technique"], ["Leave a finger down when chords share a note. Pivot fingers make changes easier.", "Guitar technique"], ["Practice with a clean tone first. Distortion hides mistakes.", "Guitar technique"], ["Count out loud. If you can't count it, you don't know the rhythm yet.", "Guitar technique"], ["Tap your foot. Your body keeping time frees your hands to play.", "Guitar technique"], ["Play quietly sometimes. Soft playing reveals uneven notes that loud playing hides.", "Guitar technique"], ["Strum from the wrist and keep your arm moving even on the beats you skip.", "Guitar technique"], ["Learn the notes you're playing. Knowing the fretboard turns shapes into music.", "Guitar technique"], ["Practice scales with a purpose: as melodies, in sequences, or over a backing track.", "Guitar technique"], ["Short nails on your fretting hand help notes ring clean.", "Guitar technique"], ["Pain is a stop sign, not a challenge. Rest and check your technique.", "Guitar technique"], ["Change strings when they go dull. Fresh strings are easier to play in tune.", "Guitar technique"], ["Learn songs, not just exercises. Music is the point of all the technique.", "Guitar technique"], ["Can't play it slow? You can't play it fast. Speed is accuracy, repeated.", "Rhythm"], ["Try the click on 2 and 4. It makes you feel the groove instead of chasing beats.", "Rhythm"], ["Half-time practice: set the click to half your tempo and fill the space yourself.", "Rhythm"], ["Play right on the click until it disappears. When you can't hear it, you're locked in.", "Rhythm"], ["Speed bursts: play a short fragment fast, then rest. Short bursts build speed without tension.", "Rhythm"], ["Practice rhythms on one muted string first. Get the timing right before adding notes.", "Rhythm"], ["Subdivide in your head. Feeling the eighth notes keeps quarter notes even.", "Rhythm"], ["Record with the click, then listen without it. Is your time still steady?", "Rhythm"], ["Play the same phrase at three tempos: slow, medium and just over your edge.", "Rhythm"], ["Grade honestly. Your Clean BPM is only as true as your Clean grades.", "TOAN"], ["Silent mode tests your inner clock. If you drift when the click drops out, slow down.", "TOAN"], ["Record yourself. You hear things while listening back that you miss while playing.", "TOAN"], ["Star a take you're proud of. Months from now, it shows how far you've come.", "TOAN"], ["Listen to Day one now and then. Progress is easy to forget until you hear it.", "TOAN"], ["A Rough grade isn't failure. It just tells Guided mode where your edge is today.", "TOAN"], ["Find your BPM again after a break. Your edge moves, and that's normal.", "TOAN"], ["Set a goal BPM for each piece. A target makes every small step count.", "TOAN"], ["Use subcategories to split a song into sections. Practice the hard part on its own.", "TOAN"], ["Check the practice ring now and then. Are you practicing what you need, or just what's fun?", "TOAN"], ["Set a practice goal you can hit on a bad week. Consistency beats intensity.", "TOAN"], ["Timer only is for playing along: songs, lessons, or just exploring ideas.", "TOAN"], ["Close is a fine grade. Holding the BPM while it settles is part of the process.", "TOAN"], ["Warm up slowly. Easy chromatic runs or open chords get your hands ready before the hard stuff.", "Guitar technique"], ["Practice the way you'll play: standing if you'll stand, with a strap, at real volume.", "Learning science"], ["Play it once without stopping, mistakes and all. Real playing means keeping going.", "Guitar technique"], ["Hear it before you play it. Hum or imagine the phrase first, then let your hands follow.", "Guitar technique"], ["Compare yourself to last month, not to other players.", "Mindset"], ["Have fun at the end. Five minutes of just playing reminds you why you practice.", "Mindset"], ["Learn by ear sometimes. Working out a melody trains your ear and your hands together.", "Guitar technique"], ["Play with others when you can. Nothing tests your timing like a real band.", "Guitar technique"]];
   // share the free space evenly between sections (worked out with the dropdowns closed, kept while one is open)
   // the metronome screen always fills evenly: spare room first grows the timer, the BPM (always the same size
   // as the timer, and never wider than its box) and the beat dots; what is left becomes one even gap top to bottom
@@ -4104,7 +4129,7 @@
   }
   var TOURS = {
     home: [
-      {sel:'#donut', shape:'pie', t:'Practice pie · Your practice time this period'},
+      {sel:'#donut', shape:'pie', t:'Practice ring · Your practice time this period'},
       {sel:'#donut .progtrack', shape:'inner', t:'Practice duration ring · Fills toward your daily practice duration'},
       {sel:'#donut', shape:'ring', t:'Target ring · Target category practice percentage'},
       {sel:'#legend .pill', fillDemo:true, t:'Categories · Tap to open, fills as you practice toward percentage goal'},
@@ -4133,7 +4158,7 @@
   };
   /* ---------- first-launch setup ---------- */
   var su = null;
-  var SU_STEPS = ['welcome', 'goal', 'cats', 'strings', 'done'];
+  var SU_STEPS = ['welcome', 'goal', 'cats', 'targets', 'strings', 'done'];
   function openSetup(){
     su = {i:0, goal:30, keep:store.cats.map(function(c){ return c.id; }), hours:0, strings:''};
     $('setup').classList.add('show'); renderSetup();
@@ -4154,24 +4179,74 @@
     }
     if(k === 'welcome'){
       $('suK').textContent = 'Welcome'; $('suT').textContent = 'TOAN Tracker';
-      $('suX').textContent = 'A practice log and metronome. It doesn\'t tell you what to play. It shows how whatever you are working on grows.';
+      $('suX').textContent = 'Be your own guide. TOAN shows you how you spend your practice time, so you can point your effort where you want to go, and build the habits that make good guitar playing.';
       $('suN').textContent = 'Play it clean. Then a little faster.'; $('suNext').textContent = 'Set up';
     } else if(k === 'goal'){
-      $('suK').textContent = 'Step 1 of 3'; $('suT').textContent = 'Practice duration';
+      $('suK').textContent = 'Step 1 of 4'; $('suT').textContent = 'Practice duration';
       $('suX').textContent = 'How long do you want to practice each day?';
       pick([[15, '15 minutes'], [30, '30 minutes'], [45, '45 minutes'], [60, '1 hour'], [90, '1.5 hours'], [120, '2 hours']], su.goal, function(v){ su.goal = v; });
       $('suN').textContent = 'The practice duration ring and the category rows fill as you practice toward it. Change it anytime with the target icon.';
       $('suNext').textContent = 'Next';
     } else if(k === 'cats'){
-      $('suK').textContent = 'Step 2 of 3'; $('suT').textContent = 'What you practice';
-      $('suX').textContent = 'Keep the categories you will use.';
+      $('suK').textContent = 'Step 2 of 4'; $('suT').textContent = 'What you practice';
+      $('suX').textContent = 'Choose the categories you will use.';
       pick(store.cats.map(function(c){ return [c.id, c.name]; }), su.keep, function(id){
         var i = su.keep.indexOf(id); if(i >= 0){ if(su.keep.length > 1) su.keep.splice(i, 1); } else su.keep.push(id);
       }, true);
-      $('suN').textContent = 'Add more later with the plus button under the list. Their targets split evenly to start.';
+      // plus pill: type your own category in place
+      if(su.adding){
+        var ni = document.createElement('input'); ni.type = 'text'; ni.maxLength = 20; ni.placeholder = 'Name'; ni.className = 'sunew'; ni.setAttribute('aria-label', 'New category name');
+        var done = false;
+        function addIt(){ if(done) return; done = true; var v = ni.value.trim().slice(0, 20); su.adding = false;
+          if(v){ addCatNamed(v); var nc = store.cats[store.cats.length - 1]; su.keep.push(nc.id); } renderSetup(); }
+        ni.addEventListener('keydown', function(e){ if(e.key === 'Enter') addIt(); });
+        ni.addEventListener('blur', addIt);
+        ch.appendChild(ni); setTimeout(function(){ ni.focus(); }, 30);
+      } else if(store.cats.length < 12){
+        var pb = document.createElement('button'); pb.type = 'button'; pb.className = 'suplus'; pb.textContent = '+'; pb.setAttribute('aria-label', 'Add your own category');
+        pb.addEventListener('click', function(){ su.adding = true; renderSetup(); });
+        ch.appendChild(pb);
+      }
+      $('suN').textContent = 'Tap a category to keep it or leave it out. Add your own with the plus.';
+      $('suNext').textContent = 'Next';
+    } else if(k === 'targets'){
+      $('suK').textContent = 'Step 3 of 4'; $('suT').textContent = 'Target percentages';
+      $('suX').textContent = 'How do you want to split your practice time?';
+      var kept = store.cats.filter(function(c){ return su.keep.indexOf(c.id) >= 0; });
+      if(!su.targets || Object.keys(su.targets).sort().join() !== kept.map(function(c){ return c.id; }).sort().join()){
+        su.targets = {}; var n0 = kept.length, b0 = Math.floor(100 / n0), x0 = 100 - b0 * n0;
+        kept.forEach(function(c, i){ su.targets[c.id] = b0 + (i < x0 ? 1 : 0); });
+      }
+      var tot = 0; kept.forEach(function(c){ tot += su.targets[c.id]; });
+      ch.className = 'such one sutg';
+      // live preview: the target ring, exactly as it will look around the practice ring
+      var R = 46, C = 2 * Math.PI * R, off = 0, ring = '<circle cx="60" cy="60" r="' + R + '" fill="none" stroke="#242a33" stroke-width="7"/>';
+      kept.forEach(function(c){ var l = su.targets[c.id] / 100 * C; if(l > 0.5) ring += '<circle cx="60" cy="60" r="' + R + '" fill="none" stroke="' + c.color + '" stroke-width="7" stroke-dasharray="' + Math.max(l - 2, 0.5).toFixed(2) + ' ' + C.toFixed(2) + '" stroke-dashoffset="' + (-off).toFixed(2) + '" transform="rotate(-90 60 60)"/>'; off += l; });
+      var pv = document.createElement('div'); pv.className = 'suring';
+      pv.innerHTML = '<svg viewBox="0 0 120 120" aria-hidden="true">' + ring + '</svg><div><b>' + tot + '</b><span>percent</span></div>';
+      ch.appendChild(pv);
+      kept.forEach(function(c){
+        var row = document.createElement('div'); row.className = 'sutrow'; row.style.setProperty('--pc', c.color);
+        row.innerHTML = '<i></i><span class="sun2">' + esc(c.name) + '</span><button type="button" class="sb" aria-label="Less">&minus;</button><b>' + su.targets[c.id] + '</b><button type="button" class="sb" aria-label="More">+</button>';
+        var bs = row.querySelectorAll('button');
+        bs[0].addEventListener('click', function(){ su.targets[c.id] = Math.max(0, su.targets[c.id] - 5); renderSetup(); });
+        // plus: uses unassigned percent first; at 100 it takes 5 from the largest other category
+        bs[1].addEventListener('click', function(){
+          var room = 100 - tot, add = Math.min(5, room);
+          if(add < 5){
+            var big = null; kept.forEach(function(o){ if(o.id !== c.id && su.targets[o.id] > 0 && (!big || su.targets[o.id] > su.targets[big.id])) big = o; });
+            if(big){ var take = Math.min(5 - add, su.targets[big.id]); su.targets[big.id] -= take; add += take; }
+          }
+          su.targets[c.id] += add; renderSetup();
+        });
+        bs[1].disabled = su.targets[c.id] >= 100;
+        ch.appendChild(row);
+      });
+      $('suN').textContent = tot < 100 ? (100 - tot) + ' percent not assigned yet. ' : '';
+      $('suN').textContent += 'These make the target ring. Each row fills as you practice toward its share.';
       $('suNext').textContent = 'Next';
     } else if(k === 'strings'){
-      $('suK').textContent = 'Step 3 of 3'; $('suT').textContent = 'Strings';
+      $('suK').textContent = 'Step 4 of 4'; $('suT').textContent = 'Strings';
       $('suX').textContent = 'About how many hours are on your strings right now?';
       pick([[0, 'Brand new'], [5, 'About 5 hours'], [15, 'About 15 hours'], [30, 'About 30 hours'], [-1, 'Not sure']], su.hours, function(v){ su.hours = v; });
       var inp = document.createElement('input'); inp.type = 'text'; inp.maxLength = 40; inp.placeholder = 'String type (optional)'; inp.value = su.strings;
@@ -4190,8 +4265,7 @@
       store.dailyGoal = su.goal;
       if(!store.log.length){
         store.cats = store.cats.filter(function(c){ return su.keep.indexOf(c.id) >= 0; });
-        var n = store.cats.length, b = Math.floor(100 / n), extra = 100 - b * n;
-        store.cats.forEach(function(c, i){ c.target = b + (i < extra ? 1 : 0); });
+        store.cats.forEach(function(c){ var v = su.targets && su.targets[c.id]; if(v > 0) c.target = v; else delete c.target; });
       }
       var g = curGuitar(); g.changedAt = Date.now(); g.offsetMs = Math.max(0, su.hours) * 36e5; g.strings = String(su.strings || '').trim().slice(0, 40);
     }
